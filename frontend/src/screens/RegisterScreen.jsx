@@ -1,12 +1,13 @@
-import {useState} from 'react';
-import {Link} from 'react-router-dom'
-import {Form, Button, Row, Col} from 'react-bootstrap';
+import { useState } from 'react';
+import { Link } from 'react-router-dom'
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 
 
 const RegisterScreen = () => {
 
     const [name, setName] = useState('');
+    const [name2, setName2] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,44 +16,51 @@ const RegisterScreen = () => {
         e.preventDefault();
         console.log('submit');
     }
-  return (
-    <FormContainer>
-        <h1>Sign Up</h1>
-        <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name' className='my-2'>
-                <Form.Label>Name:</Form.Label>
-                <Form.Control type='text' placeholder='enter name' value={name} onChange={(e)=>{setName(e.target.value)}}></Form.Control>
-            </Form.Group>
+    return (
+        <section className='main-comtainer'>
+            <div className='form login'>
+                <div className='form-content'>
+                    <header className='heading'>Sign Up</header>
+                    <form onSubmit={submitHandler}>
+                        <div className='field input-field'>
+                            <input type='text' placeholder='First name' value={name} onChange={(e) => { setName(e.target.value) }}></input>
+                        </div>
+                        <div className='field input-field'>
+                            <input type='text' placeholder='Last name' value={name2} onChange={(e) => { setName2(e.target.value) }}></input>
+                        </div>
 
-            <Form.Group controlId='email' className='my-2'>
-                <Form.Label>Email:</Form.Label>
-                <Form.Control type='email' placeholder='enter email' value={email} onChange={(e)=>{setEmail(e.target.value)}}></Form.Control>
-            </Form.Group>
+                        <div className='field input-field'>
 
-            <Form.Group controlId='password' className='my-2'>
-                <Form.Label>Password:</Form.Label>
-                <Form.Control type='password' placeholder='enter password' value={password} onChange={(e)=>{setPassword(e.target.value)}}></Form.Control>
-            </Form.Group>
-            
-            <Form.Group controlId='confirmPassword' className='my-2'>
-                <Form.Label>Confirm Password:</Form.Label>
-                <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}}></Form.Control>
-            </Form.Group>
+                            <input type='email' placeholder='Email' value={email} onChange={(e) => { setEmail(e.target.value) }}></input>
+                        </div>
 
-            <Button type='submit' variant='primary' className='mt-3'>
-                Sign In
-            </Button>
+                        <div className='field input-field'>
 
-            <Row className='py-3'>
-                <Col>
-                Already have an account? <Link to='/login'>sign in</Link>
-                </Col>
-            </Row>
+                            <input type='password' placeholder='Password' value={password} onChange={(e) => { setPassword(e.target.value) }}></input>
+                        </div>
+
+                        <div className='field input-field'>
+
+                            <input type='password' placeholder='Confirm Password' value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }}></input>
+                        </div>
+
+                        <button type='submit'  className='field button-field'>
+                            Sign In
+                        </button>
+
+                        <div className='new'>
+
+                            Already have an account? <Link to='/login'>Sign In</Link>
+
+                        </div>
 
 
-        </Form>
-    </FormContainer>
-  )
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    )
 }
 
 export default RegisterScreen;
