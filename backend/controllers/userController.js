@@ -33,18 +33,33 @@ const authUser = asyncHandler(async (req, res) => {
 
 
 const registerUser = asyncHandler(async (req, res) => {
-    const {name,email,password} = req.body;
+    const {name,email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode } = req.body;
     const userExists = await User.findOne({email});
+    
+    if (phoneNumber.length !==10){
+        res.status(400 );
+        throw new Error("Phone number should be only 10 digits. Do no include country code!")
+    }
 
     if(userExists){
         res.status(400);
         throw new Error('user already exists!');
         // Uses our error handler that we created
     }
+
     const user = await User.create({
         name,
         email,
-        password
+        password,
+        firstName,
+        lastName,
+        phoneNumber,
+        dateOfBirth, 
+        gender, 
+        state, 
+        bloodGroup, 
+        city, 
+        pincode
     });
     if(user){
         generateToken(res, user._id);
@@ -52,6 +67,7 @@ const registerUser = asyncHandler(async (req, res) => {
             _id:user._id,
             name: user.name,
             email:user.email,
+
         });
     } else{
         res.status(400);
@@ -82,7 +98,15 @@ const getUserProfile = asyncHandler(async (req, res) => {
     const user = {
         _id :req.user._id,
         email :req.user.email,
-        name:req.user.name
+        firstName:req.user.firstName,
+        lastName:req.user.lastName,
+        phoneNumber:req.user.phoneNumber,
+        bloodGroup: req.user.bloodGroup,
+        dateOfBirth: req.user.dateOfBirth,
+        gender:req.user.gender,
+        state:req.user.state,
+        city:req.user.city,
+        pincode:req.user.pincode
     }
     // console.log(user)
     res.status(200).json(user)
