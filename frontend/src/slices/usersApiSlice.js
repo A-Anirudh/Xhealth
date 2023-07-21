@@ -20,4 +20,4 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const { useLoginMutation } = usersApiSlice;
 
 
-// Mutation is a specific type of state update operation that modifies the state in a Redux store 
+// Mutation is a specific type of state update operation that modifies the state in a Redux store
