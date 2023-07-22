@@ -2,7 +2,7 @@
 
 import { apiSlice } from "./apiSlice";
 
-const USERS_URL = 'http://localhost:8000/api/users'; //Can put this in another page if needed called constants, but for this application, we have only users. for bigger projects use a different file. It will be easier to manage
+const USERS_URL = '/api/users'; //Can put this in another page if needed called constants, but for this application, we have only users. for bigger projects use a different file. It will be easier to manage
 
 export const usersApiSlice = apiSlice.injectEndpoints({
 
