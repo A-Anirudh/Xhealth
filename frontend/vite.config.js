@@ -18,6 +18,6 @@ export default defineConfig({
           '^/api': '', // Remove the '/api' prefix from the URL before forwarding
         },
       },
-},
-}
+    },
+  }
 })
