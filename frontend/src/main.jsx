@@ -10,17 +10,25 @@ import {
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen.jsx';
+import LoginScreen from './screens/LoginScreen/LoginScreen.jsx';
 import RegisterScreen from './screens/RegisterScreen.jsx';
+import Dashboard from 'D:/Xhealth/frontend/src/screens/Dashboard/Dashboard.jsx';
+import Profile from 'D:/Xhealth/frontend/src/screens/Profile/Profile.jsx';
 import store from './store.js'
 import { Provider } from 'react-redux';
-
+import PrivateRoutes from './components/PrivateRoutes.jsx';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<HomeScreen />} />
-      <Route  path='/login' element={<LoginScreen />} />
+      <Route  path='/login_user' element={<LoginScreen />} />
       <Route  path='/register' element={<RegisterScreen />} />
+      
+
+      <Route path='' element={<PrivateRoutes/>}>
+        <Route  path='/dashboard' element={<Dashboard/>} />
+        <Route  path='/profile_user' element={<Profile/>} />
+      </Route>
     </Route>
   )
 );
