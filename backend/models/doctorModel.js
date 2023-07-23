@@ -54,6 +54,14 @@ const doctorSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    workingHourStart:{
+        type:String,
+        required:true
+    },
+    workingHourEnd:{
+        type:String,
+        required:true
+    },
     qualification: {
         type: [String],
         required: true,
@@ -92,4 +100,4 @@ doctorSchema.methods.matchPasswords = async function (enterePassword) {
 }
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
-export default User;
+export default Doctor;
