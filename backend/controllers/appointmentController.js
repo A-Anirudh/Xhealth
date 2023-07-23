@@ -14,12 +14,15 @@ import Appointment from "../models/appointmentModel";
 // route: POST /api/appointment/book
 // access : private
 
-const bookApt = asyncHandler(async (req,res) => {
+const bookAppointment = asyncHandler(async (req,res) => {
     const {user, doctor, appointmentDate, startTime, reason, status} = req.body;
     const doc = await Doctor.findOne({email:doctor.email})
     if(startTime>workingHourStart){
-        res.status()
+        res.status(400)
+        throw new Error("Doctor not available!")
     }
-    console.log(doc)
-    
 })
+
+
+
+export {bookAppointment};
