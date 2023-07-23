@@ -90,6 +90,7 @@ const logoutDoctor = asyncHandler(async (req, res) => {
 
 
 const getDoctorProfile = asyncHandler(async (req, res) => {
+
     console.log(req.doctor)
     const doc = {
         _id :req.doctor._id,
