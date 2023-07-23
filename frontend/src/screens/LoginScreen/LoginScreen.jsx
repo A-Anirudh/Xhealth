@@ -15,23 +15,23 @@ const LoginScreen = () => {
 
   const[login,{isLoading}]=useLoginMutation();
 
-  const {userInfo}=useSelector((state)=>state.auth)
+  const {userInfo}=useSelector((state)=>state.auth)//to get the localstoarge data from redux
 
   useEffect(() => {
     if(userInfo){
-        navigate('/dashboard')
+        navigate('/profile')
     }
   
 
   },[navigate,userInfo])
   
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e) => {//when you click login
     e.preventDefault();
     try {
-        const res=await login({email,password}).unwrap()
+        const res=await login({email,password}).unwrap() //{email,password} will b the boduy
 
-        dispatch(setCredentials({...res}))
+        dispatch(setCredentials({res}))
         
     } catch (err) {
         toast.error(err?.data?.message||err.error)

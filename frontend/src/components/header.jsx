@@ -16,7 +16,7 @@ const Header = () => {
             <Navbar.Toggle aria-controls='basic-navbar-nav' />
             <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
-              <LinkContainer to='/login'>
+              <LinkContainer to='/login_user'>
                 <Nav.Link > <FaSignInAlt/> Sign In</Nav.Link>
               </LinkContainer>
               <LinkContainer to='/register'>

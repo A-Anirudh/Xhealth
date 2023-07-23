@@ -21,13 +21,13 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<HomeScreen />} />
-      <Route  path='/login' element={<LoginScreen />} />
+      <Route  path='/login_user' element={<LoginScreen />} />
       <Route  path='/register' element={<RegisterScreen />} />
       
 
       <Route path='' element={<PrivateRoutes/>}>
         <Route  path='/dashboard' element={<Dashboard/>} />
-        <Route  path='/profile' element={<Profile/>} />
+        <Route  path='/profile_user' element={<Profile/>} />
       </Route>
     </Route>
   )

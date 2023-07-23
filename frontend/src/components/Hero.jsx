@@ -13,7 +13,7 @@ const Hero = () => {
             Bootstrap library
           </p>
           <div className='d-flex'>
-          <LinkContainer to='/login'>          
+          <LinkContainer to='/login_user'>          
             <Button variant='primary' className='me-3'>
               Sign In
             </Button>

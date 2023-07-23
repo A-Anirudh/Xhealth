@@ -4,7 +4,7 @@ import {  useSelector } from 'react-redux'
 
 const PrivateRoutes = () => {
 const{userInfo}=useSelector((state)=>state.auth)
-return userInfo? <Outlet/> :<Navigate to='/login' replace />
+return userInfo? <Outlet/> :<Navigate to='/login_user' replace />//make it landing page later
 }
 
 export default PrivateRoutes
