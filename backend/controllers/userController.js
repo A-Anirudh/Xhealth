@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
+import { logoutDoctor } from "./doctorController.js";
 
 // @desc Auth user/set token
 // route = POST to /api/users/auth
@@ -11,7 +12,8 @@ const authUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({email})
 
     if(user && (await user.matchPasswords(password))){
-        generateToken(res, user._id);
+        
+        generateToken(res, user._id,'user');
         res.status(201).json({
             _id:user._id,
             name: user.name,
@@ -33,11 +35,11 @@ const authUser = asyncHandler(async (req, res) => {
 
 
 const registerUser = asyncHandler(async (req, res) => {
-    const {name,email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode } = req.body;
+    const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode } = req.body;
     const userExists = await User.findOne({email});
     
     if (phoneNumber.length !==10){
-        res.status(400 );
+        res.status(400);
         throw new Error("Phone number should be only 10 digits. Do no include country code!")
     }
 
@@ -48,7 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
-        name,
+        
         email,
         password,
         firstName,
@@ -62,7 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
         pincode
     });
     if(user){
-        generateToken(res, user._id);
+        generateToken(res, user._id,'user');
         res.status(201).json({
             _id:user._id,
             name: user.name,
@@ -81,10 +83,12 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 const logoutUser = asyncHandler(async (req, res) => {
-    res.cookie('jwt','',{
+
+    res.cookie('jwt-user','',{
         httpOnly:true,
         expires:new Date(0)
     })
+    
     res.status(200).json({message:"User logged out"})
 
 });
@@ -122,9 +126,16 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
 
     if(user){
-        user.name = req.body.name || user.name;
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.phoneNumber = req.body.phoneNumber || user.phoneNumber;        
         user.email = req.body.email || user.email;
-
+        user.bloodGroup = req.body.bloodGroup || user.bloodGroup;
+        user.dateOfBirth = req.body.dateOfBirth || user.dateOfBirth;
+        user.gender = req.body.gender || user.gender;
+        user.state = req.body.state || user.state;
+        user.city = req.body.city || user.city;
+        user.pincode = req.body.pincode || user.pincode;     
         if(req.body.password){
             user.password = req.body.password;
         }
