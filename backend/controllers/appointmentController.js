@@ -6,23 +6,27 @@
 // 5. View all my appointments
 
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel";
-import Doctor from "../models/doctorModel";
-import Appointment from "../models/appointmentModel";
+import User from "../models/userModel.js";
+import Doctor from "../models/doctorModel.js";
+import Appointment from "../models/appointmentModel.js";
 
 // @Desc: book an appointment for a doctor
 // route: POST /api/appointment/book
 // access : private
 
 const bookAppointment = asyncHandler(async (req,res) => {
-    const {user, doctor, appointmentDate, startTime, reason, status} = req.body;
-    const doc = await Doctor.findOne({email:doctor.email})
-    if(startTime>workingHourStart){
+    const {userId, doctorId, appointmentDate, startTime, reason, status} = req.body;
+    // console.log(doctorId)
+    const doc = await Doctor.findOne({_id:doctorId})
+    // console.log(doc)
+    const allAptOfDoc = await Appointment.find({doctor:doc._id})
+    console.log(allAptOfDoc);
+    if(startTime>workingHourStart || startTime<){
         res.status(400)
         throw new Error("Doctor not available!")
     }
+
 })
 
-
-
 export {bookAppointment};
+

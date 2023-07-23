@@ -70,6 +70,9 @@ const doctorSchema = mongoose.Schema({
     registrationNumber: {
         type: String,
         required: true,
+    },
+    timeSlotsBooked:{
+        type:[String]
     }
 
 }, {
