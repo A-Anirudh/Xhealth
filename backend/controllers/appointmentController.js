@@ -22,4 +22,4 @@ const bookApt = asyncHandler(async (req,res) => {
     }
     console.log(doc)
     
-})  
+})
