@@ -15,18 +15,46 @@ import Appointment from "../models/appointmentModel.js";
 // access : private
 
 const bookAppointment = asyncHandler(async (req,res) => {
-    const {userId, doctorId, appointmentDate, startTime, reason, status} = req.body;
+    const {userId, doctorId, appointmentDate, appointmentStartTime, reason, status} = req.body;
     // console.log(doctorId)
-    const doc = await Doctor.findOne({_id:doctorId})
-    // console.log(doc)
-    const allAptOfDoc = await Appointment.find({doctor:doc._id})
-    console.log(allAptOfDoc);
-    if(startTime>workingHourStart || startTime<){
-        res.status(400)
-        throw new Error("Doctor not available!")
-    }
+    try{
+        const doc = await Doctor.findOne({_id:doctorId})
+        // console.log(doc)
+        const allAptOfDoc = await Appointment.find({doctor:doc._id})
+        console.log(allAptOfDoc);
+        if(appointmentStartTime>doc.workingHourStart || appointmentStartTime<doc.workingHourEnd){
+            res.status(400)
+            throw new Error("Doctor not available!")
+        }
+        // Need to check if starTime is present in bookedTimeSlots of a doctor. Doctor's bookedTimeSlots should be reset everyday
+        console.log(doc)
+        if(doc.bookedTimeSlot.includes(appointmentStartTime)){
+            res.status(400)
+            throw new Error("Choose another time")
+            
+        }
+            // Step 3: Book a New Appointment
+    const newAppointment = new Appointment({
+        userId: userId,
+        doctorId: doctorId,
+        appointmentDate: new Date(appointmentDate),
+        startTime: startTime,
+        reason: reason,
+        status: status || "Scheduled",
+      });
+  
+      await newAppointment.save();
+  
+      res.status(201).json({ message: "Appointment booked successfully.", appointment: newAppointment });
+  
+    }  catch (error) {
+        res.status(res.statusCode === 200 ? 500 : res.statusCode); // Preserve existing status code if it's not an HTTP error
+        throw new Error(error.message || "An error occurred while booking the appointment.");
+      }
 
-})
+
+
+});
 
 export {bookAppointment};
 
