@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import {useDispatch,useSelector} from 'react-redux'
 import style from "./LoginScreen.module.css";
-import {useLoginMutation} from 'D:/Xhealth/frontend/src/slices/usersApiSlice'
-import{setCredentials} from 'D:/Xhealth/frontend/src/slices/authSlice'
 import { toast } from 'react-toastify';
+import { useLoginMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -13,13 +13,13 @@ const LoginScreen = () => {
   const navigate=useNavigate();
   const dispatch=useDispatch();
 
-  const[login,{isLoading}]=useLoginMutation();
+  const[login]=useLoginMutation();
 
   const {userInfo}=useSelector((state)=>state.auth)//to get the localstoarge data from redux
 
   useEffect(() => {
     if(userInfo){
-        navigate('/profile')
+        navigate('/profile_user')
     }
   
 
