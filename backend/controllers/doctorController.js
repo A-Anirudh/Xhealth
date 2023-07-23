@@ -55,7 +55,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
         state, 
         bloodGroup, 
         city, 
-        pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName
+        pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd,
     });
     if(doc){
         generateToken(res, doc._id,'doctor');
@@ -108,7 +108,10 @@ const getDoctorProfile = asyncHandler(async (req, res) => {
         department: req.doctor.department,
         experience: req.doctor.experience,
         currentHospitalWorkingName: req.doctor.currentHospitalWorkingName,
-        registrationNumber: req.doctor.registrationNumber
+        registrationNumber: req.doctor.registrationNumber,
+        workingHourStart:req.doctor.workingHourStart,
+        workingHourEnd:req.doctor.workingHourEnd,
+        timeSlotsBooked: req.doctor.timeSlotsBooked
     }
     // console.log(user)
     res.status(200).json(doc)
@@ -140,6 +143,8 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
         doc.experience = req.body.experience || doc.experience;
         doc.currentHospitalWorkingName = req.body.currentHospitalWorkingName || doc.currentHospitalWorkingName;
         doc.registrationNumber = req.body.registrationNumber || doc.registrationNumber;
+        doc.workingHourStart = req.body.workingHourStart || doc.workingHourStart,
+        doc.workingHourEnd = req.body.workingHourEnd || doc.workingHourEnd;
         if(req.body.password){
             doc.password = req.body.password;
         }
@@ -152,7 +157,7 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
         })
     } else{
         res.status(404);
-        throw new Error('User not found')
+        throw new Error('Doctor not found')
     }
 
     res.status(200).json({message:"update user profile"})

@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv';
 import router from './routes/userRoutes.js'
 import docRouter from './routes/doctorRoutes.js' ;
+import appointmentRouter from './routes/appointmentRoute.js'
 import {notFound, errorHandler} from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
@@ -20,6 +21,7 @@ app.use(express.urlencoded({extended: true})); // Allows to send form data. If I
 app.use(cookieParser());
 app.use('/api/users',router) // This is for userRoutes only
 app.use('/api/doctors',docRouter) // doctorRoutes
+app.use('/api/appointments',appointmentRouter) // doctorRoutes
 
 
 app.get('/', (req,res)=>{
