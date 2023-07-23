@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import Doctor from "./doctorModel.js";
 
 const userSchema = mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Doctor //Denots Doctor model
+      },
     firstName: {
         type: String,
         required: true,

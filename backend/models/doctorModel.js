@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 import bcrypt from "bcryptjs";
 
 const doctorSchema = mongoose.Schema({
@@ -29,7 +29,7 @@ const doctorSchema = mongoose.Schema({
         required: true,
     },
     dateOfBirth: {
-        type: Date,
+        type: Date, //YYYY-MM-DD
         required: true,
     },
     gender: {
@@ -54,12 +54,20 @@ const doctorSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    workingHourStart:{
+        type:String,
+        required:true
+    },
+    workingHourEnd:{
+        type:String,
+        required:true
+    },
     qualification: {
-        type: String,
+        type: [String],
         required: true,
     },
     experience: {
-        type: [String],
+        type: String,
         required: true,
     },
     currentHospitalWorkingName: {
@@ -71,7 +79,6 @@ const doctorSchema = mongoose.Schema({
         type: String,
         required: true,
     }
-
 
 }, {
     timestamps: true
@@ -93,4 +100,4 @@ doctorSchema.methods.matchPasswords = async function (enterePassword) {
 }
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
-export default User;
+export default Doctor;

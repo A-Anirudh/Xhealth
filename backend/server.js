@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv';
-import userRoutes from './routes/userRoutes.js'
+import router from './routes/userRoutes.js'
+import docRouter from './routes/doctorRoutes.js' ;
 import {notFound, errorHandler} from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
@@ -17,7 +18,9 @@ app.use(cors())
 app.use(express.json()); // this makes req.body available.. else body won't be available
 app.use(express.urlencoded({extended: true})); // Allows to send form data. If I don't add this, I won't be able to send data..
 app.use(cookieParser());
-app.use('/api/users',userRoutes)
+app.use('/api/users',router) // This is for userRoutes only
+app.use('/api/doctors',docRouter) // doctorRoutes
+
 
 app.get('/', (req,res)=>{
     res.send(`server is ready and running on port ${port}`)

@@ -20,12 +20,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             })
         }),
     })
+
 });
 
 export const {
     useLoginMutation,
     useGetUserInfoQuery // Add this line to export the hook for the new GET endpoint
 } = usersApiSlice;
+
 
 // Create our own endpoints in this file and it will inject them into the endpoints in the apiSlice file
 // in our form, we just need to dispatch the login action and it will do the work
@@ -41,3 +43,4 @@ export const {
 
 
 // Mutation is a specific type of state update operation that modifies the state in a Redux store
+// slice is used for grouping
