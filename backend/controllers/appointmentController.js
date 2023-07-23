@@ -22,26 +22,37 @@ const bookAppointment = asyncHandler(async (req,res) => {
         // console.log(doc)
         const allAptOfDoc = await Appointment.find({doctor:doc._id})
         console.log(allAptOfDoc);
-        if(appointmentStartTime>doc.workingHourStart || appointmentStartTime<doc.workingHourEnd){
+        // Function to convert time in "HH:mm" format to minutes since midnight
+        const convertTimeToMinutes = (time) => {
+            const [hours, minutes] = time.split(":");
+            return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+        };
+        const convertedAppointmentStartTime = convertTimeToMinutes(appointmentStartTime);
+        const convertedWorkingHourStart = convertTimeToMinutes(doc.workingHourStart);
+        const convertedWorkingHourEnd = convertTimeToMinutes(doc.workingHourEnd);
+        if(convertedAppointmentStartTime<convertedWorkingHourStart || convertedAppointmentStartTime>convertedWorkingHourEnd){
             res.status(400)
             throw new Error("Doctor not available!")
         }
         // Need to check if starTime is present in bookedTimeSlots of a doctor. Doctor's bookedTimeSlots should be reset everyday
         console.log(doc)
-        if(doc.bookedTimeSlot.includes(appointmentStartTime)){
+        if(doc.timeSlotsBooked.includes(appointmentStartTime)){
             res.status(400)
             throw new Error("Choose another time")
-            
         }
             // Step 3: Book a New Appointment
     const newAppointment = new Appointment({
         userId: userId,
         doctorId: doctorId,
         appointmentDate: new Date(appointmentDate),
-        startTime: startTime,
+        appointmentStartTime: appointmentStartTime,
         reason: reason,
         status: status || "Scheduled",
       });
+      console.log(doc.timeSlotsBooked)
+      doc.timeSlotsBooked.push(appointmentStartTime);
+      await doc.save();
+    
   
       await newAppointment.save();
   

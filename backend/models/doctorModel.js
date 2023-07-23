@@ -56,11 +56,13 @@ const doctorSchema = mongoose.Schema({
     },
     workingHourStart:{
         type:String,
-        required:true
+        required:true,
+        default: '9:00'
     },
     workingHourEnd:{
         type:String,
-        required:true
+        required:true,
+        default:'17:00'
     },
     qualification: {
         type: [String],
