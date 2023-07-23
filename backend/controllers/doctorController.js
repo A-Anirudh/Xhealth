@@ -102,7 +102,12 @@ const getDoctorProfile = asyncHandler(async (req, res) => {
         gender:req.doctor.gender,
         state:req.doctor.state,
         city:req.doctor.city,
-        pincode:req.doctor.pincode
+        pincode:req.doctor.pincode,
+        qualification: req.doctor.qualification,
+        department: req.doctor.department,
+        experience: req.doctor.experience,
+        currentHospitalWorkingName: req.doctor.currentHospitalWorkingName,
+        registrationNumber: req.doctor.registrationNumber
     }
     // console.log(user)
     res.status(200).json(doc)
