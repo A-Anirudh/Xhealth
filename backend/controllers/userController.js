@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
-import { logoutDoctor } from "./doctorController.js";
+
 
 // @desc Auth user/set token
 // route = POST to /api/users/auth
