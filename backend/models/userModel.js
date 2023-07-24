@@ -55,7 +55,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    
+    userTimeSlot:{
+        type:[String]
+    }
 
 }, {
     timestamps: true
