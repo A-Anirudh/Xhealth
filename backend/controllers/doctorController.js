@@ -181,3 +181,5 @@ const clearArray = async () =>{
     console.log('outside for loop')
 }
 cron.schedule('0 0 * * *', clearArray);
+
+// clearArray()
