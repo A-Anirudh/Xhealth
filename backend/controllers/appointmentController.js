@@ -19,6 +19,7 @@ const bookAppointment = asyncHandler(async (req,res) => {
     // console.log(doctorId)
     try{
         const doc = await Doctor.findOne({_id:doctorId})
+        const user = await User.findOne({_id:userId})
         // console.log(doc)
         const allAptOfDoc = await Appointment.find({doctor:doc._id})
         console.log(allAptOfDoc);
@@ -51,9 +52,8 @@ const bookAppointment = asyncHandler(async (req,res) => {
       });
       console.log(doc.timeSlotsBooked)
       doc.timeSlotsBooked.push(appointmentStartTime);
+
       await doc.save();
-    
-  
       await newAppointment.save();
   
       res.status(201).json({ message: "Appointment booked successfully.", appointment: newAppointment });
