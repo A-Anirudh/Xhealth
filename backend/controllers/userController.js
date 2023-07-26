@@ -1,6 +1,9 @@
 import asyncHandler from "express-async-handler";
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
+import { clearUserArray } from "../utils/refreshDaily.js";
+import cron from 'node-cron';
+
 
 
 // @desc Auth user/set token
@@ -152,5 +155,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({message:"update user profile"})
 
 });
-
+cron.schedule('0 0 * * *', clearUserArray);
 export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile};
+
+// clearUserArray()

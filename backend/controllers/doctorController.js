@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import Doctor from '../models/doctorModel.js'
 import generateToken from '../utils/generateToken.js'
 // import { logoutUser } from "./userController.js";
+import {clearDocArray} from '../utils/refreshDaily.js'
 import cron from 'node-cron';
 
 // @desc Auth doctor/set token
@@ -167,19 +168,5 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
 export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile};
 
 // Remove all elements in timeSlotsBooked array for all doctors
-
-const clearArray = async () =>{
-    const allDoc = await Doctor.find()
-    // console.log(allDoc)
-    for(let i in allDoc){
-        console.log(allDoc[i].timeSlotsBooked)
-        allDoc[i].timeSlotsBooked=[]
-        console.log(allDoc[i].timeSlotsBooked)
-        await allDoc[i].save()
-    }
-    
-    console.log('outside for loop')
-}
-cron.schedule('0 0 * * *', clearArray);
-
-// clearArray()
+cron.schedule('0 0 * * *', clearDocArray);
+// clearDocArray()
