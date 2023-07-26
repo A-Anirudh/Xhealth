@@ -56,11 +56,13 @@ const doctorSchema = mongoose.Schema({
     },
     workingHourStart:{
         type:String,
-        required:true
+        required:true,
+        default: '9:00'
     },
     workingHourEnd:{
         type:String,
-        required:true
+        required:true,
+        default:'17:00'
     },
     qualification: {
         type: [String],
@@ -78,6 +80,9 @@ const doctorSchema = mongoose.Schema({
     registrationNumber: {
         type: String,
         required: true,
+    },
+    timeSlotsBooked:{
+        type:[String],
     }
 
 }, {

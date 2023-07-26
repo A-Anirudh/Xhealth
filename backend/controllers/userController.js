@@ -1,7 +1,10 @@
 import asyncHandler from "express-async-handler";
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
-import { logoutDoctor } from "./doctorController.js";
+import { clearUserArray } from "../utils/refreshDaily.js";
+import cron from 'node-cron';
+
+
 
 // @desc Auth user/set token
 // route = POST to /api/users/auth
@@ -108,7 +111,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
         gender:req.user.gender,
         state:req.user.state,
         city:req.user.city,
-        pincode:req.user.pincode
+        pincode:req.user.pincode,
+        userTimeSlots : req.user.userTimeSlot,
     }
     // console.log(user)
     res.status(200).json(user)
@@ -151,5 +155,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({message:"update user profile"})
 
 });
-
+cron.schedule('0 0 * * *', clearUserArray);
 export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile};
+
+// clearUserArray()

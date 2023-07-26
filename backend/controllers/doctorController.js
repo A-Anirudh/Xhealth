@@ -1,7 +1,9 @@
 import asyncHandler from "express-async-handler";
 import Doctor from '../models/doctorModel.js'
 import generateToken from '../utils/generateToken.js'
-import { logoutUser } from "./userController.js";
+// import { logoutUser } from "./userController.js";
+import {clearDocArray} from '../utils/refreshDaily.js'
+import cron from 'node-cron';
 
 // @desc Auth doctor/set token
 // route = POST to /api/users/doctor
@@ -30,7 +32,7 @@ const authDoctor = asyncHandler(async (req, res) => {
 // Access = Public
 
 const registerDoctor = asyncHandler(async (req, res) => {
-    const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName } = req.body;
+    const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd } = req.body;
     const doctorExists = await Doctor.findOne({email});
     
     if (phoneNumber.length !==10){
@@ -55,7 +57,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
         state, 
         bloodGroup, 
         city, 
-        pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName
+        pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd,
     });
     if(doc){
         generateToken(res, doc._id,'doctor');
@@ -108,7 +110,10 @@ const getDoctorProfile = asyncHandler(async (req, res) => {
         department: req.doctor.department,
         experience: req.doctor.experience,
         currentHospitalWorkingName: req.doctor.currentHospitalWorkingName,
-        registrationNumber: req.doctor.registrationNumber
+        registrationNumber: req.doctor.registrationNumber,
+        workingHourStart:req.doctor.workingHourStart,
+        workingHourEnd:req.doctor.workingHourEnd,
+        timeSlotsBooked: req.doctor.timeSlotsBooked
     }
     // console.log(user)
     res.status(200).json(doc)
@@ -140,6 +145,8 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
         doc.experience = req.body.experience || doc.experience;
         doc.currentHospitalWorkingName = req.body.currentHospitalWorkingName || doc.currentHospitalWorkingName;
         doc.registrationNumber = req.body.registrationNumber || doc.registrationNumber;
+        doc.workingHourStart = req.body.workingHourStart || doc.workingHourStart,
+        doc.workingHourEnd = req.body.workingHourEnd || doc.workingHourEnd;
         if(req.body.password){
             doc.password = req.body.password;
         }
@@ -152,7 +159,7 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
         })
     } else{
         res.status(404);
-        throw new Error('User not found')
+        throw new Error('Doctor not found')
     }
 
     res.status(200).json({message:"update user profile"})
@@ -160,5 +167,6 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
 
 export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile};
 
-
-// Error I am facing is JWT being done same name for both user and doctor.. change names and keep it different :)
+// Remove all elements in timeSlotsBooked array for all doctors
+cron.schedule('0 0 * * *', clearDocArray);
+// clearDocArray()
