@@ -82,7 +82,7 @@ const doctorSchema = mongoose.Schema({
         required: true,
     },
     timeSlotsBooked:{
-        type:[String]
+        type:[String],
     }
 
 }, {
