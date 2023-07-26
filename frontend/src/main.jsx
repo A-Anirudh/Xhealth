@@ -1,12 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { RouterProvider } from 'react-router-dom';
+import ReactDOM from 'react-dom/client'; 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
+import { Provider } from 'react-redux';
+import store from './store.js';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { LoginUser, Dashboard } from './screens';
+import { PrivateRoutes } from './components';
+
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import store from './store.js'
-import { Provider } from 'react-redux';
-import { router } from './router';
-import { ThemeProvider, createTheme } from '@mui/material';
 
 const theme = createTheme({
   status: {
@@ -15,12 +17,27 @@ const theme = createTheme({
   },
 });
 
+const AppRouter = () => (
+  <Router>
+    <Routes>
+      <Route path='/' element={<LoginUser />}>
+        <Route path='login_user' element={<LoginUser />} />
+
+        {/* <Route path='register' element={<RegisterScreen />} /> */}
+      </Route>
+      <Route path='/' element={<PrivateRoutes />}>
+        {/* <Route path='dashboard' element={<Dashboard />} /> */}
+        <Route path='profile_user' element={<Dashboard />} />
+      </Route>
+    </Routes>
+  </Router>
+);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+        <AppRouter />
       </ThemeProvider>
     </React.StrictMode>
   </Provider>
