@@ -73,9 +73,9 @@ const bookAppointment = asyncHandler(async (req, res) => {
         await doc.save();
         await newAppointment.save();
         await user.save()
-
+        
         res.status(201).json({ message: "Appointment booked successfully.", appointment: newAppointment });
-
+    
     } catch (error) {
         res.status(res.statusCode === 200 ? 500 : res.statusCode); // Preserve existing status code if it's not an HTTP error
         throw new Error(error.message || "An error occurred while booking the appointment.");
