@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, Dashboard } from './screens';
+import { LoginUser, Dashboard, LoginDoctor } from './screens';
 import { PrivateRoutes } from './components';
 
 import './index.css';
@@ -20,6 +20,7 @@ const theme = createTheme({
 const AppRouter = () => (
   <Router>
     <Routes>
+      <Route path='login_doctor' element={<LoginDoctor />} />
       <Route path='/' element={<LoginUser />}>
         <Route path='login_user' element={<LoginUser />} />
 

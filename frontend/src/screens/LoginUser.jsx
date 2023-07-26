@@ -3,9 +3,11 @@ import xhealth from "../assets/xhealthlogo.svg";
 import { useEffect, useState } from 'react';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
-import {useDispatch,useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import LoginIcon from '@mui/icons-material/Login';
+
 
 
 export const LoginUser = () => {
@@ -24,7 +26,7 @@ export const LoginUser = () => {
     const { userInfo } = useSelector((state) => state.auth)//to get the localstoarge data from redux
 
     useEffect(() => {
-        console.log(email,"+",password)
+        console.log(email, "+", password)
         if (userInfo) {
             navigate('/profile_user')
         }
@@ -33,18 +35,18 @@ export const LoginUser = () => {
     const submitHandler = async (e) => {//when you click login
         e.preventDefault();
         try {
-            const res=await login({email,password}).unwrap() //{email,password} will b the boduy
-    
-            dispatch(setCredentials({res}))
-            
+            const res = await login({ email, password }).unwrap() //{email,password} will b the boduy
+
+            dispatch(setCredentials({ res }))
+
         } catch (err) {
-            toast.error(err?.data?.message||err.error)
+            toast.error(err?.data?.message || err.error)
         }
-        
-      };
+
+    };
 
     return (
-        <Box   sx={
+        <Box sx={
             {
                 backgroundColor: "#d1d1d1",
                 height: "100vh",
@@ -52,13 +54,13 @@ export const LoginUser = () => {
                 alignItems: "center",
                 paddingInline: "8rem",
                 justifyContent: "space-around",
-                
+
             }}>
             <Box
                 sx={{
                     width: '100vw',
                     height: '20vh',
-                    backgroundColor: theme.status.secondary,
+                    backgroundColor: theme.status.primary,
                     position: 'absolute',
                     top: 0,
                     left: 0,
@@ -67,8 +69,9 @@ export const LoginUser = () => {
                     padding: "0 8rem",
                 }}
             >
-                <Typography variant="h3" component="h2" sx={{ color: "white", fontWeight: "bold" }}>
-                    For Patients
+                <Typography variant="h3" component="h2" sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                    User Login
+                    <LoginIcon fontSize="3rem" />
                 </Typography>
             </Box>
             <Box sx={{
@@ -123,21 +126,41 @@ export const LoginUser = () => {
                         sx={{ width: "80%" }}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Button variant="solid" onClick={submitHandler} sx={{
-                        backgroundColor: theme.status.primary,
-                        color: 'white',
-                        textTransform: "capitalize",
-                        fontSize: 18,
-                        paddingInline: "3rem",
-                        borderRadius: 2,
-                        marginTop: 5,
-                        fontFamily: 'Roboto',
-                        '&:hover': {
-                            backgroundColor: theme.status.secondary,
-                            color: "white"
-                        }
-                        
-                    }}>Sign In</Button>
+                    <Box sx={{ display: "flex", gap: "2rem" }}>
+                        <Button variant="solid" onClick={submitHandler} sx={{
+                            backgroundColor: theme.status.primary,
+                            color: 'white',
+                            textTransform: "capitalize",
+                            fontSize: 18,
+                            paddingInline: "3rem",
+                            borderRadius: 2,
+                            marginTop: 5,
+                            fontFamily: 'Roboto',
+                            '&:hover': {
+                                backgroundColor: theme.status.secondary,
+                                color: "white"
+                            }
+
+                        }}>Sign In</Button>
+                        <Button variant="solid" onClick={async () => {
+                            const res = await login({ email: "test1@test.com", password:"123456" }).unwrap()
+                            dispatch(setCredentials({ res }))
+                        }} sx={{
+                            backgroundColor: theme.status.primary,
+                            color: 'white',
+                            textTransform: "capitalize",
+                            fontSize: 18,
+                            paddingInline: "3rem",
+                            borderRadius: 2,
+                            marginTop: 5,
+                            fontFamily: 'Roboto',
+                            '&:hover': {
+                                backgroundColor: theme.status.secondary,
+                                color: "white"
+                            }
+
+                        }}>Test User</Button>
+                    </Box>
                 </Box>
             </Box>
         </Box>
