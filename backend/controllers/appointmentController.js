@@ -8,6 +8,8 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Doctor from "../models/doctorModel.js";
 import Appointment from "../models/appointmentModel.js";
+import { checkDocAvailability, checkUserAvailability } from "../utils/checkAvail.js";
+import { addDocArray, addUserArray, removeDocArray, removeUserArray } from "../utils/slotArrayHandler.js";
 
 // @Desc: book an appointment for a doctor
 // route: POST /api/users/appointments/book
@@ -22,7 +24,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
         // console.log(doc)
         const allAptOfDoc = await Appointment.find({ doctor: doc._id })
         // console.log(allAptOfDoc);
-        // Function to convert time in "HH:mm" format to minutes since midnight
+        // ? Function to convert time in "HH:mm" format to minutes since midnight
         const convertTimeToMinutes = (time) => {
             const [hours, minutes] = time.split(":");
             return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
@@ -42,21 +44,14 @@ const bookAppointment = asyncHandler(async (req, res) => {
         const d = new Date(year, month-1, date, hour, min)
         console.log(d)
 
-        // Check if doctor is free or has an appointment
+        // ? Check if doctor is free or has an appointment
         // console.log(doc)
         console.log(d.toString())
-
-        if (doc.timeSlotsBooked.includes(d.toString())) {
-            res.status(400)
-            throw new Error("Slot not available")
-        }
-        // Check if user has another appointment at that time
-        console.log(user.userTimeSlot)
-        if (user.userTimeSlot.includes(d.toString())) {
-            res.status(400)
-            throw new Error("You already have an appointment at that time! Please choose another time!")
-        }
-        // Step 3: Book a New Appointment
+        checkDocAvailability(doc, d)
+        // ? Check if user has another appointment at that time
+        // console.log(user.userTimeSlot)
+        checkUserAvailability(user, d)
+        // * Step 3: Book a New Appointment
         const newAppointment = new Appointment({
             userId: req.user._id,
             doctorId: doctorId,
@@ -66,11 +61,12 @@ const bookAppointment = asyncHandler(async (req, res) => {
             status: status || "Scheduled",
         });
 
-        //   Add time to doctor time slots
+        //  ? Add time to doctor time slots
         //   console.log(doc.timeSlotsBooked)
+        //  TODO: Add the functions and remove the below 2 lines
 
-        doc.timeSlotsBooked.push(d.toString());
-        user.userTimeSlot.push(d.toString());
+        addDocArray(doc, d);
+        addUserArray(user, d);
         await doc.save();
         await newAppointment.save();
         await user.save()
@@ -110,36 +106,24 @@ const deleteAppointments = asyncHandler(async (req, res) => {
             
         }
         deletedAppointments.status = 'Cancelled';
-
-        // Changing format of date and time
-        // const [year, month, date] = deletedAppointments.appointmentDate.split('-')
-        // const [hour, min] = deletedAppointments.appointmentStartTime.split(":")
-        // console.log(year, month, date, hour, min);
-        // const d = new Date(year, month, date, hour, min);
-
-        // Removing time slot from doctor array
+        /*
+        ? Changing format of date and time
+        const [year, month, date] = deletedAppointments.appointmentDate.split('-')
+        const [hour, min] = deletedAppointments.appointmentStartTime.split(":")
+        console.log(year, month, date, hour, min);
+        const d = new Date(year, month, date, hour, min);*/
+        // ? Removing time slot from doctor array
+    
         const doc = await Doctor.findOne({ _id: deletedAppointments.doctorId })
-        for(let i in doc.timeSlotsBooked){
-            console.log(doc.timeSlotsBooked[i])
-        }
-        console.log(`doc is ${doc}`)
+        // console.log(`doc is ${doc}`)
 
-        const index = doc.timeSlotsBooked.indexOf(deletedAppointments.appointmentDate)
-        console.log(`doctor index is ${index}`)
-        if (index > -1) { // only splice array when item is found
-            doc.timeSlotsBooked.splice(index, 1); // 2nd parameter means remove one item only
-        }
+        removeDocArray(doc, deletedAppointments);
 
         //   Removing from user array
         const user = await User.findOne({ _id: req.user._id });
-        console.log(`user is ${user}`)
+        // console.log(`user is ${user}`)
 
-        const uIndex = user.userTimeSlot.indexOf(deletedAppointments.appointmentDate)
-        
-        console.log(`user index is ${uIndex}`);
-        if (uIndex > -1) {
-            user.userTimeSlot.splice(uIndex, 1)
-        }
+        removeUserArray(user, deletedAppointments);
 
         await doc.save();
         await user.save();
@@ -163,10 +147,12 @@ const editAppointment = asyncHandler(async (req, res) => {
     if (apt) {
         apt.doctorId = req.body.doctorId || apt.doctorId
         if (req.body.appointmentStartTime) {
-
+            // TODO: EDIT feature: doctor, date and time can only be edited.
+            // ? Change doctorList and userList for timings and date as well.. Hardwork needs to be done.
         }
 
     }
     console.log('asdf')
 })
+
 export { bookAppointment, viewAllMyAppointments, deleteAppointments };
