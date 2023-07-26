@@ -1,7 +1,7 @@
 import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { PrivateRoutes } from './components';
 import App from './App.jsx';
-import { LoginUser } from './screens';
+import { LoginUser, UserProfile } from './screens';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -12,7 +12,7 @@ export const router = createBrowserRouter(
 
       <Route path='' element={<PrivateRoutes />}>
         {/* <Route path='/dashboard' element={<Dashboard />} /> */}
-        {/* <Route path='/profile_user' element={<Profile />} /> */}
+        <Route path='/profile_user' element={<UserProfile />} />
       </Route>
     </Route>
   )

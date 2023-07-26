@@ -1,17 +1,58 @@
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
 import xhealth from "../assets/xhealthlogo.svg";
+import { useEffect, useState } from 'react';
+import { useLoginMutation } from '../slices/usersApiSlice';
+import { setCredentials } from '../slices/authSlice';
+import {useDispatch,useSelector} from 'react-redux'
+import { toast } from 'react-toastify';
+import { Link,useNavigate } from 'react-router-dom';
+
 
 export const LoginUser = () => {
+
+
     const theme = useTheme();
+
+    const [email, setEmail] = useState(''); //state variable to store email
+    const [password, setPassword] = useState(''); //state variable to store password
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [login] = useLoginMutation();
+
+    const { userInfo } = useSelector((state) => state.auth)//to get the localstoarge data from redux
+
+    useEffect(() => {
+        console.log(email,"+",password)
+        if (userInfo) {
+            navigate('/profile_user')
+        }
+    }, [navigate, userInfo])
+
+    const submitHandler = async (e) => {//when you click login
+        e.preventDefault();
+        try {
+            const res=await login({email,password}).unwrap() //{email,password} will b the boduy
+    
+            dispatch(setCredentials({res}))
+            
+        } catch (err) {
+            toast.error(err?.data?.message||err.error)
+        }
+        
+      };
+
     return (
-        <Box sx={
+        <Box   sx={
             {
                 backgroundColor: "#d1d1d1",
                 height: "100vh",
                 display: "flex",
                 alignItems: "center",
                 paddingInline: "8rem",
-                justifyContent: "space-around"
+                justifyContent: "space-around",
+                
             }}>
             <Box
                 sx={{
@@ -23,14 +64,14 @@ export const LoginUser = () => {
                     left: 0,
                     display: "flex",
                     alignItems: "center",
-                    padding: "0 8rem"
+                    padding: "0 8rem",
                 }}
             >
                 <Typography variant="h3" component="h2" sx={{ color: "white", fontWeight: "bold" }}>
                     For Patients
                 </Typography>
             </Box>
-            <Box sx = {{
+            <Box sx={{
                 fontSize: "1.5rem",
                 lineHeight: "4rem",
                 display: "flex",
@@ -51,14 +92,14 @@ export const LoginUser = () => {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap:"6rem",
+                    gap: "6rem",
                     width: "35%",
                     minHeight: "40rem",
                     minWidth: "28rem",
                     zIndex: "1"
                 }}>
                 <img src={xhealth} alt="xhealth logo" />
-                <Box sx = {{
+                <Box sx={{
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -71,6 +112,7 @@ export const LoginUser = () => {
                         defaultValue=""
                         variant="standard"
                         sx={{ width: "80%" }}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
                         id="standard"
@@ -79,21 +121,26 @@ export const LoginUser = () => {
                         defaultValue=""
                         variant="standard"
                         sx={{ width: "80%" }}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Button variant="solid" sx={{
+                    <Button variant="solid" onClick={submitHandler} sx={{
                         backgroundColor: theme.status.primary,
+                        color: 'white',
                         textTransform: "capitalize",
                         fontSize: 18,
                         paddingInline: "3rem",
                         borderRadius: 2,
                         marginTop: 5,
+                        fontFamily: 'Roboto',
                         '&:hover': {
                             backgroundColor: theme.status.secondary,
                             color: "white"
                         }
+                        
                     }}>Sign In</Button>
                 </Box>
             </Box>
         </Box>
     )
 }
+
