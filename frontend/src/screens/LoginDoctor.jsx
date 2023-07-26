@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import LoginIcon from '@mui/icons-material/Login';
 
-export const LoginUser = () => {
+export const LoginDoctor = () => {
     const theme = useTheme();
     const [creds, setCreds] = useState({ email: "", password: "" });
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ export const LoginUser = () => {
         try {
             const res = await login({ email: creds.email, password: creds.password }).unwrap() //{email,password} will b the boduy
             dispatch(setCredentials({ res }))
-            toast.success("Welcome User!")
+            toast.success("Welcome Doctor!")
         } catch (err) {
             toast.error(err?.data?.message || err.error)
         }
@@ -63,7 +63,7 @@ export const LoginUser = () => {
                 }}
             >
                 <Typography variant="h3" component="h2" sx={{display: "flex", alignItems: "center", gap: "1rem"}}>
-                    User Login 
+                    Doctor Login 
                     <LoginIcon fontSize="3rem" />
                 </Typography>
             </Box>
