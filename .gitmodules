@@ -1,0 +1,3 @@
+[submodule "xhealthApplication"]
+	path = xhealthApplication
+	url = https://github.com/JagnathReddy/xhealthApplication.git
