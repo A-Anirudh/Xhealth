@@ -108,7 +108,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
         gender:req.user.gender,
         state:req.user.state,
         city:req.user.city,
-        pincode:req.user.pincode
+        pincode:req.user.pincode,
+        userTimeSlots : req.user.userTimeSlot,
     }
     // console.log(user)
     res.status(200).json(user)

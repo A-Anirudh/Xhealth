@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import Doctor from '../models/doctorModel.js'
 import generateToken from '../utils/generateToken.js'
-import { logoutUser } from "./userController.js";
+// import { logoutUser } from "./userController.js";
+import cron from 'node-cron';
 
 // @desc Auth doctor/set token
 // route = POST to /api/users/doctor
@@ -30,7 +31,7 @@ const authDoctor = asyncHandler(async (req, res) => {
 // Access = Public
 
 const registerDoctor = asyncHandler(async (req, res) => {
-    const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName } = req.body;
+    const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd } = req.body;
     const doctorExists = await Doctor.findOne({email});
     
     if (phoneNumber.length !==10){
@@ -165,5 +166,20 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
 
 export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile};
 
+// Remove all elements in timeSlotsBooked array for all doctors
 
-// Error I am facing is JWT being done same name for both user and doctor.. change names and keep it different :)
+const clearArray = async () =>{
+    const allDoc = await Doctor.find()
+    // console.log(allDoc)
+    for(let i in allDoc){
+        console.log(allDoc[i].timeSlotsBooked)
+        allDoc[i].timeSlotsBooked=[]
+        console.log(allDoc[i].timeSlotsBooked)
+        await allDoc[i].save()
+    }
+    
+    console.log('outside for loop')
+}
+cron.schedule('0 0 * * *', clearArray);
+
+// clearArray()

@@ -58,6 +58,10 @@ const userSchema = mongoose.Schema({
     userSlotsBooked:{
         type: [String]
     }
+    userTimeSlot:{
+        type:[String]
+    }
+
 }, {
     timestamps: true
 });
