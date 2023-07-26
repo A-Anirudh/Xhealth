@@ -55,9 +55,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    userSlotsBooked:{
-        type: [String]
-    }
     userTimeSlot:{
         type:[String]
     }
