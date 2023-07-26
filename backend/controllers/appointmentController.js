@@ -9,20 +9,26 @@ import User from "../models/userModel.js";
 import Doctor from "../models/doctorModel.js";
 import Appointment from "../models/appointmentModel.js";
 
-// @Desc: book an appointment for a doctor
-// route: POST /api/users/appointments/book
-// access : private
+// @desc: book an appointment for a doctor
+// @route: POST /api/users/appointments/book
+// @access : private
 
 const bookAppointment = asyncHandler(async (req,res) => {
     const {doctorId, appointmentDate, appointmentStartTime, reason, status} = req.body;
+
     // console.log(doctorId)
+
     try{
         const doc = await Doctor.findOne({_id:doctorId})
         const user = await User.findOne({_id:req.user._id})
+
         // console.log(doc)
+
         const allAptOfDoc = await Appointment.find({doctor:doc._id})
+
         // console.log(allAptOfDoc);
         // Function to convert time in "HH:mm" format to minutes since midnight
+
         const convertTimeToMinutes = (time) => {
             const [hours, minutes] = time.split(":");
             return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
@@ -30,17 +36,22 @@ const bookAppointment = asyncHandler(async (req,res) => {
         const convertedAppointmentStartTime = convertTimeToMinutes(appointmentStartTime);
         const convertedWorkingHourStart = convertTimeToMinutes(doc.workingHourStart);
         const convertedWorkingHourEnd = convertTimeToMinutes(doc.workingHourEnd);
+
     // Checking if appointment time is within working hours of doctor
+
         if(convertedAppointmentStartTime<convertedWorkingHourStart || convertedAppointmentStartTime>convertedWorkingHourEnd){
             res.status(400)
             throw new Error("Doctor not available!")
         }
+
         // Format of date from input
+
         const [year, month, date] = appointmentDate.split('-')
         const [hour, min] =  appointmentStartTime.split(':')
         const d = new Date(year, month, date, hour, min)
 
         // Check if doctor is free or has an appointment
+
         console.log(doc)
         console.log(d.toString())
         
@@ -48,14 +59,19 @@ const bookAppointment = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error("Slot not available")
         }
+        // Need to ensure if there is an appointment at 10:00, no appointment can be booked till 10:30
+
         // Check if user has another appointment at that time
+
         console.log(user.userTimeSlot)
         if(user.userTimeSlot.includes(d.toString())){
             
             res.status(400)
             throw new Error("You already have an appointment at that time! Please choose another time!")
         }
+
         // Step 3: Book a New Appointment
+
     const newAppointment = new Appointment({
         userId: req.user._id,
         doctorId: doctorId,
