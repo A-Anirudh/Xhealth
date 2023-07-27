@@ -4,9 +4,11 @@ import { apiSlice } from "./apiSlice";
 
 const USERS_URL = '/api/users';
 
+const DOC_URL='/api/doctors'
+
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        login: builder.mutation({
+        loginUser: builder.mutation({
             query: data => ({
                 url: `${USERS_URL}/auth`,
                 method: 'POST',
@@ -19,13 +21,28 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             })
         }),
+
+        loginDoc: builder.mutation({
+            query: data => ({
+                url: `${DOC_URL}/auth`,
+                method: 'POST',
+                body: data 
+            })
+        }),
+
+
+
+
+
     })
 
 });
 
 export const {
-    useLoginMutation,
-    useGetUserInfoQuery // Add this line to export the hook for the new GET endpoint
+    useLoginUserMutation,
+    useGetUserInfoQuery,
+    
+    useLoginDocMutation, // Add this line to export the hook for the new GET endpoint
 } = usersApiSlice;
 
 

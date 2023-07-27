@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client'; 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
+import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom'; 
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, Dashboard } from './screens';
-import { PrivateRoutes } from './components';
+import { LoginUser, LoginDoc, DashboardUser,DashboardDoc } from './screens';
+import { DoctorPrivateRoutes, PrivateRoutes } from './components';
 
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import App from './App.jsx';
 
 const theme = createTheme({
   status: {
@@ -20,14 +21,19 @@ const theme = createTheme({
 const AppRouter = () => (
   <Router>
     <Routes>
-      <Route path='/' element={<LoginUser />}>
-        <Route path='login_user' element={<LoginUser />} />
+      <Route path='/' element={<App />}/>
+      <Route path='/login_user' element={<LoginUser />} />
+      <Route path='/login_doc' element={<LoginDoc />} />
 
-        {/* <Route path='register' element={<RegisterScreen />} /> */}
+
+      
+      <Route path='' element={<PrivateRoutes />}>
+        <Route path='profile_user' element={<DashboardUser />} />
+
       </Route>
-      <Route path='/' element={<PrivateRoutes />}>
-        {/* <Route path='dashboard' element={<Dashboard />} /> */}
-        <Route path='profile_user' element={<Dashboard />} />
+
+      <Route path='' element={<DoctorPrivateRoutes />}>
+        <Route path='profile_doc' element={<DashboardDoc />} />
       </Route>
     </Routes>
   </Router>

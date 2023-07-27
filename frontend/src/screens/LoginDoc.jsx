@@ -1,14 +1,14 @@
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
 import xhealth from "../assets/xhealthlogo.svg";
 import { useEffect, useState } from 'react';
-import { useLoginUserMutation } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
+import { useLoginDocMutation } from '../slices/usersApiSlice';
+import { setCredentials } from '../slices/docAuthSlice';
 import {useDispatch,useSelector} from 'react-redux'
 import { toast } from 'react-toastify';
 import { Link,useNavigate } from 'react-router-dom';
 
 
-export const LoginUser = () => {
+export const LoginDoc = () => {
 
 
     const theme = useTheme();
@@ -19,21 +19,21 @@ export const LoginUser = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [loginUser] = useLoginUserMutation();//getting loginUser fuction
+    const [loginDoc] = useLoginDocMutation();//getting loginUser fuction
 
-    const { userInfo } = useSelector((state) => state.auth)//to get the localstoarge data from redux
+    const { docInfo } = useSelector((state) => state.docAuth)//to get the localstoarge data from redux
 
     useEffect(() => {
-        console.log(email,"+",password)
-        if (userInfo) {
-            navigate('/profile_user')
+        console.log(docInfo+" from login doc")
+        if (docInfo) {
+            navigate('/profile_doc')
         }
-    }, [navigate, userInfo])
+    }, [navigate, docInfo])
 
     const submitHandler = async (e) => {//when you click login
         e.preventDefault();
         try {
-            const res=await loginUser({email,password}).unwrap() //{email,password} will b the boduy
+            const res=await loginDoc({email,password}).unwrap() //{email,password} will b the boduy
             dispatch(setCredentials({res}))
         } catch (err) {
             toast.error(err?.data?.message||err.error)
@@ -66,7 +66,7 @@ export const LoginUser = () => {
                 }}
             >
                 <Typography variant="h3" component="h2" sx={{ color: "white", fontWeight: "bold" }}>
-                    For Patients
+                    For Doctors
                 </Typography>
             </Box>
             <Box sx={{
