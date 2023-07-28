@@ -26,9 +26,9 @@ app.use('/api/notification',NotificationRouter)//for targeting devices
 app.use('/api/users/appointments',appointmentRouter) // doctorRoutes
 
 
-app.get('/', (req,res)=>{
-    res.send(`server is ready and running on port ${port}`)
-})
+// app.get('/', (req,res)=>{
+    // res.send(`server is ready and running on port ${port}`)
+// })
 
 app.use(notFound);
 app.use(errorHandler);
