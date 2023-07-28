@@ -163,18 +163,16 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
         throw new Error('Doctor not found')
     }
 
-    res.status(200).json({message:"update user profile"})
 });
 
 /**
- * @desc - list all doctors
+ * @desc : list all doctors
  * @access : PRIVATE
- * @route : GET 'api/doctors/all
+ * @route : GET 'api/doctors/all'
  */
 
 const allDoctor = asyncHandler(async (req,res) => {
     const allDoc =await Doctor.find({});
-    console.log(allDoc)
     res.status(400).json({
         allDoc
     });
