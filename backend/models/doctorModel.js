@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const doctorSchema = mongoose.Schema({
@@ -83,6 +83,15 @@ const doctorSchema = mongoose.Schema({
     },
     timeSlotsBooked:{
         type:[String],
+    },
+    avgRating:{
+        type:Number,
+        required: true,
+        default:0
+    },
+    gradCollegeName:{
+        type: [String],
+        required: true
     }
 
 }, {

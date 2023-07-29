@@ -4,6 +4,7 @@ import generateToken from '../utils/generateToken.js'
 // import { logoutUser } from "./userController.js";
 import {clearDocArray} from '../utils/refreshDaily.js'
 import cron from 'node-cron';
+import {doctorsList} from '../data/doctors.js'
 
 // @desc Auth doctor/set token
 // route = POST to /api/users/doctor
@@ -57,7 +58,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
         state, 
         bloodGroup, 
         city, 
-        pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd,
+        pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd, gradCollegeName
     });
     if(doc){
         generateToken(res, doc._id,'doctor');
@@ -162,11 +163,52 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
         throw new Error('Doctor not found')
     }
 
-    res.status(200).json({message:"update user profile"})
 });
 
-export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile};
+/**
+ * @desc : list all doctors
+ * @access : PRIVATE
+ * @route : GET 'api/doctors/all'
+ */
+
+const allDoctor = asyncHandler(async (req,res) => {
+    const allDoc =await Doctor.find({});
+    res.status(400).json({
+        allDoc
+    });
+});
+export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile,allDoctor};
 
 // Remove all elements in timeSlotsBooked array for all doctors
 cron.schedule('0 0 * * *', clearDocArray);
+
+
 // clearDocArray()
+
+
+// Creating many doctors because I can
+
+// doctorsList.forEach(element => {
+//     const doc = Doctor.create({
+//         email: element.email,
+//         password: element.password,
+//         firstName: element.firstName,
+//         lastName: element.lastName,
+//         phoneNumber:element.phoneNumber,
+//         dateOfBirth:element.dateOfBirth, 
+//         gender:element.gender, 
+//         state:element.state, 
+//         bloodGroup:element.bloodGroup, 
+//         city:element.city, 
+//         pincode:element.pincode,
+//         department:element.department,
+//         qualification:element.qualification,
+//         experience:element.experience,
+//         registrationNumber:element.registrationNumber,
+//         currentHospitalWorkingName:element.currentHospitalWorkingName,
+//         workingHourStart:element.workingHourStart,
+//         workingHourEnd:element.workingHourEnd,
+//         gradCollegeName:element.gradCollegeName
+//     });
+// });
+
