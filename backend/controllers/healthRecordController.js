@@ -27,8 +27,8 @@ const getAllHealthRecords=asyncHandler(async (req,res)=>{
 
 
 
-//endpoint:  POST - /api/users/healthRecords/
-//EXAMPLE REQUEST FOR ADDING HEALTH RECORDS
+// endpoint:  POST - /api/users/healthRecords/
+// EXAMPLE REQUEST FOR ADDING HEALTH RECORDS
 // {   
 //     "email":"emailToIdentifyPotentialDataLeaks53",
 //     "record":{  
@@ -90,7 +90,6 @@ const newHealthRecord=asyncHandler(async (req,res)=>{
         }catch(err){
             new Error(err.message)
         }
-    
     }
 });
 

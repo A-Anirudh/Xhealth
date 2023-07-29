@@ -32,4 +32,16 @@ const protect = asyncHandler(async (req,res,next) =>{
     }
 
 })
-export {protect}
+
+const androidProtect=asyncHandler(async (req,res,next) =>{
+    const {email, password} = req.body;
+    const user = await User.findOne({email})
+    
+    if(user && (await user.matchPasswords(password))){
+        next();
+    } else{
+        res.status(401);
+        throw new Error('Invalid email or password')
+    }
+})
+export {protect,androidProtect}
