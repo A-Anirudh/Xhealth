@@ -34,6 +34,7 @@ app.use('/api/users/healthRecords',healthRecordsRouter) //to get health records
 app.use(notFound);
 app.use(errorHandler);
 app.listen(port, () =>{
+    console.log("new git")
     console.log(`This is console log`)
     console.log(`server is ready and running on port ${port}`)
 })
