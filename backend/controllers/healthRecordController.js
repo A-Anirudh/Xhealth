@@ -26,6 +26,17 @@ const getAllHealthRecords=asyncHandler(async (req,res)=>{
 });
 
 
+const getAllHealthRecordsAndroid=asyncHandler(async (req,res)=>{
+    const {email}=req.headers
+    const userHR=await getHealthRecordInstance(email);
+    if(userHR){
+        res.status(200).json(userHR);
+    }else{
+        res.status(404).json({message:"No health record found for user " + email})
+    }
+});
+
+
 
 // endpoint:  POST - /api/users/healthRecords/
 // EXAMPLE REQUEST FOR ADDING HEALTH RECORDS
@@ -95,5 +106,5 @@ const newHealthRecord=asyncHandler(async (req,res)=>{
 
 const getHealthRecordSpecific=asyncHandler(async (req,res)=>{});
 
-export {getHealthRecordSpecific,getAllHealthRecords,newHealthRecord};
+export {getHealthRecordSpecific,getAllHealthRecords,newHealthRecord,getAllHealthRecordsAndroid};
 
