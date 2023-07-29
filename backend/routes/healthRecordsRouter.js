@@ -1,14 +1,15 @@
 import express from "express"
-import {protect}  from "../middleware/authMiddleware.js"
+import {androidProtect, protect}  from "../middleware/authMiddleware.js"
 import { getAllHealthRecords, getHealthRecordSpecific, newHealthRecord } from "../controllers/healthRecordController.js";
 
 const healthRecordsRouter=express.Router()
    //to get health records associated with a particular doctor
 
-
+   
+healthRecordsRouter.route("/android").get(androidProtect,getAllHealthRecords)
+healthRecordsRouter.get('/doctor',(protect,getHealthRecordSpecific))   
 healthRecordsRouter.route("/").get(protect,getAllHealthRecords).post(protect,newHealthRecord)   
 
-healthRecordsRouter.get('/doctor',(protect,getHealthRecordSpecific))   
 
 
 //Dynamic access to doctors 

@@ -2,6 +2,9 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import Doctor from '../models/doctorModel.js';
+import bcrypt from "bcryptjs"
+
+import { error } from 'console';
 
 const protect = asyncHandler(async (req,res,next) =>{
     let doctor_token, user_token;
@@ -32,4 +35,16 @@ const protect = asyncHandler(async (req,res,next) =>{
     }
 
 })
-export {protect}
+
+const androidProtect=asyncHandler(async (req,res,next) =>{
+    const {email, password} = req.body;
+    const user = await User.findOne({email})
+    
+    if(user && (await user.matchPasswords(password))){
+        next();
+    } else{
+        res.status(401);
+        throw new Error('Invalid email or password')
+    }
+})
+export {protect,androidProtect}
