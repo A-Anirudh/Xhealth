@@ -2,9 +2,6 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import Doctor from '../models/doctorModel.js';
-import bcrypt from "bcryptjs"
-
-import { error } from 'console';
 
 const protect = asyncHandler(async (req,res,next) =>{
     let doctor_token, user_token;
