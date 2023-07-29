@@ -13,7 +13,7 @@ import cron from 'node-cron';
 const authUser = asyncHandler(async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({email})
-
+    
     if(user && (await user.matchPasswords(password))){
  
         generateToken(res, user._id,'user');
