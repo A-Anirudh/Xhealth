@@ -180,7 +180,7 @@ const allDoctor = asyncHandler(async (req,res) => {
 export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile,allDoctor};
 
 // Remove all elements in timeSlotsBooked array for all doctors
-cron.schedule('0 0 * * *', clearDocArray);
+// cron.schedule('0 0 * * *', clearDocArray);
 
 
 // clearDocArray()

@@ -151,7 +151,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     
 
 });
-cron.schedule('0 0 * * *', clearUserArray);
+// cron.schedule('0 0 * * *', clearUserArray);
 export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile};
 
 // clearUserArray()
