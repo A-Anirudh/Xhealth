@@ -77,7 +77,6 @@ const bookAppointment = asyncHandler(async (req, res) => {
 });
 
 
-
 // @desc : View all my appointments
 // route : GET /api/users/appointments
 // Access : private
@@ -86,49 +85,37 @@ const viewAllMyAppointments = asyncHandler(async (req, res) => {
     res.status(200).json(appointments)
 })
 
-// @desc delete appointment
+// @desc Update appointment status
 // route : POST /api/users/appointments
 // Access : private
-const deleteAppointments = asyncHandler(async (req, res) => {
+const changeAppointmentStatus = asyncHandler(async (req, res) => {
+    const {newStatus} = req.body;
     // console.log(req.user)
     try {
-        const deletedAppointments = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
-        // console.log(`date to be cancelled is ${deletedAppointments.appointmentDate}`)
-        if (deletedAppointments === null) {
+        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
+        // console.log(`date to be cancelled is ${updatedAppointmentStatus.appointmentDate}`)
+        if (updatedAppointmentStatus === null) {
             res.status(400)
             throw new Error("Appointment does not exist for the user")
         }
-        if(deletedAppointments.status === 'Cancelled'){
+        if(updatedAppointmentStatus.status === 'Cancelled' && newStatus === 'Cancelled'){
             res.status(200)
             throw new Error("Appointment already cancelled!");
-            
         }
-        deletedAppointments.status = 'Cancelled';
-        /*
-        ? Changing format of date and time
-        const [year, month, date] = deletedAppointments.appointmentDate.split('-')
-        const [hour, min] = deletedAppointments.appointmentStartTime.split(":")
-        console.log(year, month, date, hour, min);
-        const d = new Date(year, month, date, hour, min);*/
-        // ? Removing time slot from doctor array
-    
-        const doc = await Doctor.findOne({ _id: deletedAppointments.doctorId })
-        // console.log(`doc is ${doc}`)
-
-        removeDocArray(doc, deletedAppointments.appointmentDate);
-
+        updatedAppointmentStatus.status = newStatus;
+        //  Removing time slot from doctor array
+        const doc = await Doctor.findOne({ _id: updatedAppointmentStatus.doctorId })
         //   Removing from user array
         const user = await User.findOne({ _id: req.user._id });
-        // console.log(`user is ${user}`)
-
-        removeUserArray(user, deletedAppointments.appointmentDate);
-
+        if(newStatus === 'Cancelled' || newStatus==='Completed'){
+            removeUserArray(user, updatedAppointmentStatus.appointmentDate);
+            removeDocArray(doc, updatedAppointmentStatus.appointmentDate);
+        }
         await doc.save()
         await user.save()
-
-        await deletedAppointments.save();
+        await updatedAppointmentStatus.save();
         res.status(200).json({
-            deletedAppointments,
+            updatedAppointmentStatus,
             message: "Appointment cancelled successfully"
         });
     } catch (error) {
@@ -136,7 +123,6 @@ const deleteAppointments = asyncHandler(async (req, res) => {
         throw new Error(error.message || "An error occurred while cancelling the appointment. Please try again later");
     }
 })
-
 
 /**
  * @desc : edit appointment
@@ -178,10 +164,10 @@ const editAppointment = asyncHandler(async (req, res) => {
         newDoc.save();
         apt.save();
         currentUser.save();
-            // TODO: EDIT feature: doctor, date and time can only be edited.
-            // ? Change doctorList and userList for timings and date as well.. Hardwork needs to be done.
     }
     res.status(200).json("Appointment updates successfully")
 })
 
-export { bookAppointment, viewAllMyAppointments, deleteAppointments,editAppointment };
+export { bookAppointment, viewAllMyAppointments, changeAppointmentStatus,editAppointment };
+
+// TODO: Change CRON NODE so that the array does not refresh everyday.. Just remove that one particular date once the appointment is completed.
