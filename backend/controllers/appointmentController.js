@@ -77,6 +77,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
 });
 
 
+
 // @desc : View all my appointments
 // route : GET /api/users/appointments
 // Access : private
@@ -103,16 +104,28 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
             throw new Error("Appointment already cancelled!");
         }
         updatedAppointmentStatus.status = newStatus;
-        //  Removing time slot from doctor array
+        /*
+        ? Changing format of date and time
+        const [year, month, date] = updatedAppointmentStatus.appointmentDate.split('-')
+        const [hour, min] = updatedAppointmentStatus.appointmentStartTime.split(":")
+        console.log(year, month, date, hour, min);
+        const d = new Date(year, month, date, hour, min);*/
+        // ? Removing time slot from doctor array
+    
         const doc = await Doctor.findOne({ _id: updatedAppointmentStatus.doctorId })
+        // console.log(`doc is ${doc}`)
+
+        removeDocArray(doc, updatedAppointmentStatus.appointmentDate);
+
         //   Removing from user array
         const user = await User.findOne({ _id: req.user._id });
-        if(newStatus === 'Cancelled' || newStatus==='Completed'){
-            removeUserArray(user, updatedAppointmentStatus.appointmentDate);
-            removeDocArray(doc, updatedAppointmentStatus.appointmentDate);
-        }
+        // console.log(`user is ${user}`)
+
+        removeUserArray(user, updatedAppointmentStatus.appointmentDate);
+
         await doc.save()
         await user.save()
+
         await updatedAppointmentStatus.save();
         res.status(200).json({
             updatedAppointmentStatus,
