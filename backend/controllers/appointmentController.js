@@ -27,7 +27,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
         // console.log(doc)
         const allAptOfDoc = await Appointment.find({ doctor: doc._id })
         // console.log(allAptOfDoc);
-
+        
         const convertedAppointmentStartTime = convertTimeToMinutes(appointmentStartTime);
         const convertedWorkingHourStart = convertTimeToMinutes(doc.workingHourStart);
         const convertedWorkingHourEnd = convertTimeToMinutes(doc.workingHourEnd);
@@ -57,7 +57,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
             reason: reason,
             status: status || "Scheduled",
         });
-
+        
         //  ? Add time to doctor time slots
         //   console.log(doc.timeSlotsBooked)
         //  TODO: Add the functions and remove the below 2 lines
