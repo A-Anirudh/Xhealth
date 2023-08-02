@@ -1,14 +1,12 @@
 import asyncHandler from "express-async-handler";
 import Doctor from '../models/doctorModel.js'
 import generateToken from '../utils/generateToken.js'
-// import { logoutUser } from "./userController.js";
-import {clearDocArray} from '../utils/refreshDaily.js'
-import cron from 'node-cron';
-import {doctorsList} from '../data/doctors.js'
 
-// @desc Auth doctor/set token
-// route = POST to /api/users/doctor
-// Access = Public
+/**
+ * @desc : Auth doctor/set token
+ * @access : Public
+ * @route : POST to /api/doctors/auth
+ */
 
 const authDoctor = asyncHandler(async (req, res) => {
     const {email, password} = req.body;
@@ -27,10 +25,11 @@ const authDoctor = asyncHandler(async (req, res) => {
         throw new Error('Invalid email or password')
     }
 });
-
-// @desc Register a new doc
-// route = POST to /api/doctor
-// Access = Public
+/**
+ * @desc : Register a new doc
+ * @access : Public
+ * @route : POST to /api/doctors
+ */
 
 const registerDoctor = asyncHandler(async (req, res) => {
     const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd } = req.body;
@@ -74,10 +73,11 @@ const registerDoctor = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc Logout
-// route = POST to /api/doctors/logout
-// Access = Private
-
+/**
+ * @desc : Logout
+ * @access : PRIVATE
+ * @route : POST to /api/doctors/logout
+ */
 
 const logoutDoctor = asyncHandler(async (req, res) => {
         res.cookie('jwt-doctor','',{
@@ -87,10 +87,11 @@ const logoutDoctor = asyncHandler(async (req, res) => {
     res.status(200).json({message:"Doctor logged out"})
 });
 
-// @desc get doctor profile
-// route = GET to /api/doctors/profile
-// Access = Private
-
+/**
+ * @desc : get doctor profile
+ * @access : PRIVATE
+ * @route : GET to /api/doctors/profile
+ */
 
 const getDoctorProfile = asyncHandler(async (req, res) => {
 
@@ -121,10 +122,12 @@ const getDoctorProfile = asyncHandler(async (req, res) => {
 
 });
 
+/**
+ * @desc : Update Doctor Profile
+ * @access : PRIVATE
+ * @route : PUT to /api/doctors/profile
+ */
 
-// @desc Update Doctor Profile
-// route = PUT to /api/profile
-// Access = Private
 
 const updateDoctorProfile = asyncHandler(async (req, res) => {
     console.log('doctor Profile update')

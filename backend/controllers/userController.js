@@ -1,15 +1,14 @@
 import asyncHandler from "express-async-handler";
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
-import { clearUserArray } from "../utils/refreshDaily.js";
-import cron from 'node-cron';
 
+// TODO user profile view doctor permissions allowance!
 
-
-// @desc Auth user/set token
-// route = POST to /api/users/auth
-// Access = Public
-
+/**
+ * @desc Auth user/set token
+* @route  POST to /api/users/auth
+* @Access Public
+*/
 const authUser = asyncHandler(async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({email})
@@ -18,20 +17,21 @@ const authUser = asyncHandler(async (req, res) => {
         generateToken(res, user._id,'user');
         return res.status(201).json({
             _id:user._id,
-            name: user.name,
+            firstName: user.firstName,
             email:user.email,
         });
     } else{
         res.status(401);
         throw new Error('Invalid email or password')
     }
-
 });
 
-// @desc Register a new user
-// route = POST to /api/users
-// Access = Public
-
+/**
+ * @desc Register a new user
+ * @route POST to /api/users
+ * @access Public
+ * @params - email, password, firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode
+ */
 
 const registerUser = asyncHandler(async (req, res) => {
     const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode } = req.body;
@@ -66,7 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
         generateToken(res, user._id,'user');
         res.status(201).json({
             _id:user._id,
-            name: user.name,
+            firstName: user.firstName,
             email:user.email,
 
         });
@@ -76,10 +76,11 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc Logout
-// route = POST to /api/users/logout
-// Access = Private
-
+/**
+ * @desc Logout
+ * @route POST to  /api/users/logout
+ * @access Public
+ */
 
 const logoutUser = asyncHandler(async (req, res) => {
     res.cookie('jwt-user','',{
@@ -90,11 +91,11 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 });
 
-// @desc get user profile
-// route = GET to /api/users/profile
-// Access = Private
-
-
+/**
+ * @desc get user profile
+ * @route GET to /api/users/profile
+ * @access Private
+ */
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = {
         _id :req.user._id,
@@ -115,10 +116,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 });
 
-// @desc Update User Profile
-// route = PUT to /api/profile
-// Access = Private
-
+/**
+ * @desc Update User Profile
+ * @route PUT to /api/users/profile
+ * @access Private
+ */
 
 const updateUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
