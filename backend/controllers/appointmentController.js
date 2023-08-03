@@ -10,12 +10,15 @@ import Doctor from "../models/doctorModel.js";
 import Appointment from "../models/appointmentModel.js";
 import { checkDocAvailability, checkUserAvailability } from "../utils/checkAvail.js";
 import { addDocArray, addUserArray, removeDocArray, removeUserArray } from "../utils/slotArrayHandler.js";
+import { convertTimeToMinutes } from "../utils/timeToMinutes.js";
+
 
 // @Desc: book an appointment for a doctor
 // route: POST /api/users/appointments/book
 // access : private
 
 const bookAppointment = asyncHandler(async (req, res) => {
+    
     const { doctorId, appointmentDate, appointmentStartTime, reason, status } = req.body;
     // console.log(doctorId)
     try {
@@ -24,33 +27,27 @@ const bookAppointment = asyncHandler(async (req, res) => {
         // console.log(doc)
         const allAptOfDoc = await Appointment.find({ doctor: doc._id })
         // console.log(allAptOfDoc);
-        // ? Function to convert time in "HH:mm" format to minutes since midnight
-        const convertTimeToMinutes = (time) => {
-            const [hours, minutes] = time.split(":");
-            return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
-        };
+        
         const convertedAppointmentStartTime = convertTimeToMinutes(appointmentStartTime);
         const convertedWorkingHourStart = convertTimeToMinutes(doc.workingHourStart);
         const convertedWorkingHourEnd = convertTimeToMinutes(doc.workingHourEnd);
         // Checking if appointment time is within working hours of doctor
         if (convertedAppointmentStartTime < convertedWorkingHourStart || convertedAppointmentStartTime > convertedWorkingHourEnd) {
+            console.log(res)
             res.status(400)
             throw new Error("Doctor not available!")
         }
         // Format of date from input
         const [year, month, date] = appointmentDate.split('-')
         const [hour, min] = appointmentStartTime.split(':')
-        console.log(hour, min)
         const d = new Date(year, month-1, date, hour, min)
-        console.log(d)
 
         // ? Check if doctor is free or has an appointment
         // console.log(doc)
-        console.log(d.toString())
-        checkDocAvailability(doc, d)
+        checkDocAvailability(doc, d,res)
         // ? Check if user has another appointment at that time
         // console.log(user.userTimeSlot)
-        checkUserAvailability(user, d)
+        checkUserAvailability(user, d,res)
         // * Step 3: Book a New Appointment
         const newAppointment = new Appointment({
             userId: req.user._id,
@@ -60,17 +57,17 @@ const bookAppointment = asyncHandler(async (req, res) => {
             reason: reason,
             status: status || "Scheduled",
         });
-
+        
         //  ? Add time to doctor time slots
         //   console.log(doc.timeSlotsBooked)
         //  TODO: Add the functions and remove the below 2 lines
 
         addDocArray(doc, d);
         addUserArray(user, d);
-        await doc.save();
-        await newAppointment.save();
         await user.save()
-
+        await doc.save()
+        await newAppointment.save();
+        
         res.status(201).json({ message: "Appointment booked successfully.", appointment: newAppointment });
 
     } catch (error) {
@@ -78,6 +75,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
         throw new Error(error.message || "An error occurred while booking the appointment.");
     }
 });
+
 
 
 // @desc : View all my appointments
@@ -88,48 +86,49 @@ const viewAllMyAppointments = asyncHandler(async (req, res) => {
     res.status(200).json(appointments)
 })
 
-// @desc delete appointment
+// @desc Update appointment status
 // route : POST /api/users/appointments
 // Access : private
-const deleteAppointments = asyncHandler(async (req, res) => {
+const changeAppointmentStatus = asyncHandler(async (req, res) => {
+    const {newStatus} = req.body;
     // console.log(req.user)
     try {
-        const deletedAppointments = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
-        console.log(`date to be cancelled is ${deletedAppointments.appointmentDate}`)
-        if (deletedAppointments === null) {
+        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
+        // console.log(`date to be cancelled is ${updatedAppointmentStatus.appointmentDate}`)
+        if (updatedAppointmentStatus === null) {
             res.status(400)
             throw new Error("Appointment does not exist for the user")
         }
-        if(deletedAppointments.status === 'Cancelled'){
+        if(updatedAppointmentStatus.status === 'Cancelled' && newStatus === 'Cancelled'){
             res.status(200)
             throw new Error("Appointment already cancelled!");
-            
         }
-        deletedAppointments.status = 'Cancelled';
+        updatedAppointmentStatus.status = newStatus;
         /*
         ? Changing format of date and time
-        const [year, month, date] = deletedAppointments.appointmentDate.split('-')
-        const [hour, min] = deletedAppointments.appointmentStartTime.split(":")
+        const [year, month, date] = updatedAppointmentStatus.appointmentDate.split('-')
+        const [hour, min] = updatedAppointmentStatus.appointmentStartTime.split(":")
         console.log(year, month, date, hour, min);
         const d = new Date(year, month, date, hour, min);*/
         // ? Removing time slot from doctor array
     
-        const doc = await Doctor.findOne({ _id: deletedAppointments.doctorId })
+        const doc = await Doctor.findOne({ _id: updatedAppointmentStatus.doctorId })
         // console.log(`doc is ${doc}`)
 
-        removeDocArray(doc, deletedAppointments);
+        removeDocArray(doc, updatedAppointmentStatus.appointmentDate);
 
         //   Removing from user array
         const user = await User.findOne({ _id: req.user._id });
         // console.log(`user is ${user}`)
 
-        removeUserArray(user, deletedAppointments);
+        removeUserArray(user, updatedAppointmentStatus.appointmentDate);
 
-        await doc.save();
-        await user.save();
-        await deletedAppointments.save();
+        await doc.save()
+        await user.save()
+
+        await updatedAppointmentStatus.save();
         res.status(200).json({
-            deletedAppointments,
+            updatedAppointmentStatus,
             message: "Appointment cancelled successfully"
         });
     } catch (error) {
@@ -138,21 +137,50 @@ const deleteAppointments = asyncHandler(async (req, res) => {
     }
 })
 
-// @desc : edit appointment
-// Route : PUT /api/users/appointment
-// access : private
-const editAppointment = asyncHandler(async (req, res) => {
-    const apt = await Appointment.findById(req.body._id)
-    const doc = await Doctor.findById(apt.doctorId)
-    if (apt) {
-        apt.doctorId = req.body.doctorId || apt.doctorId
-        if (req.body.appointmentStartTime) {
-            // TODO: EDIT feature: doctor, date and time can only be edited.
-            // ? Change doctorList and userList for timings and date as well.. Hardwork needs to be done.
-        }
+/**
+ * @desc : edit appointment
+ * @Route : PUT /api/users/appointment
+ * @access : private
+ * @body
+   ->  `aptId` ID of appointment to edit - `Required`      
+   ->  `newDoctorId` Id of new doctor   
+   ->  `newAppointmentDate` new Appointment Date  
+   ->  `new AppointmentTime` new Appointment Time        
+   -> Condition assumed is             
+- doctorId may or maynot change
+- If `newAppointmentDate`, there will be change in time as well and you should send in `Date.toString()` format only to all functions
+- If `newAppointmentTime` is being posted, date is not changing
+ */
 
+
+const editAppointment = asyncHandler(async (req, res) => {
+    const {aptId, newDoctorId, newAppointmentDate, newAppointmentTime} = req.body
+    const apt = await Appointment.findById(aptId);
+    const newDoc = await Doctor.findById(newDoctorId);
+    const currentUser = await User.findById(req.user._id);
+    // TODO : Check all the code and functions below again!
+    if (apt) {
+        const [hour, min] = newAppointmentTime.split(":")
+        const year = new Date(newAppointmentDate).getFullYear();
+        const month = new Date(newAppointmentDate).getMonth();
+        const date = new Date(newAppointmentDate).getDate();
+        const newD = new Date(year, month, date, hour, min)
+        checkUserAvailability(currentUser, newD, res)
+        checkDocAvailability(newDoc, newD, res);
+        removeUserArray(currentUser,apt.appointmentDate);
+        addUserArray(currentUser, newD.toString())
+        removeDocArray(newDoc, apt.appointmentDate)
+        addDocArray(newDoc, newD.toString());
+        apt.doctorId = newDoctorId || apt.doctorId
+        apt.appointmentDate = newD.toString() || apt.appointmentDate;
+        apt.appointmentStartTime = newAppointmentTime || apt.appointmentStartTime;
+        newDoc.save();
+        apt.save();
+        currentUser.save();
     }
-    console.log('asdf')
+    res.status(200).json("Appointment updates successfully")
 })
 
-export { bookAppointment, viewAllMyAppointments, deleteAppointments };
+export { bookAppointment, viewAllMyAppointments, changeAppointmentStatus,editAppointment };
+
+// TODO: Change CRON NODE so that the array does not refresh everyday.. Just remove that one particular date once the appointment is completed.

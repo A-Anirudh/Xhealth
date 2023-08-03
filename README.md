@@ -5,4 +5,4 @@ install all the dependecies and dev dependencies. There are multiple package.jso
 Once installed, run 
 ```npm run dev```
 in the main project folder to run both backend and frontend simultaneously
-backend runs at port 8000 and frontend at port 3000
+backend runs at port 8080 and frontend at port 3000
