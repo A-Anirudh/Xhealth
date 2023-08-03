@@ -6,8 +6,6 @@ import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital } from './screens';
 import { PrivateRoutes } from './components';
-
-
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App.jsx';
