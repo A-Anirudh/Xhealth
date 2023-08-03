@@ -6,7 +6,7 @@ const USERS_URL = '/api/users';
 
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        login: builder.mutation({
+        userLogin: builder.mutation({
             query: data => ({
                 url: `${USERS_URL}/auth`,
                 method: 'POST',
@@ -24,7 +24,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-    useLoginMutation,
+    useUserLoginMutation,
     useGetUserInfoQuery // Add this line to export the hook for the new GET endpoint
 } = usersApiSlice;
 
