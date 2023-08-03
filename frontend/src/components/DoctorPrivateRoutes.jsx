@@ -3,5 +3,5 @@ import {  useSelector } from 'react-redux'
 
 export const DoctorPrivateRoutes = () => {
 const{docInfo}=useSelector((state)=>state.docAuth)
-return docInfo? <Outlet/> :<Navigate to='/' replace />//make it landing page later
+return docInfo? <Outlet/> :<Navigate to='/login_doctor' replace />//make it landing page later
 }

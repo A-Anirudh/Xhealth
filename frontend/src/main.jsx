@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital } from './screens';
-import { PrivateRoutes } from './components';
+import { DoctorPrivateRoutes, PrivateRoutes } from './components';
 
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -52,14 +52,16 @@ const AppRouter = () => (
     <Routes>
       <Route path='login_doctor' element={<LoginDoctor />} />
       <Route path='login_hospital' element={<LoginHospital />} />
-      <Route path='/' element={<LoginUser />}>
+      
         <Route path='login_user' element={<LoginUser />} />
         {/* <Route path='register_user' element={<RegisterScreen />} /> */}
-      </Route>
+      
       <Route path='/' element={<PrivateRoutes />}>
-        {/* <Route path='dashboard' element={<Dashboard />} /> */}
-        <Route path='profile_doctor' element={<DashboardDoctor />} />
         <Route path='profile_user' element={<DashboardUser />} />
+      </Route>
+      {/* Extra */}
+      <Route path='/' element={<DoctorPrivateRoutes />}>
+        <Route path='profile_doctor' element={<DashboardDoctor />} />
       </Route>
     </Routes>
   </Router>
