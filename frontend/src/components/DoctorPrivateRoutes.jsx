@@ -1,7 +1,7 @@
-import { Navigate,Outlet } from 'react-router-dom'
-import {  useSelector } from 'react-redux'
+import { Navigate, Outlet } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export const DoctorPrivateRoutes = () => {
-const{docInfo}=useSelector((state)=>state.docAuth)
-return docInfo? <Outlet/> :<Navigate to='/' replace />//make it landing page later
+    const { doctorInfo } = useSelector((state) => state.auth)
+    return doctorInfo ? <Outlet /> : <Navigate to='/login-doctor' replace />
 }
