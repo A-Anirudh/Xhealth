@@ -4,6 +4,8 @@ import { apiSlice } from "./apiSlice";
 
 const USERS_URL = '/api/users';
 
+const DOC_URL='/api/doctors'
+
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         userLogin: builder.mutation({
@@ -19,6 +21,19 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             })
         }),
+
+        loginDoc: builder.mutation({
+            query: data => ({
+                url: `${DOC_URL}/auth`,
+                method: 'POST',
+                body: data 
+            })
+        }),
+
+
+
+
+
     })
 
 });
@@ -31,16 +46,6 @@ export const {
 
 // Create our own endpoints in this file and it will inject them into the endpoints in the apiSlice file
 // in our form, we just need to dispatch the login action and it will do the work
-
-
-
-
-
-
-
-
-
-
 
 // Mutation is a specific type of state update operation that modifies the state in a Redux store
 // slice is used for grouping
