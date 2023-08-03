@@ -57,6 +57,10 @@ const userSchema = mongoose.Schema({
     },
     userTimeSlot:{
         type:[String]
+    },
+    permissionCheck:{
+        type:[String],
+        default:[]
     }
 
 }, {
