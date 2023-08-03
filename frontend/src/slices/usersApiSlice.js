@@ -21,19 +21,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             })
         }),
-
-        loginDoc: builder.mutation({
-            query: data => ({
-                url: `${DOC_URL}/auth`,
-                method: 'POST',
-                body: data 
-            })
-        }),
-
-
-
-
-
     })
 
 });
