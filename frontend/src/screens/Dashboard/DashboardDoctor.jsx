@@ -1,7 +1,8 @@
 import React from 'react'
 
-export const DashboardDoc = () => {
+export const DashboardDoctor = () => {
   return (
     <div>Dashboard Doctor</div>
   )
 }
+

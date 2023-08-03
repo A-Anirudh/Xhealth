@@ -1,4 +1,5 @@
-export { LoginUser } from "./LoginUser";
-export { DashboardUser } from "./DashboardUser";
-export{LoginDoc} from './LoginDoc'
-export {DashboardDoc} from './DashboardDoc'
+export { DashboardDoctor } from "./Dashboard/DashboardDoctor";
+export { LoginHospital } from "./Login/LoginHospital";
+export { LoginDoctor } from "./Login/LoginDoctor";
+export { LoginUser } from "./Login/LoginUser";
+export { DashboardUser } from "./Dashboard/DashboardUser";
