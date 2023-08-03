@@ -1,2 +1,2 @@
-export { PrivateRoutes } from "./PrivateRoutes";
-export {DoctorPrivateRoutes} from './DoctorPrivateRoutes'
+export { UserPrivateRoutes } from "./UserPrivateRoutes";
+export { DoctorPrivateRoutes } from './DoctorPrivateRoutes'
