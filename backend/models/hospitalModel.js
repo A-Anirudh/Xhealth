@@ -29,7 +29,8 @@ const hospitalSchema = mongoose.Schema({
         required:true
     },
     doctorsList : {
-        type: [doctorSchema]
+        type: [doctorSchema],
+        default :[]
     },
     password: {
         type: String,

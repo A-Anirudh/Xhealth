@@ -197,35 +197,32 @@ export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctor
 // clearDocArray()
 
 
-// Creating many doctors and hospitals because I can
+// doctorsList.forEach(async element => {
+//     const hos = await Hospital.findOne({name : element.currentHospitalWorkingName})
 
-
-doctorsList.forEach(async element => {
-    const hos = await Hospital.find({name : element.currentHospitalWorkingName})
-
-    const doc = Doctor.create({
-        email: element.email,
-        password: element.password,
-        firstName: element.firstName,
-        lastName: element.lastName,
-        phoneNumber:element.phoneNumber,
-        dateOfBirth:element.dateOfBirth, 
-        gender:element.gender, 
-        state:element.state, 
-        bloodGroup:element.bloodGroup, 
-        city:element.city, 
-        pincode:element.pincode,
-        department:element.department,
-        qualification:element.qualification,
-        experience:element.experience,
-        registrationNumber:element.registrationNumber,
-        currentHospitalWorkingName:element.currentHospitalWorkingName,
-        workingHourStart:element.workingHourStart,
-        workingHourEnd:element.workingHourEnd,
-        gradCollegeName:element.gradCollegeName
-    });
-    if(hos){
-        hos.doctorsList.push(doc)
-    }
-});
+//     const doc = Doctor.create({
+//         email: element.email,
+//         password: element.password,
+//         firstName: element.firstName,
+//         lastName: element.lastName,
+//         phoneNumber:element.phoneNumber,
+//         dateOfBirth:element.dateOfBirth, 
+//         gender:element.gender, 
+//         state:element.state, 
+//         bloodGroup:element.bloodGroup, 
+//         city:element.city, 
+//         pincode:element.pincode,
+//         department:element.department,
+//         qualification:element.qualification,
+//         experience:element.experience,
+//         registrationNumber:element.registrationNumber,
+//         currentHospitalWorkingName:element.currentHospitalWorkingName,
+//         workingHourStart:element.workingHourStart,
+//         workingHourEnd:element.workingHourEnd,
+//         gradCollegeName:element.gradCollegeName
+//     });
+//     if(hos){
+//         hos.doctorsList.push(doc)
+//     }
+// });
 
