@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import Doctor from '../models/doctorModel.js'
 import generateToken from '../utils/generateToken.js'
-
+import Hospital from "../models/hospitalModel.js";
+import { doctorsList, hopitalList } from "../data/doctors.js";
 /**
  * @desc : Auth doctor/set token
  * @access : Public
@@ -17,7 +18,7 @@ const authDoctor = asyncHandler(async (req, res) => {
         generateToken(res, doc._id,'doctor');
         res.status(201).json({
             _id:doc._id,
-            name: doc.name,
+            firstName: doc.firstName,
             email:doc.email,
         });
     } else{
@@ -32,14 +33,16 @@ const authDoctor = asyncHandler(async (req, res) => {
  */
 
 const registerDoctor = asyncHandler(async (req, res) => {
-    const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd } = req.body;
+    const {email,password,firstName, lastName, phoneNumber, dateOfBirth, gender, state, bloodGroup, city, pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd,gradCollegeName } = req.body;
     const doctorExists = await Doctor.findOne({email});
+    const hospital = await Hospital.findOne({name:currentHospitalWorkingName});
+
+    console.log(hospital)
     
     if (phoneNumber.length !==10){
         res.status(400);
         throw new Error("Phone number should be only 10 digits. Do no include country code!")
     }
-
     if(doctorExists){
         res.status(400);
         throw new Error('doctor already exists!');
@@ -60,17 +63,22 @@ const registerDoctor = asyncHandler(async (req, res) => {
         pincode,department,qualification,experience,registrationNumber,currentHospitalWorkingName,workingHourStart,workingHourEnd, gradCollegeName
     });
     if(doc){
+        if (hospital) {
+            hospital.doctorsList.push(doc);
+            await hospital.save()
+        }
         generateToken(res, doc._id,'doctor');
         res.status(201).json({
             _id:doc._id,
-            name: doc.name,
+            firstName: doc.firstName,
             email:doc.email,
-
         });
     } else{
         res.status(400);
         throw new Error('Invalid doc data!')
     }
+    
+    
 });
 
 /**
@@ -189,9 +197,9 @@ export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctor
 // clearDocArray()
 
 
-// Creating many doctors because I can
+// doctorsList.forEach(async element => {
+//     const hos = await Hospital.findOne({name : element.currentHospitalWorkingName})
 
-// doctorsList.forEach(element => {
 //     const doc = Doctor.create({
 //         email: element.email,
 //         password: element.password,
@@ -213,5 +221,8 @@ export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctor
 //         workingHourEnd:element.workingHourEnd,
 //         gradCollegeName:element.gradCollegeName
 //     });
+//     if(hos){
+//         hos.doctorsList.push(doc)
+//     }
 // });
 

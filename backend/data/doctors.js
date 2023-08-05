@@ -439,3 +439,169 @@ export const doctorsList = [
   ]
   
 
+export const hopitalList = 
+  [
+    {
+        "name": "Apollo Hospital",
+        "email": "apollo.hospital@example.com",
+        "state": "Delhi (National Capital Territory of Delhi)",
+        "city": "New Delhi",
+        "pincode": "110001",
+        "hospitalRegistrationNumber": "DOC123456",
+        "password": "password123"
+    },
+    {
+        "name": "Fortis Hospital",
+        "email": "fortis.hospital@example.com",
+        "state": "Maharashtra",
+        "city": "Mumbai",
+        "pincode": "400001",
+        "hospitalRegistrationNumber": "DOC987654",
+        "password": "pass123word"
+    },
+    {
+        "name": "CIMS Hospital",
+        "email": "cims.hospital@example.com",
+        "state": "Gujarat",
+        "city": "Ahmedabad",
+        "pincode": "380001",
+        "hospitalRegistrationNumber": "DOC555000",
+        "password": "doctor@123"
+    },
+    {
+        "name": "Medanta Hospital",
+        "email": "medanta.hospital@example.com",
+        "state": "Uttar Pradesh",
+        "city": "Lucknow",
+        "pincode": "226001",
+        "hospitalRegistrationNumber": "DOC998877",
+        "password": "pass4321word"
+    },
+    {
+        "name": "Manipal Hospital",
+        "email": "manipal.hospital@example.com",
+        "state": "Karnataka",
+        "city": "Bengaluru",
+        "pincode": "560001",
+        "hospitalRegistrationNumber": "DOC112233",
+        "password": "doctor5678"
+    },
+    {
+        "name": "Max Hospital",
+        "email": "max.hospital@example.com",
+        "state": "Punjab",
+        "city": "Chandigarh",
+        "pincode": "160001",
+        "hospitalRegistrationNumber": "DOC121212",
+        "password": "passw0987ord"
+    },
+    {
+        "name": "Aster Medicity",
+        "email": "aster.medicity@example.com",
+        "state": "Kerala",
+        "city": "Kochi",
+        "pincode": "682001",
+        "hospitalRegistrationNumber": "DOC343434",
+        "password": "drtiger@123"
+    },
+    {
+        "name": "Sankara Eye Hospital",
+        "email": "sankara.hospital@example.com",
+        "state": "Tamil Nadu",
+        "city": "Chennai",
+        "pincode": "600001",
+        "hospitalRegistrationNumber": "DOC232323",
+        "password": "doctor@987"
+    },
+    {
+        "name": "Artemis Hospital",
+        "email": "artemis.hospital@example.com",
+        "state": "Haryana",
+        "city": "Gurugram",
+        "pincode": "122001",
+        "hospitalRegistrationNumber": "DOC434343",
+        "password": "pass0987word"
+    },
+    {
+        "name": "Ruby General Hospital",
+        "email": "ruby.hospital@example.com",
+        "state": "West Bengal",
+        "city": "Kolkata",
+        "pincode": "700001",
+        "hospitalRegistrationNumber": "DOC232323",
+        "password": "dr12345"
+    },
+    {
+        "name": "Indira Gandhi Institute of Medical Sciences",
+        "email": "indira.hospital@example.com",
+        "state": "Bihar",
+        "city": "Patna",
+        "pincode": "800001",
+        "hospitalRegistrationNumber": "DOC676767",
+        "password": "password987"
+    },
+    {
+        "name": "Care Hospitals",
+        "email": "care.hospitals@example.com",
+        "state": "Telangana",
+        "city": "Hyderabad",
+        "pincode": "500001",
+        "hospitalRegistrationNumber": "DOC565656",
+        "password": "doctor098"
+    },
+    {
+        "name": "AIIMS Bhopal",
+        "email": "aiims.hospital@example.com",
+        "state": "Madhya Pradesh",
+        "city": "Bhopal",
+        "pincode": "462001",
+        "hospitalRegistrationNumber": "DOC232323",
+        "password": "doc13579"
+    },
+    {
+        "name": "Max Super Speciality Hospital",
+        "email": "max.super@example.com",
+        "state": "Uttarakhand",
+        "city": "Dehradun",
+        "pincode": "248001",
+        "hospitalRegistrationNumber": "DOC787878",
+        "password": "pass222word"
+    },
+    {
+        "name": "Gauhati Medical College and Hospital",
+        "email": "gauhati.hospital@example.com",
+        "state": "Assam",
+        "city": "Guwahati",
+        "pincode": "781001",
+        "hospitalRegistrationNumber": "DOC989898",
+        "password": "doctor2022"
+    },
+    {
+        "name": "AIIMS Bhubaneswar",
+        "email": "aiims.bhubaneswar@example.com",
+        "state": "Odisha",
+        "city": "Bhubaneswar",
+        "pincode": "751001",
+        "hospitalRegistrationNumber": "DOC676767",
+        "password": "password111"
+    },
+    {
+        "name": "RIMS Ranchi",
+        "email": "rims.hospital@example.com",
+        "state": "Jharkhand",
+        "city": "Ranchi",
+        "pincode": "834001",
+        "hospitalRegistrationNumber": "DOC787878",
+        "password": "pass54321"
+    },
+    {
+        "name": "Ramkrishna Care Hospital",
+        "email": "ramkrishna.hospital@example.com",
+        "state": "Chhattisgarh",
+        "city": "Raipur",
+        "pincode": "492001",
+        "hospitalRegistrationNumber": "DOC111111",
+        "password": "doctor2023"
+    }
+]
+

@@ -10,6 +10,7 @@ import NotificationRouter from './routes/notificationRouter.js'
 import cors from 'cors'
 import healthRecordsRouter from './routes/healthRecordsRouter.js';
 import personalHealthRouter from './routes/personalHealthRouter.js';
+import hospitalRouter from './routes/hospitalRouter.js';
 dotenv.config();
 
 connectDB();
@@ -27,7 +28,8 @@ app.use('/api/doctors',docRouter) // doctorRoutes
 app.use('/api/notification',NotificationRouter)//for targeting devices
 app.use('/api/users/appointments',appointmentRouter) // doctorRoutes
 app.use('/api/users/healthRecords',healthRecordsRouter) //to get health records
-app.use('/api/users/metrics', personalHealthRouter)
+app.use('/api/users/metrics', personalHealthRouter);
+app.use('/api/hospitals',hospitalRouter)
 
 // app.get('/', (req,res)=>{
     // res.send(`server is ready and running on port ${port}`)
