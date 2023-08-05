@@ -15,7 +15,6 @@ import { useGetAllDoctorsQuery } from '../../slices/doctorsApiSlice';
 import moment from 'moment/moment';
 import { useDispatch } from 'react-redux';
 import { userLogout } from '../../slices/authSlice';
-import { Toaster } from 'react-hot-toast';
 
 
 export const DashboardUser = () => {
@@ -23,10 +22,10 @@ export const DashboardUser = () => {
   const [latestRecord, setLatestRecord] = useState({});
   const [latestAppointments, setLatestAppointments] = useState([]);
   const [userOptions, setUserOptions] = useState(false);
-  const { data } = useGetUserInfoQuery();
-  const { data: personalHealth } = useGetPersonalHeathQuery();
-  const { data: appointments } = useGetAppointmentsQuery();
-  const { data: doctors } = useGetAllDoctorsQuery();
+  const { data, refetch: refetchUser } = useGetUserInfoQuery();
+  const { data: personalHealth, refetch: refetchHealth } = useGetPersonalHeathQuery();
+  const { data: appointments, refetch: refetchAppointment } = useGetAppointmentsQuery();
+  const { data: doctors, refetch: refetchDoctors } = useGetAllDoctorsQuery();
   const [logout] = useLogoutUserMutation();
   const dispatch = useDispatch();
 
@@ -37,17 +36,48 @@ export const DashboardUser = () => {
   }
 
   useEffect(() => {
+    refetchUser();
+    refetchHealth();
+    refetchAppointment();
+    refetchDoctors();
+  }, [])
+
+  useEffect(() => {
     personalHealth && setLatestRecord(personalHealth[personalHealth.length - 1]);
   }, [personalHealth])
 
   useEffect(() => {
     if (appointments && doctors?.allDoc) {
-      const prevAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 2].doctorId);
-      const nextAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 1].doctorId);
-      const prevApp = { doctorName: prevAppDoc.firstName, hospitalName: prevAppDoc.currentHospitalWorkingName, appointmentDate: appointments[appointments.length - 2].appointmentDate }
-      const nextApp = { doctorName: nextAppDoc.firstName, hospitalName: nextAppDoc.currentHospitalWorkingName, appointmentDate: appointments[appointments.length - 1].appointmentDate }
+      if (appointments.length > 1) {
+        const prevAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 2].doctorId);
+        const nextAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 1].doctorId);
+        const prevApp = {
+          name: "prev",
+          doctorName: prevAppDoc.firstName,
+          hospitalName: prevAppDoc.currentHospitalWorkingName,
+          appointmentDate: appointments[appointments.length - 2].appointmentDate
+        };
+        const nextApp = {
+          name: "next",
+          doctorName: nextAppDoc.firstName,
+          hospitalName: nextAppDoc.currentHospitalWorkingName,
+          appointmentDate: appointments[appointments.length - 1].appointmentDate
+        }
 
-      setLatestAppointments([prevApp, nextApp]);
+        setLatestAppointments([prevApp, nextApp]);
+
+      }
+      else if (appointments.length === 1) {
+        const nextAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 1].doctorId);
+        const nextApp = {
+          name: "next",
+          doctorName: nextAppDoc.firstName,
+          hospitalName: nextAppDoc.currentHospitalWorkingName,
+          appointmentDate: appointments[appointments.length - 1].appointmentDate
+        }
+
+        setLatestAppointments([nextApp]);
+      }
     }
   }, [appointments, doctors])
 
@@ -56,46 +86,291 @@ export const DashboardUser = () => {
   //   appointments && console.log(appointments);
   // }, [appointments, doctors])
 
+  /**
+   * hostpia
+   * const hospitalData = {...HospitalModel, doctorsList: allDoc.filter(item => item.hostpitalName === hostpitalModel.name)}
+   * hostipadata.save();
+   * 
+   * dotosrList.push
+   * 
+   * hostpitalList = [
+   *  {
+   *    name: "manipal",
+   *    docList: [4t4g4g, 4545h45g, 45h45h45h, 45h4, 5h45, h56, h5h]
+   *  }
+   * ]
+   * 
+   * docList.map(item => allDoc.map(item5 => item5.id === item.id)
+   * 
+   * docDetails = {
+   *  name: "abc",
+   *  hospital: "manipal"
+   * }
+   * 
+   * 
+   */
+
   return (
-    <Grid container backgroundColor={theme['blue-100']}>
-      <Grid item xl={12} sx={{ background: theme["purple-500"], padding: "1.5rem 2rem", display: "flex", alignItems: "center", borderRadius: "0 0 1rem 1rem" }}>
+    <Grid
+      container
+      backgroundColor={theme['blue-100']}
+    >
+      <Grid
+        item
+        xl lg md sm xs xsm
+        sx={{
+          background: theme["purple-500"],
+          padding: "1.5rem 2rem",
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "0 0 1rem 1rem",
+          [theme.breakpoints.down("xsm")]: {
+            padding: "0.7rem 2rem",
+          },
+        }}
+      >
         <Link style={{ textDecoration: "none" }}>
-          <Typography variant="h4" fontWeight="bold" color="white" sx={{ cursor: "pointer" }}>XHealth</Typography>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color="white"
+            sx={{
+              cursor: "pointer",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "5vw"
+              },
+            }}
+
+          >
+            XHealth
+          </Typography>
         </Link>
-        <Box marginLeft="auto" display="flex" gap={4} alignItems="center">
-          <Typography color="white" sx={{ cursor: "pointer" }}>Appointments</Typography>
-          <Box display="flex" gap={1} alignItems="center" sx={{ cursor: "pointer" }}>
+        <Box
+          marginLeft="auto"
+          display="flex"
+          gap={4}
+          alignItems="center"
+        >
+          <Link to="book-appointment" style={{ textDecoration: "none" }}>
+            <Typography color="white" sx={{
+              cursor: "pointer",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "1vw",
+                display: "none"
+              },
+            }}>Appointments</Typography>
+          </Link>
+          <Box
+            display="flex"
+            gap={1}
+            alignItems="center"
+            sx={{
+              cursor: "pointer",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "1vw",
+                display: "none"
+              },
+            }}
+          >
             <Typography color="white">Health Record</Typography>
             <img src={dropdown} alt="dropdown" />
           </Box>
-          <Box sx={{ cursor: "pointer", position: "relative" }}>
+          <Box sx={
+            {
+              cursor: "pointer",
+              position: "relative"
+            }
+          }
+          >
             <img onClick={() => setUserOptions(p => !p)} src={userProfile} alt="user image" />
-            <Box display={userOptions ? "block" : "none"} backgroundColor="white" padding="0.5rem 1rem" borderRadius={1} position="absolute" sx={{ transform: "translate(-50%, 10%)" }}>
-              <Button onClick={logoutUser}>Logout</Button>
+            <Box
+              display={userOptions ? "flex" : "none"}
+              backgroundColor="white"
+              padding="0.5rem 1rem"
+              borderRadius={1}
+              position="absolute"
+              left={-40}
+              sx={{ transform: "translate(-50%, 10%)" }}
+              minWidth="max-content"
+              textAlign="center"
+              color={theme['blue-150']}
+              flexDirection="column"
+              gap={1}
+              fontSize={4}
+              zIndex={3}
+              boxShadow="0 4px 4px lightgray"
+            >
+              <Box sx={{
+                [theme.breakpoints.down("xxl")]: {
+                  display: "none"
+                },
+                [theme.breakpoints.down("sm")]: {
+                  display: "block"
+                },
+              }}>
+                <Link to="book-appointment" style={{ textDecoration: "none" }}>
+                  <Typography sx={{
+                    cursor: "pointer",
+                    color: theme['blue-150'],
+                    fontWeight: "bold",
+                  }}>Appointments</Typography>
+                </Link>
+              </Box>
+              <Box
+                display="flex"
+                gap={1}
+                alignItems="center"
+                sx={{
+                  cursor: "pointer",
+                  [theme.breakpoints.down("xxl")]: {
+                    display: "none"
+                  },
+                  [theme.breakpoints.down("sm")]: {
+                    display: "block"
+                  },
+                }}
+              >
+                <Typography
+                  sx={{
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}>Health Record</Typography>
+              </Box>
+              <Button onClick={logoutUser} sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Logout</Button>
             </Box>
           </Box>
         </Box>
       </Grid>
-      <Grid item xl={12} margin="4rem 6rem 2rem" container justifyContent="space-around">
-        <Grid item xl={8} boxShadow="0 4px 4px rgba(0,0,0,0.25)" borderRadius={4} overflow="hidden" border={`4px solid ${theme["purple-500"]}`} >
-          <Box display="flex" alignItems="center" justifyContent="space-around" padding="0 7rem">
-            <Box textAlign="center" minWidth="28rem">
-              <Typography variant="h3" display="flex" gap={2} fontWeight="bold" justifyContent="center"><Typography variant="h3" fontWeight="bold" color={`${theme["purple-500"]}`}>Welcome</Typography> {data?.firstName}!</Typography>
-              <Typography variant="h5">Get better easily and live a healthy life.</Typography>
+      <Grid
+        item
+        xl={12}
+        margin="4rem 6rem 2rem"
+        container
+        gap={4}
+        justifyContent="space-around"
+        sx={{
+          [theme.breakpoints.down("lg")]: {
+            margin: "4rem 1rem 2rem"
+          },
+          [theme.breakpoints.down("sm")]: {
+            margin: "2rem 1rem"
+          },
+        }}
+      >
+        <Grid
+          item
+          xl={4}
+          boxShadow="0 4px 4px rgba(0,0,0,0.25)"
+          borderRadius={4}
+          width={950}
+          overflow="hidden"
+          border={`4px solid ${theme["purple-500"]}`}
+          sx={{
+            [theme.breakpoints.down("xl")]: {
+              width: "max-content"
+            },
+          }}
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-around"
+            padding="0 3rem"
+            sx={{
+              [theme.breakpoints.down("md")]: {
+                padding: "0",
+                width: "90vw"
+              },
+              [theme.breakpoints.down("sm")]: {
+                padding: "0",
+                // width: "initial"
+              },
+            }}
+          >
+            <Box
+              textAlign="center"
+              minWidth="2rem"
+              sx={{
+                [theme.breakpoints.down("lg")]: {
+                  margin: "3rem",
+                },
+                [theme.breakpoints.down("sm")]: {
+                  margin: "2rem 0",
+                },
+              }}
+            >
+              <Typography
+                variant="h3"
+                display="flex"
+                gap={2}
+                fontWeight="bold"
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                  [theme.breakpoints.down("sm")]: {
+                    fontSize: "2rem",
+                    gap: 1
+                  },
+                  [theme.breakpoints.down("xsm")]: {
+                    fontSize: "1.5rem"
+                  },
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  fontWeight="bold"
+                  color={`${theme["purple-500"]}`}
+                  sx={{
+                    [theme.breakpoints.down("sm")]: {
+                      fontSize: "2rem"
+                    },
+                    [theme.breakpoints.down("xsm")]: {
+                      fontSize: "1.5rem"
+                    },
+                  }}
+                >
+                  Welcome
+                </Typography>
+                {data?.firstName}!
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{
+                  display: "inline",
+                  [theme.breakpoints.down("sm")]: {
+                    fontSize: "1.2rem"
+                  },
+                  [theme.breakpoints.down("xsm")]: {
+                    fontSize: "1rem"
+                  },
+                }}
+              >Get better easily and live a healthy life.</Typography>
             </Box>
-            <Box>
+            <Box
+              sx={{
+                [theme.breakpoints.down("lg")]: {
+                  display: "none"
+                },
+              }}
+            >
               <img src={coverImg} alt="doctors image" />
             </Box>
           </Box>
 
         </Grid>
         <Grid item
-          xl={3}
+          xl={7}
           backgroundColor="white"
           padding="1rem 1.5rem"
           borderRadius={4}
           boxShadow="0 4px 4px rgba(0,0,0,0.25)"
           position="relative"
+          width="15rem"
+          sx={{
+            [theme.breakpoints.down("lg")]: {
+              display: "none"
+            },
+          }}
         >
           <Typography variant="h5" color={theme["blue-150"]} margin={0}>Profile</Typography>
           <Box
@@ -114,7 +389,19 @@ export const DashboardUser = () => {
           </Box>
         </Grid>
       </Grid>
-      <Grid item xl={12} margin="0 8rem" container display="flex" justifyContent="space-around" gap={5}>
+      <Grid
+        item xl md
+        margin="0 8rem"
+        container
+        display="flex"
+        justifyContent="space-around"
+        gap={5}
+        sx={{
+          [theme.breakpoints.down("lg")]: {
+            margin: "0 1rem"
+          },
+        }}
+      >
         <Grid item
           xl={5}
           backgroundColor={theme["purple-500"]}
@@ -126,7 +413,11 @@ export const DashboardUser = () => {
           alignItems="center"
           justifyContent="center"
           gap="1rem"
-
+          sx={{
+            [theme.breakpoints.down("lg")]: {
+              flexGrow: 1
+            },
+          }}
         >
           <Typography
             backgroundColor="white"
@@ -162,11 +453,16 @@ export const DashboardUser = () => {
           display="flex"
           flexDirection="column"
           gap={1}
+          sx={{
+            [theme.breakpoints.down("lg")]: {
+              flexGrow: 1
+            },
+          }}
         >
           <Typography variant="h5" fontWeight="bold" color="white" paddingLeft={2}>
             Appointments
           </Typography>
-          {latestAppointments.map(({ doctorName, hospitalName, appointmentDate }, idx) => (
+          {appointments?.length > 0 ? latestAppointments.map(({ name, doctorName, hospitalName, appointmentDate }, idx) => (
             <Box
               display="flex"
               alignItems="center"
@@ -177,15 +473,27 @@ export const DashboardUser = () => {
               key={idx}
             >
               <Box backgroundColor="white" minWidth="10rem">
-                <Typography variant="h5" fontWeight="bold" padding="1rem 1.5rem" height="5rem" display="flex" alignItems="center" justifyContent="center">
-                  {idx === 0 ? "Previous" : "Upcoming"}
+                <Typography
+                  variant="h5"
+                  fontWeight="bold"
+                  padding="1rem 1.5rem"
+                  height="5rem"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {name === "prev" ? "Previous" : "Upcoming"}
                 </Typography>
               </Box>
-              <Box backgroundColor={theme['blue-500']} width="100%" color="white" padding="1rem 1.5rem">
+              <Box
+                backgroundColor={theme['blue-500']}
+                width="100%"
+                color="white"
+                padding="1rem 1.5rem"
+              >
                 <Box display="flex" alignItems="center">
                   <Box
                     display="flex"
-                    // alignItems="center"
                     flexDirection="column"
                   >
                     <Typography variant="h5">
@@ -202,40 +510,75 @@ export const DashboardUser = () => {
               </Box>
 
             </Box>
-          ))}
+          )) : <Box
+            display="flex"
+            alignItems="center"
+            borderRadius={4}
+            overflow="hidden"
+            maxHeight="5rem"
+            marginBottom={1}
+          >
+            <Box backgroundColor="white" width="100%">
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                padding="1rem 1.5rem"
+                height="5rem"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                No Appointments Booked!
+              </Typography>
+            </Box>
+          </Box>
+          }
         </Grid>
       </Grid>
-      <Grid item xl={12} margin="2rem 8rem" container display="flex" justifyContent="space-around" gap={5} paddingBottom={5}>
-        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
+      <Grid
+        item xl={12}
+        margin="2rem 8rem"
+        container
+        display="flex"
+        justifyContent="space-around"
+        gap={5}
+        paddingBottom={5}
+        sx={{
+          [theme.breakpoints.down("lg")]: {
+            margin: "2rem"
+          },
+        }}
+      >
+        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
           <Box marginBottom={2}>
             <img src={heart} alt="heartRate" />
           </Box>
           <Typography variant="h6">Heart Rate</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.heartRate} bpm</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.heartRate : "-"} bpm</Typography>
         </Grid>
-        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
+        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
           <Box marginBottom={2}>
             <img src={bp} alt="bloodpressure" />
           </Box>
           <Typography variant="h6">Blood pressure</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.bloodPressure}</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.bloodPressure : "-/-"}</Typography>
         </Grid>
-        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
+        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
           <Box marginBottom={2}>
             <img src={bw} alt="body weight" />
           </Box>
           <Typography variant="h6">Body Weight</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.weight} kg</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.weight : "-"} kg</Typography>
         </Grid>
-        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
+        <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
           <Box marginBottom={2}>
             <img src={gl} alt="glucose level" />
           </Box>
           <Typography variant="h6">Glucose Levels</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.glucose}</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.glucose : "-"}</Typography>
         </Grid>
       </Grid>
-    </Grid>
+    </Grid >
   )
 }
 
