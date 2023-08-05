@@ -189,7 +189,7 @@ export const DashboardUser = () => {
           </Box>
         </Grid>
       </Grid>
-      <Grid item xl={12} margin="2rem 8rem" container display="flex" justifyContent="space-around" gap={5} paddingBottom={5F}>
+      <Grid item xl={12} margin="2rem 8rem" container display="flex" justifyContent="space-around" gap={5} paddingBottom={5}>
         <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
           <Box marginBottom={2}>
             <img src={heart} alt="heartRate" />
