@@ -1,7 +1,7 @@
 import { Box, Input, InputLabel, Typography } from "@mui/material"
 import loginThumbnail from "../../assets/userLogin.png";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Login.module.css";
+import styles from "../Login/Login.module.css";
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
 import { useUserLoginMutation } from "../../slices/usersApiSlice";
@@ -9,13 +9,70 @@ import { setUserCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
 
-export const LoginUser = () => {
+export const SignupUser = () => {
     const theme = useTheme()
     const [creds, setCreds] = useState({});
     const [login] = useUserLoginMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userInfo } = useSelector(state => state.auth);
+    const signUpDetails = [
+        {
+            "name": "firstName",
+            "type": "text",
+            "label": "First name"
+        },
+        {
+            "name": "lastName",
+            "type": "text",
+            "label": "Last name"
+        },
+        {
+            "name": "password",
+            "type": "password",
+            "label": "Password"
+        },
+        {
+            "name": "email",
+            "type": "email",
+            "label": "Email"
+        },
+        {
+            "name": "phoneNumber",
+            "type": "tel",
+            "label": "Phone number"
+        },
+        {
+            "name": "dateOfBirth",
+            "type": "date",
+            "label": "Date of Birth"
+        },
+        {
+            "name": "state",
+            "type": "text",
+            "label": "State"
+        },
+        {
+            "name": "city",
+            "type": "text",
+            "label": "City"
+        },
+        {
+            "name": "pincode",
+            "type": "text",
+            "label": "Pincode"
+        },
+        {
+            "name": "gender",
+            "type": "text",
+            "label": "Gender"
+        },
+        {
+            "name": "bloodGroup",
+            "type": "text",
+            "label": "Blood group"
+        }
+    ]
 
     const getCredentials = e => {
         const { value, name } = e.target;
@@ -29,13 +86,13 @@ export const LoginUser = () => {
             dispatch(setUserCredentials(res));
             toast.success("Welcome User!")
         }
-        catch(e) {
+        catch (e) {
             toast.error("Invalid Credentials!!")
         }
     }
 
     useEffect(() => {
-        navigate(userInfo ? "/profile-user" : "/login-user");
+        navigate(userInfo ? "/profile-user" : "/signup-user");
     }, [navigate, userInfo])
 
     return (
@@ -53,7 +110,7 @@ export const LoginUser = () => {
                 display: "flex",
                 overflow: "hidden",
                 height: "80%",
-                width: "60rem",
+                width: "70%",
                 [theme.breakpoints.down('lg')]: {
                     width: "90%",
                 },
@@ -64,7 +121,7 @@ export const LoginUser = () => {
                 <Box sx={{
                     background: theme.patient.primary,
                     height: "100%",
-                    width: "40%",
+                    width: "35%",
                     position: "relative",
                     display: "flex",
                     alignItems: "center",
@@ -130,7 +187,7 @@ export const LoginUser = () => {
                                 fontSize: "9vw",
                             },
                         }}>
-                            Login
+                            Sign Up
                         </Typography>
                         <Typography variant="h6" sx={{
                             color: theme.secondaryText,
@@ -138,101 +195,66 @@ export const LoginUser = () => {
                                 fontSize: "5vw",
                             },
                         }}>
-                            Please login to your account
+                            Please Sign up your account
                         </Typography>
                     </Box>
                     <Box sx={{
                         display: "flex",
-                        flexDirection: "column",
-                        width: "70%",
+                        // flexDirection: "column",
+                        width: "80%",
                         gap: "1rem",
                         alignItems: "center",
+                        justifyContent: "center",
+                        flexWrap: "wrap"
                     }}
                     >
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            alignItems: "center",
-                        }}
-                        >
-                            <InputLabel
-                                htmlFor="email"
-                                sx={{
-                                    alignSelf: "flex-start",
-                                    paddingInline: "2rem",
-                                    fontSize: "1.1rem",
-                                    color: "#9D9D9D",
-                                    [theme.breakpoints.down("xsm")]: {
-                                        fontSize: "1rem",
-                                        paddingInline: "1rem"
-                                    },
+                        {
+                            signUpDetails.map(({name, type, label}) => (
+                                <Box sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    width: "10rem",
+                                    alignItems: "center",
                                 }}
-                            >
-                                Email
-                            </InputLabel>
-
-                            <Input
-                                id="email"
-                                type="email"
-                                name="email"
-                                sx={{
-                                    borderRadius: "20px",
-                                    outlineColor: theme.patient.inputActive,
-                                    border: `2px solid ${theme.patient.inputDefault}`,
-                                    width: "100%",
-                                    padding: "0.4rem 1rem",
-                                    fontSize: "1.4rem",
-                                    background: theme.inputBackground,
-                                    [theme.breakpoints.down("xsm")]: {
-                                        fontSize: "1rem"
-                                    },
-                                }}
-                                disableUnderline
-                                onChange={e => getCredentials(e)}
-                            />
-                        </Box>
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            alignItems: "center",
-                        }}
-                        >
-                            <InputLabel htmlFor="password" sx={{
-                                alignSelf: "flex-start",
-                                paddingInline: "2rem",
-                                fontSize: "1.1rem",
-                                color: "#9D9D9D",
-                                [theme.breakpoints.down("xsm")]: {
-                                    fontSize: "1rem",
-                                    paddingInline: "1rem"
-                                },
-                            }}>
-                                Password
-                            </InputLabel>
-
-                            <Input
-                                id="password"
-                                type="password"
-                                name="password"
-                                sx={{
-                                    borderRadius: "20px",
-                                    outlineColor: theme.patient.inputActive,
-                                    border: `2px solid ${theme.patient.inputDefault}`,
-                                    width: "100%",
-                                    padding: "0.4rem 1rem",
-                                    fontSize: "1.4rem",
-                                    background: theme.inputBackground,
-                                    [theme.breakpoints.down("xsm")]: {
-                                        fontSize: "1rem"
-                                    },
-                                }}
-                                disableUnderline
-                                onChange={e => getCredentials(e)}
-                            />
-                        </Box>
-                        <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" }}>forgot passward</Link>
+                                >
+                                    <InputLabel
+                                        htmlFor={name}
+                                        sx={{
+                                            alignSelf: "flex-start",
+                                            paddingInline: "1rem",
+                                            fontSize: "0.8rem",
+                                            color: "#9D9D9D",
+                                            [theme.breakpoints.down("xsm")]: {
+                                                fontSize: "1rem",
+                                                paddingInline: "1rem"
+                                            },
+                                        }}
+                                    >
+                                        {label}
+                                    </InputLabel>
+    
+                                    <Input
+                                        id={name}
+                                        type={type}
+                                        name={name}
+                                        sx={{
+                                            borderRadius: "20px",
+                                            outlineColor: theme.patient.inputActive,
+                                            border: `1px solid ${theme.patient.inputDefault}`,
+                                            width: "100%",
+                                            padding: "0 1rem",
+                                            fontSize: "1rem",
+                                            background: theme.inputBackground,
+                                            [theme.breakpoints.down("xsm")]: {
+                                                fontSize: "1rem"
+                                            },
+                                        }}
+                                        disableUnderline
+                                        onChange={e => getCredentials(e)}
+                                    />
+                                </Box>
+                            ))
+                        }
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
                         <Input type="submit" value="Login"
@@ -250,10 +272,10 @@ export const LoginUser = () => {
                                     fontSize: "1rem",
                                     paddingInline: "1rem"
                                 },
-                            }} 
+                            }}
                             onClick={(e) => submitCredentials(e, creds)}
-                            />
-                        <span>New User? <Link to="/signup-user" style={{ color: theme.success }}>Register Now</Link></span>
+                        />
+                        <span>New User? <Link to="/register" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>
 
