@@ -19,13 +19,27 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             })
         }),
+        getPersonalHeath: builder.query({
+            query: () => ({
+                url: `${USERS_URL}/metrics`,
+                method: 'GET'
+            })
+        }),
+        getAppointments: builder.query({
+            query: () => ({
+                url: `${USERS_URL}/appointments`,
+                method: 'GET'
+            })
+        })
     })
 
 });
 
 export const {
     useUserLoginMutation,
-    useGetUserInfoQuery // Add this line to export the hook for the new GET endpoint
+    useGetUserInfoQuery,
+    useGetPersonalHeathQuery,
+    useGetAppointmentsQuery
 } = usersApiSlice;
 
 
