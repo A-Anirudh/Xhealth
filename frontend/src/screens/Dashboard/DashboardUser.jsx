@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import userProfile from "../../assets/profile.svg";
 import dropdown from "../../assets/dropdown.png";
@@ -10,19 +10,31 @@ import bp from "../../assets/bp.png";
 import gl from "../../assets/gl.png";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react'
-import { useGetAppointmentsQuery, useGetPersonalHeathQuery, useGetUserInfoQuery } from '../../slices/usersApiSlice';
+import { useGetAppointmentsQuery, useGetPersonalHeathQuery, useGetUserInfoQuery, useLogoutUserMutation } from '../../slices/usersApiSlice';
 import { useGetAllDoctorsQuery } from '../../slices/doctorsApiSlice';
 import moment from 'moment/moment';
+import { useDispatch } from 'react-redux';
+import { userLogout } from '../../slices/authSlice';
+import { Toaster } from 'react-hot-toast';
 
 
 export const DashboardUser = () => {
   const theme = useTheme();
   const [latestRecord, setLatestRecord] = useState({});
   const [latestAppointments, setLatestAppointments] = useState([]);
+  const [userOptions, setUserOptions] = useState(false);
   const { data } = useGetUserInfoQuery();
   const { data: personalHealth } = useGetPersonalHeathQuery();
   const { data: appointments } = useGetAppointmentsQuery();
   const { data: doctors } = useGetAllDoctorsQuery();
+  const [logout] = useLogoutUserMutation();
+  const dispatch = useDispatch();
+
+  const logoutUser = async () => {
+    await logout();
+    dispatch(userLogout());
+    setUserOptions(false);
+  }
 
   useEffect(() => {
     personalHealth && setLatestRecord(personalHealth[personalHealth.length - 1]);
@@ -56,7 +68,12 @@ export const DashboardUser = () => {
             <Typography color="white">Health Record</Typography>
             <img src={dropdown} alt="dropdown" />
           </Box>
-          <Box sx={{ cursor: "pointer" }}><img src={userProfile} alt="user image" /></Box>
+          <Box sx={{ cursor: "pointer", position: "relative" }}>
+            <img onClick={() => setUserOptions(p => !p)} src={userProfile} alt="user image" />
+            <Box display={userOptions ? "block" : "none"} backgroundColor="white" padding="0.5rem 1rem" borderRadius={1} position="absolute" sx={{ transform: "translate(-50%, 10%)" }}>
+              <Button onClick={logoutUser}>Logout</Button>
+            </Box>
+          </Box>
         </Box>
       </Grid>
       <Grid item xl={12} margin="4rem 6rem 2rem" container justifyContent="space-around">
@@ -186,39 +203,6 @@ export const DashboardUser = () => {
 
             </Box>
           ))}
-          {/* <Box
-            display="flex"
-            alignItems="center"
-            borderRadius={4}
-            overflow="hidden"
-            maxHeight="5rem"
-          >
-            <Box backgroundColor="white" minWidth="10rem">
-              <Typography variant="h5" fontWeight="bold" padding="1rem 1.5rem" height="5rem" display="flex" alignItems="center" justifyContent="center">
-                Upcoming
-              </Typography>
-            </Box>
-            <Box backgroundColor={theme['blue-500']} width="100%" color="white" padding="1rem 1.5rem">
-              <Box display="flex" alignItems="center">
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  flexDirection="column"
-                >
-                  <Typography variant="h5">
-                    Dr. Santhosh
-                  </Typography>
-                  <Typography fontSize={15} color={theme['gray-200']} marginTop={-0.5}>
-                    Manipal Hospitals
-                  </Typography>
-                </Box>
-                <Typography fontSize={15} marginLeft="auto">
-                  19/08/2023
-                </Typography>
-              </Box>
-            </Box>
-
-          </Box> */}
         </Grid>
       </Grid>
       <Grid item xl={12} margin="2rem 8rem" container display="flex" justifyContent="space-around" gap={5} paddingBottom={5}>
