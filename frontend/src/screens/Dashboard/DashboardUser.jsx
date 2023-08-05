@@ -8,26 +8,55 @@ import heart from "../../assets/heart.png";
 import bw from "../../assets/bw.png";
 import bp from "../../assets/bp.png";
 import gl from "../../assets/gl.png";
-
-import React, { useEffect } from 'react'
-import { useGetUserInfoQuery } from '../../slices/usersApiSlice';
+import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { useGetAppointmentsQuery, useGetPersonalHeathQuery, useGetUserInfoQuery } from '../../slices/usersApiSlice';
+import { useGetAllDoctorsQuery } from '../../slices/doctorsApiSlice';
+import moment from 'moment/moment';
 
 
 export const DashboardUser = () => {
   const theme = useTheme();
+  const [latestRecord, setLatestRecord] = useState({});
+  const [latestAppointments, setLatestAppointments] = useState([]);
   const { data } = useGetUserInfoQuery();
+  const { data: personalHealth } = useGetPersonalHeathQuery();
+  const { data: appointments } = useGetAppointmentsQuery();
+  const { data: doctors } = useGetAllDoctorsQuery();
+
+  useEffect(() => {
+    personalHealth && setLatestRecord(personalHealth[personalHealth.length - 1]);
+  }, [personalHealth])
+
+  useEffect(() => {
+    if (appointments && doctors?.allDoc) {
+      const prevAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 2].doctorId);
+      const nextAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 1].doctorId);
+      const prevApp = { doctorName: prevAppDoc.firstName, hospitalName: prevAppDoc.currentHospitalWorkingName, appointmentDate: appointments[appointments.length - 2].appointmentDate }
+      const nextApp = { doctorName: nextAppDoc.firstName, hospitalName: nextAppDoc.currentHospitalWorkingName, appointmentDate: appointments[appointments.length - 1].appointmentDate }
+
+      setLatestAppointments([prevApp, nextApp]);
+    }
+  }, [appointments, doctors])
+
+  // useEffect(() => {
+  //   console.log(latestAppointments);
+  //   appointments && console.log(appointments);
+  // }, [appointments, doctors])
 
   return (
     <Grid container backgroundColor={theme['blue-100']}>
       <Grid item xl={12} sx={{ background: theme["purple-500"], padding: "1.5rem 2rem", display: "flex", alignItems: "center", borderRadius: "0 0 1rem 1rem" }}>
-        <Typography variant="h4" fontWeight="bold" color="white">XHealth</Typography>
+        <Link style={{ textDecoration: "none" }}>
+          <Typography variant="h4" fontWeight="bold" color="white" sx={{ cursor: "pointer" }}>XHealth</Typography>
+        </Link>
         <Box marginLeft="auto" display="flex" gap={4} alignItems="center">
-          <Typography color="white">Appointments</Typography>
-          <Box display="flex" gap={1} alignItems="center">
+          <Typography color="white" sx={{ cursor: "pointer" }}>Appointments</Typography>
+          <Box display="flex" gap={1} alignItems="center" sx={{ cursor: "pointer" }}>
             <Typography color="white">Health Record</Typography>
             <img src={dropdown} alt="dropdown" />
           </Box>
-          <Box><img src={userProfile} alt="user image" /></Box>
+          <Box sx={{ cursor: "pointer" }}><img src={userProfile} alt="user image" /></Box>
         </Box>
       </Grid>
       <Grid item xl={12} margin="4rem 6rem 2rem" container justifyContent="space-around">
@@ -120,41 +149,44 @@ export const DashboardUser = () => {
           <Typography variant="h5" fontWeight="bold" color="white" paddingLeft={2}>
             Appointments
           </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            borderRadius={4}
-            overflow="hidden"
-            maxHeight="5rem"
-            marginBottom={1}
-          >
-            <Box backgroundColor="white" minWidth="10rem">
-              <Typography variant="h5" fontWeight="bold" padding="1rem 1.5rem" height="5rem" display="flex" alignItems="center" justifyContent="center">
-                Previous
-              </Typography>
-            </Box>
-            <Box backgroundColor={theme['blue-500']} width="100%" color="white" padding="1rem 1.5rem">
-              <Box display="flex" alignItems="center">
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  flexDirection="column"
-                >
-                  <Typography variant="h5">
-                    Dr. Santhosh
-                  </Typography>
-                  <Typography fontSize={15} color={theme['gray-200']} marginTop={-0.5}>
-                    Manipal Hospitals
-                  </Typography>
-                </Box>
-                <Typography fontSize={15} marginLeft="auto">
-                  19/08/2023
+          {latestAppointments.map(({ doctorName, hospitalName, appointmentDate }, idx) => (
+            <Box
+              display="flex"
+              alignItems="center"
+              borderRadius={4}
+              overflow="hidden"
+              maxHeight="5rem"
+              marginBottom={1}
+              key={idx}
+            >
+              <Box backgroundColor="white" minWidth="10rem">
+                <Typography variant="h5" fontWeight="bold" padding="1rem 1.5rem" height="5rem" display="flex" alignItems="center" justifyContent="center">
+                  {idx === 0 ? "Previous" : "Upcoming"}
                 </Typography>
               </Box>
-            </Box>
+              <Box backgroundColor={theme['blue-500']} width="100%" color="white" padding="1rem 1.5rem">
+                <Box display="flex" alignItems="center">
+                  <Box
+                    display="flex"
+                    // alignItems="center"
+                    flexDirection="column"
+                  >
+                    <Typography variant="h5">
+                      {doctorName}
+                    </Typography>
+                    <Typography fontSize={15} color={theme['gray-200']} marginTop={-0.5}>
+                      {hospitalName}
+                    </Typography>
+                  </Box>
+                  <Typography fontSize={15} marginLeft="auto">
+                    {moment(appointmentDate).format('DD/MM/YYYY')}
+                  </Typography>
+                </Box>
+              </Box>
 
-          </Box>
-          <Box
+            </Box>
+          ))}
+          {/* <Box
             display="flex"
             alignItems="center"
             borderRadius={4}
@@ -186,37 +218,37 @@ export const DashboardUser = () => {
               </Box>
             </Box>
 
-          </Box>
+          </Box> */}
         </Grid>
       </Grid>
-      <Grid item xl={12} margin="2rem 8rem" container display="flex" justifyContent="space-around" gap={5} paddingBottom={5F}>
+      <Grid item xl={12} margin="2rem 8rem" container display="flex" justifyContent="space-around" gap={5} paddingBottom={5}>
         <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
           <Box marginBottom={2}>
             <img src={heart} alt="heartRate" />
           </Box>
           <Typography variant="h6">Heart Rate</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>85 bpm</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.heartRate} bpm</Typography>
         </Grid>
         <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
           <Box marginBottom={2}>
             <img src={bp} alt="bloodpressure" />
           </Box>
           <Typography variant="h6">Blood pressure</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>120/80</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.bloodPressure}</Typography>
         </Grid>
         <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
           <Box marginBottom={2}>
             <img src={bw} alt="body weight" />
           </Box>
           <Typography variant="h6">Body Weight</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>70 kg</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.weight} kg</Typography>
         </Grid>
         <Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem">
           <Box marginBottom={2}>
             <img src={gl} alt="glucose level" />
           </Box>
           <Typography variant="h6">Glucose Levels</Typography>
-          <Typography variant="h6" color={theme["purple-500"]}>75-90</Typography>
+          <Typography variant="h6" color={theme["purple-500"]}>{latestRecord && latestRecord?.glucose}</Typography>
         </Grid>
       </Grid>
     </Grid>
