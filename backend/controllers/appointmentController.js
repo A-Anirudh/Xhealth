@@ -83,8 +83,10 @@ const bookAppointment = asyncHandler(async (req, res) => {
 // Access : private
 const viewAllMyAppointments = asyncHandler(async (req, res) => {
     const appointments = await Appointment.find({ userId: req.user._id })
-    res.status(200).json(appointments)
+    const sortedAppointments = appointments.sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate))
+    res.status(200).json(sortedAppointments)
 })
+
 
 // @desc Update appointment status
 // route : POST /api/users/appointments

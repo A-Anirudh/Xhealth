@@ -184,7 +184,7 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
 
 const allDoctor = asyncHandler(async (req,res) => {
     const allDoc =await Doctor.find({});
-    res.status(400).json({
+    res.status(200).json({
         allDoc
     });
 });
