@@ -117,7 +117,7 @@ export const DashboardUser = () => {
     >
       <Grid
         item
-        xl lg md sm xs xsm
+        xl  lg md sm xs xsm
         sx={{
           background: theme["purple-500"],
           padding: "1.5rem 2rem",
@@ -246,7 +246,6 @@ export const DashboardUser = () => {
         xl={12}
         margin="4rem 6rem 2rem"
         container
-        gap={4}
         justifyContent="space-around"
         sx={{
           [theme.breakpoints.down("lg")]: {
@@ -259,23 +258,17 @@ export const DashboardUser = () => {
       >
         <Grid
           item
-          xl={4}
+          xl={8}
           boxShadow="0 4px 4px rgba(0,0,0,0.25)"
           borderRadius={4}
-          width={950}
           overflow="hidden"
           border={`4px solid ${theme["purple-500"]}`}
-          sx={{
-            [theme.breakpoints.down("xl")]: {
-              width: "max-content"
-            },
-          }}
         >
           <Box
             display="flex"
             alignItems="center"
             justifyContent="space-around"
-            padding="0 3rem"
+            padding="0 7rem"
             sx={{
               [theme.breakpoints.down("md")]: {
                 padding: "0",
@@ -289,7 +282,7 @@ export const DashboardUser = () => {
           >
             <Box
               textAlign="center"
-              minWidth="2rem"
+              minWidth="28rem"
               sx={{
                 [theme.breakpoints.down("lg")]: {
                   margin: "3rem",
@@ -359,15 +352,14 @@ export const DashboardUser = () => {
 
         </Grid>
         <Grid item
-          xl={7}
+          xl={3}
           backgroundColor="white"
           padding="1rem 1.5rem"
           borderRadius={4}
           boxShadow="0 4px 4px rgba(0,0,0,0.25)"
           position="relative"
-          width="15rem"
           sx={{
-            [theme.breakpoints.down("lg")]: {
+            [theme.breakpoints.down("xl")]: {
               display: "none"
             },
           }}
