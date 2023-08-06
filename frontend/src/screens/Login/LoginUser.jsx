@@ -35,7 +35,7 @@ export const LoginUser = () => {
     }
 
     useEffect(() => {
-        navigate(userInfo ? "/profile-user" : "/login-user");
+        navigate(userInfo ? "/dashboard-user" : "/login-user");
     }, [navigate, userInfo])
 
     return (
