@@ -37,7 +37,7 @@ export const LoginDoctor = () => {
     }
 
     useEffect(() => {
-        navigate(doctorInfo ? "/profile-doctor" : "/login-doctor");
+        navigate(doctorInfo ? "/dashboard-doctor" : "/login-doctor");
     }, [navigate, doctorInfo])
 
 

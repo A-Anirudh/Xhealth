@@ -48,67 +48,57 @@ export const DashboardUser = () => {
 
   useEffect(() => {
     if (appointments && doctors?.allDoc) {
-      if (appointments.length > 1) {
-        const prevAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 2].doctorId);
-        const nextAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 1].doctorId);
+      const upcomingApp = appointments.filter(app => app.status === "Scheduled" && new Date(app.appointmentDate).getFullYear() === new Date().getFullYear());
+      const previousApp = appointments.filter(app => app.status === "Completed" && new Date(app.appointmentDate).getFullYear() === new Date().getFullYear());
+
+      // const upcomingApp = appointments.filter(app => app.status === "Scheduled");
+      // const previousApp = appointments.filter(app => app.status === "Completed");
+      // console.log(new Date(upcomingApp[5].appointmentDate).getFullYear() > new Date().getFullYear(), previousApp);
+
+      if (previousApp.length > 0 && upcomingApp.length > 0) {
+        const prevAppDoc = doctors?.allDoc?.find(item => item._id === previousApp[previousApp.length - 1].doctorId);
+        const nextAppDoc = doctors?.allDoc?.find(item => item._id === upcomingApp[0].doctorId);
         const prevApp = {
           name: "prev",
           doctorName: prevAppDoc.firstName,
           hospitalName: prevAppDoc.currentHospitalWorkingName,
-          appointmentDate: appointments[appointments.length - 2].appointmentDate
+          appointmentDate: previousApp[previousApp.length - 1].appointmentDate
         };
         const nextApp = {
           name: "next",
           doctorName: nextAppDoc.firstName,
           hospitalName: nextAppDoc.currentHospitalWorkingName,
-          appointmentDate: appointments[appointments.length - 1].appointmentDate
+          appointmentDate: upcomingApp[0].appointmentDate
         }
 
         setLatestAppointments([prevApp, nextApp]);
 
       }
-      else if (appointments.length === 1) {
-        const nextAppDoc = doctors?.allDoc?.find(item => item._id === appointments[appointments.length - 1].doctorId);
+      else if (previousApp.length === 0 && upcomingApp.length > 0) {
+        console.log(upcomingApp);
+        const nextAppDoc = doctors?.allDoc?.find(item => item._id === upcomingApp[0].doctorId);
         const nextApp = {
           name: "next",
           doctorName: nextAppDoc.firstName,
           hospitalName: nextAppDoc.currentHospitalWorkingName,
-          appointmentDate: appointments[appointments.length - 1].appointmentDate
+          appointmentDate: upcomingApp[0].appointmentDate
         }
 
         setLatestAppointments([nextApp]);
       }
+      else if (upcomingApp.length === 0 && previousApp.length > 0) {
+        const prevAppDoc = doctors?.allDoc?.find(item => item._id === previousApp[previousApp.length - 1].doctorId);
+        const prevApp = {
+          name: "prev",
+          doctorName: prevAppDoc.firstName,
+          hospitalName: prevAppDoc.currentHospitalWorkingName,
+          appointmentDate: previousApp[previousApp.length - 1].appointmentDate
+        }
+
+        setLatestAppointments([prevApp]);
+      }
     }
   }, [appointments, doctors])
-
-  // useEffect(() => {
-  //   console.log(latestAppointments);
-  //   appointments && console.log(appointments);
-  // }, [appointments, doctors])
-
-  /**
-   * hostpia
-   * const hospitalData = {...HospitalModel, doctorsList: allDoc.filter(item => item.hostpitalName === hostpitalModel.name)}
-   * hostipadata.save();
-   * 
-   * dotosrList.push
-   * 
-   * hostpitalList = [
-   *  {
-   *    name: "manipal",
-   *    docList: [4t4g4g, 4545h45g, 45h45h45h, 45h4, 5h45, h56, h5h]
-   *  }
-   * ]
-   * 
-   * docList.map(item => allDoc.map(item5 => item5.id === item.id)
-   * 
-   * docDetails = {
-   *  name: "abc",
-   *  hospital: "manipal"
-   * }
-   * 
-   * 
-   */
 
   return (
     <Grid
@@ -117,7 +107,7 @@ export const DashboardUser = () => {
     >
       <Grid
         item
-        xl  lg md sm xs xsm
+        xl lg md sm xs xsm
         sx={{
           background: theme["purple-500"],
           padding: "1.5rem 2rem",
@@ -151,7 +141,7 @@ export const DashboardUser = () => {
           gap={4}
           alignItems="center"
         >
-          <Link to="book-appointment" style={{ textDecoration: "none" }}>
+          <Link to="/appointments" style={{ textDecoration: "none" }}>
             <Typography color="white" sx={{
               cursor: "pointer",
               [theme.breakpoints.down("sm")]: {
@@ -454,7 +444,7 @@ export const DashboardUser = () => {
           <Typography variant="h5" fontWeight="bold" color="white" paddingLeft={2}>
             Appointments
           </Typography>
-          {appointments?.length > 0 ? latestAppointments.map(({ name, doctorName, hospitalName, appointmentDate }, idx) => (
+          {latestAppointments?.length > 0 ? latestAppointments.map(({ name, doctorName, hospitalName, appointmentDate }, idx) => (
             <Box
               display="flex"
               alignItems="center"
