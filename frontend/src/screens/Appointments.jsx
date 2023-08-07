@@ -54,9 +54,10 @@ export const Appointments = () => {
             >
                 <Typography variant="h3">
                     Appointments
+                    {console.log(sortedAppointments)}
                 </Typography>
                 {
-                    sortedAppointments ?
+                    sortedAppointments && Object.keys(sortedAppointments).length > 0 ?
                         <Box
                             width="100%"
                             backgroundColor={theme["purple-100"]}
