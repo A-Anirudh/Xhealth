@@ -48,11 +48,16 @@ export const DashboardUser = () => {
 
   useEffect(() => {
     if (appointments && doctors?.allDoc) {
-      const upcomingApp = appointments.filter(app => app.status === "Scheduled");
-      const previousApp = appointments.filter(app => app.status === "Completed");
+      const upcomingApp = appointments.filter(app => app.status === "Scheduled" && new Date(app.appointmentDate).getFullYear() === new Date().getFullYear());
+      const previousApp = appointments.filter(app => app.status === "Completed" && new Date(app.appointmentDate).getFullYear() === new Date().getFullYear());
+
+      // const upcomingApp = appointments.filter(app => app.status === "Scheduled");
+      // const previousApp = appointments.filter(app => app.status === "Completed");
+      // console.log(new Date(upcomingApp[5].appointmentDate).getFullYear() > new Date().getFullYear(), previousApp);
+
       if (previousApp.length > 0 && upcomingApp.length > 0) {
         const prevAppDoc = doctors?.allDoc?.find(item => item._id === previousApp[previousApp.length - 1].doctorId);
-        const nextAppDoc = doctors?.allDoc?.find(item => item._id === upcomingApp[upcomingApp.length - 1].doctorId);
+        const nextAppDoc = doctors?.allDoc?.find(item => item._id === upcomingApp[0].doctorId);
         const prevApp = {
           name: "prev",
           doctorName: prevAppDoc.firstName,
@@ -63,7 +68,7 @@ export const DashboardUser = () => {
           name: "next",
           doctorName: nextAppDoc.firstName,
           hospitalName: nextAppDoc.currentHospitalWorkingName,
-          appointmentDate: upcomingApp[upcomingApp.length - 1].appointmentDate
+          appointmentDate: upcomingApp[0].appointmentDate
         }
 
         setLatestAppointments([prevApp, nextApp]);
@@ -71,12 +76,12 @@ export const DashboardUser = () => {
       }
       else if (previousApp.length === 0 && upcomingApp.length > 0) {
         console.log(upcomingApp);
-        const nextAppDoc = doctors?.allDoc?.find(item => item._id === upcomingApp[upcomingApp.length - 1].doctorId);
+        const nextAppDoc = doctors?.allDoc?.find(item => item._id === upcomingApp[0].doctorId);
         const nextApp = {
           name: "next",
           doctorName: nextAppDoc.firstName,
           hospitalName: nextAppDoc.currentHospitalWorkingName,
-          appointmentDate: upcomingApp[upcomingApp.length - 1].appointmentDate
+          appointmentDate: upcomingApp[0].appointmentDate
         }
 
         setLatestAppointments([nextApp]);
@@ -84,7 +89,7 @@ export const DashboardUser = () => {
       else if (upcomingApp.length === 0 && previousApp.length > 0) {
         const prevAppDoc = doctors?.allDoc?.find(item => item._id === previousApp[previousApp.length - 1].doctorId);
         const prevApp = {
-          name: "prec",
+          name: "prev",
           doctorName: prevAppDoc.firstName,
           hospitalName: prevAppDoc.currentHospitalWorkingName,
           appointmentDate: previousApp[previousApp.length - 1].appointmentDate
@@ -102,7 +107,7 @@ export const DashboardUser = () => {
     >
       <Grid
         item
-        xl  lg md sm xs xsm
+        xl lg md sm xs xsm
         sx={{
           background: theme["purple-500"],
           padding: "1.5rem 2rem",
@@ -136,7 +141,7 @@ export const DashboardUser = () => {
           gap={4}
           alignItems="center"
         >
-          <Link to="book-appointment" style={{ textDecoration: "none" }}>
+          <Link to="/appointments" style={{ textDecoration: "none" }}>
             <Typography color="white" sx={{
               cursor: "pointer",
               [theme.breakpoints.down("sm")]: {
@@ -439,7 +444,7 @@ export const DashboardUser = () => {
           <Typography variant="h5" fontWeight="bold" color="white" paddingLeft={2}>
             Appointments
           </Typography>
-          {appointments?.length > 0 ? latestAppointments.map(({ name, doctorName, hospitalName, appointmentDate }, idx) => (
+          {latestAppointments?.length > 0 ? latestAppointments.map(({ name, doctorName, hospitalName, appointmentDate }, idx) => (
             <Box
               display="flex"
               alignItems="center"
