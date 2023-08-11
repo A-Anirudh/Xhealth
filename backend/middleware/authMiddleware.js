@@ -38,6 +38,7 @@ const androidProtect=asyncHandler(async (req,res,next) =>{
     const user = await User.findOne({email})
     
     if(user && (await user.matchPasswords(password))){
+        req.user = user;
         next();
     } else{
         res.status(401);
