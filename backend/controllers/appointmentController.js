@@ -69,7 +69,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
         await newAppointment.save();
         
         res.status(201).json({ message: "Appointment booked successfully.", appointment: newAppointment });
-
+    
     } catch (error) {
         res.status(res.statusCode === 200 ? 500 : res.statusCode); // Preserve existing status code if it's not an HTTP error
         throw new Error(error.message || "An error occurred while booking the appointment.");
@@ -80,6 +80,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
 
 // @desc : View all my appointments
 // route : GET /api/users/appointments
+// route : GET /api/users/appointment/android
 // Access : private
 const viewAllMyAppointments = asyncHandler(async (req, res) => {
     const appointments = await Appointment.find({ userId: req.user._id })
