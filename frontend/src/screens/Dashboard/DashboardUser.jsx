@@ -379,20 +379,24 @@ export const DashboardUser = () => {
           }}
         >
           <Typography variant="h5" color={theme["blue-150"]} margin={0}>Profile</Typography>
-          <Box
-            alignItems="center"
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            top="0"
-            height="100%"
-            position="absolute"
-            left="0"
-            width="100%"
+          <Link
+            style={{
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              top: "0",
+              height: "100%",
+              position: "absolute",
+              left: "0",
+              width: "100%",
+              textDecoration:"none"
+            }}
+            to="/profile-user"
           >
             <img src={boyimg} alt="user avatar" />
             <Typography variant="h5">{data?.firstName}</Typography>
-          </Box>
+          </Link>
         </Grid>
       </Grid>
       <Grid
