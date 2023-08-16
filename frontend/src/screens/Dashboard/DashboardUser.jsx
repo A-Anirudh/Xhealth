@@ -10,7 +10,7 @@ import bp from "../../assets/bp.png";
 import gl from "../../assets/gl.png";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react'
-import { useGetAppointmentsQuery, useGetPersonalHeathQuery, useGetUserInfoQuery, useLogoutUserMutation } from '../../slices/usersApiSlice';
+import { useGetAppointmentsQuery, useGetPersonalHeathQuery, useGetUserInfoQuery, useLogoutUserMutation, useUpdateAppointmentMutation } from '../../slices/usersApiSlice';
 import { useGetAllDoctorsQuery } from '../../slices/doctorsApiSlice';
 import moment from 'moment/moment';
 import { useDispatch } from 'react-redux';
@@ -26,6 +26,7 @@ export const DashboardUser = () => {
   const { data: personalHealth, refetch: refetchHealth } = useGetPersonalHeathQuery();
   const { data: appointments, refetch: refetchAppointment } = useGetAppointmentsQuery();
   const { data: doctors, refetch: refetchDoctors } = useGetAllDoctorsQuery();
+  const [updateApt] = useUpdateAppointmentMutation();
   const [logout] = useLogoutUserMutation();
   const dispatch = useDispatch();
 
@@ -46,14 +47,16 @@ export const DashboardUser = () => {
     personalHealth && setLatestRecord(personalHealth[personalHealth.length - 1]);
   }, [personalHealth])
 
+  // useEffect(() => {
+  //   if (appointments && doctors?.allDoc) {
+
+  //   }
+  // }, [appointments])
+
   useEffect(() => {
     if (appointments && doctors?.allDoc) {
       const upcomingApp = appointments.filter(app => app.status === "Scheduled" && new Date(app.appointmentDate).getFullYear() === new Date().getFullYear());
       const previousApp = appointments.filter(app => app.status === "Completed" && new Date(app.appointmentDate).getFullYear() === new Date().getFullYear());
-
-      // const upcomingApp = appointments.filter(app => app.status === "Scheduled");
-      // const previousApp = appointments.filter(app => app.status === "Completed");
-      // console.log(new Date(upcomingApp[5].appointmentDate).getFullYear() > new Date().getFullYear(), previousApp);
 
       if (previousApp.length > 0 && upcomingApp.length > 0) {
         const prevAppDoc = doctors?.allDoc?.find(item => item._id === previousApp[previousApp.length - 1].doctorId);
@@ -150,12 +153,13 @@ export const DashboardUser = () => {
               },
             }}>Appointments</Typography>
           </Link>
-          <Box
-            display="flex"
-            gap={1}
-            alignItems="center"
-            sx={{
+          <Link to="/health-records"
+            style={{
+              gap: "6px",
+              textDecoration: 'none',
+              display: "flex",
               cursor: "pointer",
+              alignItems: "center",
               [theme.breakpoints.down("sm")]: {
                 fontSize: "1vw",
                 display: "none"
@@ -163,8 +167,17 @@ export const DashboardUser = () => {
             }}
           >
             <Typography color="white">Health Record</Typography>
-            <img src={dropdown} alt="dropdown" />
-          </Box>
+            {/* <img src={dropdown} alt="dropdown" /> */}
+          </Link>
+          <Link to="/doctor-recommendation" style={{ textDecoration: "none" }}>
+            <Typography color="white" sx={{
+              cursor: "pointer",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "1vw",
+                display: "none"
+              },
+            }}>Get a Doctor</Typography>
+          </Link>
           <Box sx={
             {
               cursor: "pointer",
@@ -311,6 +324,17 @@ export const DashboardUser = () => {
                       fontSize: "1.5rem"
                     },
                   }}
+                // onClick={() => {
+                //   appointments.find(item => {
+                //     if (item.status === "Scheduled" && new Date(item.appointmentDate) < new Date()) {
+                //       const data = {
+                //         _id: item._id,
+                //         newStatus: "Expired"
+                //       }
+                //       updateApt(data);
+                //     }
+                //   })
+                // }}
                 >
                   Welcome
                 </Typography>

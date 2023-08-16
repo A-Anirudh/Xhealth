@@ -90,7 +90,7 @@ export const Appointments = () => {
                                                 textAlign="center"
                                                 key={_id}
                                             >
-                                                {checkStatus(status, appointmentDate)}
+                                                {status}
                                             </Typography>
                                             <Box
                                                 height="1.5rem"
