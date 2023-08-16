@@ -21,6 +21,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
     
     const { doctorId, appointmentDate, appointmentStartTime, reason, status } = req.body;
     // console.log(doctorId)
+
     try {
         const doc = await Doctor.findOne({ _id: doctorId })
         const user = await User.findOne({ _id: req.user._id })
@@ -41,6 +42,10 @@ const bookAppointment = asyncHandler(async (req, res) => {
         const [year, month, date] = appointmentDate.split('-')
         const [hour, min] = appointmentStartTime.split(':')
         const d = new Date(year, month-1, date, hour, min)
+        if(d.toString() < new Date().toString()){
+            res.status(400)
+            throw new Error("Appointment date cannot be before todays date!")
+        }
 
         // ? Check if doctor is free or has an appointment
         // console.log(doc)
