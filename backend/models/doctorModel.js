@@ -87,7 +87,8 @@ export const doctorSchema = mongoose.Schema({
     avgRating:{
         type:Number,
         required: true,
-        default:0
+        default:1,
+        enum:[1,2,3,4,5]
     },
     gradCollegeName:{
         type: [String],
