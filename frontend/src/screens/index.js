@@ -1,3 +1,5 @@
+export { PersonalHealthRecords } from "./PersonalHealthRecords";
+export { DoctorRecommendation } from "./DoctorRecommendation";
 export { Appointments } from "./Appointments";
 export { SignupUser } from "./Signup/SignupUser";
 export { DashboardDoctor } from "./Dashboard/DashboardDoctor";

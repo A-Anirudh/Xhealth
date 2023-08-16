@@ -5,7 +5,7 @@ import { useGetAppointmentsQuery } from '../slices/usersApiSlice';
 import moment from 'moment';
 import { useGetAllDoctorsQuery } from '../slices/doctorsApiSlice';
 
-export const Appointments = () => {
+export const PersonalHealthRecords = () => {
     const theme = useTheme();
     const { data: appointments } = useGetAppointmentsQuery();
     const { data: doctors } = useGetAllDoctorsQuery();
@@ -53,7 +53,7 @@ export const Appointments = () => {
                 gap={3}
             >
                 <Typography variant="h3">
-                    Appointments
+                    Personal Health Records
                     {console.log(sortedAppointments)}
                 </Typography>
                 {

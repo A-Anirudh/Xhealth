@@ -122,7 +122,6 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
         //   Removing from user array
         const user = await User.findOne({ _id: req.user._id });
         // console.log(`user is ${user}`)
-
         removeUserArray(user, updatedAppointmentStatus.appointmentDate);
 
         await doc.save()
