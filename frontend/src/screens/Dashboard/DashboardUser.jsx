@@ -155,11 +155,11 @@ export const DashboardUser = () => {
           </Link>
           <Link to="/health-records"
             style={{
-              gap:"6px",
-              textDecoration:'none',
-              display:"flex",
+              gap: "6px",
+              textDecoration: 'none',
+              display: "flex",
               cursor: "pointer",
-              alignItems:"center",
+              alignItems: "center",
               [theme.breakpoints.down("sm")]: {
                 fontSize: "1vw",
                 display: "none"
@@ -167,7 +167,16 @@ export const DashboardUser = () => {
             }}
           >
             <Typography color="white">Health Record</Typography>
-            <img src={dropdown} alt="dropdown" />
+            {/* <img src={dropdown} alt="dropdown" /> */}
+          </Link>
+          <Link to="/doctor-recommendation" style={{ textDecoration: "none" }}>
+            <Typography color="white" sx={{
+              cursor: "pointer",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "1vw",
+                display: "none"
+              },
+            }}>Get a Doctor</Typography>
           </Link>
           <Box sx={
             {
@@ -315,17 +324,17 @@ export const DashboardUser = () => {
                       fontSize: "1.5rem"
                     },
                   }}
-                  // onClick={() => {
-                  //   appointments.find(item => {
-                  //     if (item.status === "Scheduled" && new Date(item.appointmentDate) < new Date()) {
-                  //       const data = {
-                  //         _id: item._id,
-                  //         newStatus: "Expired"
-                  //       }
-                  //       updateApt(data);
-                  //     }
-                  //   })
-                  // }}
+                // onClick={() => {
+                //   appointments.find(item => {
+                //     if (item.status === "Scheduled" && new Date(item.appointmentDate) < new Date()) {
+                //       const data = {
+                //         _id: item._id,
+                //         newStatus: "Expired"
+                //       }
+                //       updateApt(data);
+                //     }
+                //   })
+                // }}
                 >
                   Welcome
                 </Typography>
