@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital,LandingPage } from './screens';
+import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage } from './screens';
 import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
 
 import './index.css';
@@ -30,7 +30,20 @@ const theme = createTheme({
     inputActive: "#35C367",
   },
   'purple-500': "#5642AA",
+  'purple-100': "#DDCDF2",
+  'purple-150': "#804980",
   'blue-100': "#F2F6FE",
+  'blue-150': "#4145D1",
+  'blue-500': "#272848",
+  'green-olive': "#79AC6E",
+  'green-150': "#AAFF98",
+  'gray-200': "#7A7575",
+  'yellow-200': "#FFFB93",
+  'Completed': "#939EFF",
+  'Scheduled': "#AAFF98",
+  'In Progress': "#FFFB93",
+  'Cancelled': "#FF9393",
+  'Expired': "#C3C3C8",
   inputBackground: "#EEEEEE",
   primaryText: "",
   secondaryText: "#C3C3C8",
@@ -41,8 +54,9 @@ const theme = createTheme({
       xsm: 450,
       sm: 600,
       md: 900,
-      lg: 1200,
+      lg: 1226,
       xl: 1536,
+      xxl: 4000
     },
   },
 });
@@ -54,11 +68,13 @@ const AppRouter = () => (
       <Route path='login-doctor' element={<LoginDoctor />} />
       <Route path='login-hospital' element={<LoginHospital />} />
       <Route path='login-user' element={<LoginUser />} />
+      <Route path='signup-user' element={<SignupUser />} />
       <Route path="/" element={<UserPrivateRoutes />}>
-        <Route path='profile-user' element={<DashboardUser />} />
+        <Route path='dashboard-user' element={<DashboardUser />} />
+        <Route path='appointments' element={<Appointments />} />
       </Route>
       <Route path="/" element={<DoctorPrivateRoutes />}>
-        <Route path='profile-doctor' element={<DashboardDoctor />} />
+        <Route path='dashboard-doctor' element={<DashboardDoctor />} />
       </Route>
 
     </Routes>

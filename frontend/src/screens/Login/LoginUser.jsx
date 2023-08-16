@@ -35,7 +35,7 @@ export const LoginUser = () => {
     }
 
     useEffect(() => {
-        navigate(userInfo ? "/profile-user" : "/login-user");
+        navigate(userInfo ? "/dashboard-user" : "/login-user");
     }, [navigate, userInfo])
 
     return (
@@ -253,7 +253,7 @@ export const LoginUser = () => {
                             }} 
                             onClick={(e) => submitCredentials(e, creds)}
                             />
-                        <span>New User? <Link to="/register" style={{ color: theme.success }}>Register Now</Link></span>
+                        <span>New User? <Link to="/signup-user" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>
 

@@ -10,13 +10,31 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             query: data => ({
                 url: `${USERS_URL}/auth`,
                 method: 'POST',
-                body: data
-            })
+                body: data,
+            }),
         }),
         getUserInfo: builder.query({
             query: () => ({
                 url: `${USERS_URL}/profile`,
                 method: 'GET',
+            })
+        }),
+        getPersonalHeath: builder.query({
+            query: () => ({
+                url: `${USERS_URL}/metrics`,
+                method: 'GET'
+            })
+        }),
+        getAppointments: builder.query({
+            query: () => ({
+                url: `${USERS_URL}/appointments`,
+                method: 'GET'
+            })
+        }),
+        logoutUser: builder.mutation({
+            query: () => ({
+                url: `${USERS_URL}/logout`,
+                method: 'POST'
             })
         }),
     })
@@ -25,7 +43,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useUserLoginMutation,
-    useGetUserInfoQuery // Add this line to export the hook for the new GET endpoint
+    useGetUserInfoQuery,
+    useGetPersonalHeathQuery,
+    useGetAppointmentsQuery,
+    useLogoutUserMutation
 } = usersApiSlice;
 
 

@@ -1,21 +1,78 @@
 import { Box, Input, InputLabel, Typography } from "@mui/material"
-import loginThumbnail from "../../assets/userDoctor.png";
+import loginThumbnail from "../../assets/userLogin.png";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Login.module.css";
+import styles from "../Login/Login.module.css";
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
+import { useUserLoginMutation } from "../../slices/usersApiSlice";
+import { setUserCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setDoctorCredentials } from "../../slices/authSlice";
 import { Toaster, toast } from "react-hot-toast";
-import { useDoctorLoginMutation } from "../../slices/doctorsApiSlice";
 
-export const LoginDoctor = () => {
+export const SignupUser = () => {
     const theme = useTheme()
     const [creds, setCreds] = useState({});
-    const [login] = useDoctorLoginMutation();
+    const [login] = useUserLoginMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { doctorInfo } = useSelector(state => state.auth);
+    const { userInfo } = useSelector(state => state.auth);
+    const signUpDetails = [
+        {
+            "name": "firstName",
+            "type": "text",
+            "label": "First name"
+        },
+        {
+            "name": "lastName",
+            "type": "text",
+            "label": "Last name"
+        },
+        {
+            "name": "password",
+            "type": "password",
+            "label": "Password"
+        },
+        {
+            "name": "email",
+            "type": "email",
+            "label": "Email"
+        },
+        {
+            "name": "phoneNumber",
+            "type": "tel",
+            "label": "Phone number"
+        },
+        {
+            "name": "dateOfBirth",
+            "type": "date",
+            "label": "Date of Birth"
+        },
+        {
+            "name": "state",
+            "type": "text",
+            "label": "State"
+        },
+        {
+            "name": "city",
+            "type": "text",
+            "label": "City"
+        },
+        {
+            "name": "pincode",
+            "type": "text",
+            "label": "Pincode"
+        },
+        {
+            "name": "gender",
+            "type": "text",
+            "label": "Gender"
+        },
+        {
+            "name": "bloodGroup",
+            "type": "text",
+            "label": "Blood group"
+        }
+    ]
 
     const getCredentials = e => {
         const { value, name } = e.target;
@@ -25,10 +82,8 @@ export const LoginDoctor = () => {
     const submitCredentials = async (e, data) => {
         try {
             e.preventDefault();
-            console.log(data);
             const res = await login(data).unwrap();
-            console.log(res);
-            dispatch(setDoctorCredentials(res));
+            dispatch(setUserCredentials(res));
             toast.success("Welcome User!")
         }
         catch (e) {
@@ -37,13 +92,12 @@ export const LoginDoctor = () => {
     }
 
     useEffect(() => {
-        navigate(doctorInfo ? "/dashboard-doctor" : "/login-doctor");
-    }, [navigate, doctorInfo])
-
+        navigate(userInfo ? "/dashboard-user" : "/signup-user");
+    }, [navigate, userInfo])
 
     return (
         <Box sx={{
-            background: theme.doctor.background,
+            background: theme.patient.background,
             height: "100vh",
             display: "flex",
             alignItems: "center",
@@ -56,7 +110,7 @@ export const LoginDoctor = () => {
                 display: "flex",
                 overflow: "hidden",
                 height: "80%",
-                width: "60rem",
+                width: "70%",
                 [theme.breakpoints.down('lg')]: {
                     width: "90%",
                 },
@@ -65,9 +119,9 @@ export const LoginDoctor = () => {
                 }
             }}>
                 <Box sx={{
-                    background: theme.doctor.primary,
+                    background: theme.patient.primary,
                     height: "100%",
-                    width: "40%",
+                    width: "35%",
                     position: "relative",
                     display: "flex",
                     alignItems: "center",
@@ -82,7 +136,7 @@ export const LoginDoctor = () => {
                         fontFamily: "Poppins",
                         fontWeight: "bold",
                         transform: "rotate(270deg) translateY(-7rem)",
-                        background: "linear-gradient(90deg, #5642AA 0%, rgba(255, 255, 255, 0.50) 100%)",
+                        background: "linear-gradient(90deg, #C767C7 0%, rgba(255, 255, 255, 0.50) 100%)",
                         backgroundClip: "text",
                         textFillColor: "transparent",
                         fontSize: "clamp(7rem, 8.5vw, 8rem)",
@@ -101,14 +155,14 @@ export const LoginDoctor = () => {
                             fontSize: "14vw",
                         },
                     }}>
-                        DOCTOR
+                        PATIENT
                     </Typography>
                     <Box sx={{
                         [theme.breakpoints.down('sm')]: {
                             display: "none"
                         }
                     }}>
-                        <img src={loginThumbnail} className={styles.coverImg} alt="doctor" />
+                        <img src={loginThumbnail} className={styles.coverImg} alt="patient" />
                     </Box>
                 </Box>
                 <Box sx={{
@@ -133,7 +187,7 @@ export const LoginDoctor = () => {
                                 fontSize: "9vw",
                             },
                         }}>
-                            Login
+                            Sign Up
                         </Typography>
                         <Typography variant="h6" sx={{
                             color: theme.secondaryText,
@@ -141,98 +195,66 @@ export const LoginDoctor = () => {
                                 fontSize: "5vw",
                             },
                         }}>
-                            Please login to your account
+                            Please Sign up your account
                         </Typography>
                     </Box>
                     <Box sx={{
                         display: "flex",
-                        flexDirection: "column",
-                        width: "70%",
+                        // flexDirection: "column",
+                        width: "80%",
                         gap: "1rem",
                         alignItems: "center",
+                        justifyContent: "center",
+                        flexWrap: "wrap"
                     }}
                     >
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            alignItems: "center",
-                        }}
-                        >
-                            <InputLabel htmlFor="email" sx={{
-                                alignSelf: "flex-start",
-                                paddingInline: "2rem",
-                                fontSize: "1.1rem",
-                                color: "#9D9D9D",
-                                [theme.breakpoints.down("xsm")]: {
-                                    fontSize: "1rem",
-                                    paddingInline: "1rem"
-                                },
-                            }}>
-                                Email
-                            </InputLabel>
-
-                            <Input
-                                id="email"
-                                type="email"
-                                name="email"
-                                sx={{
-                                    borderRadius: "20px",
-                                    outlineColor: theme.doctor.inputActive,
-                                    border: `2px solid ${theme.doctor.inputDefault}`,
-                                    width: "100%",
-                                    padding: "0.4rem 1rem",
-                                    fontSize: "1.4rem",
-                                    background: theme.inputBackground,
-                                    [theme.breakpoints.down("xsm")]: {
-                                        fontSize: "1rem"
-                                    },
+                        {
+                            signUpDetails.map(({name, type, label}) => (
+                                <Box sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    width: "10rem",
+                                    alignItems: "center",
                                 }}
-                                disableUnderline
-                                onChange={e => getCredentials(e)}
-                            />
-                        </Box>
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            alignItems: "center",
-                        }}
-                        >
-                            <InputLabel htmlFor="password" sx={{
-                                alignSelf: "flex-start",
-                                paddingInline: "2rem",
-                                fontSize: "1.1rem",
-                                color: "#9D9D9D",
-                                [theme.breakpoints.down("xsm")]: {
-                                    fontSize: "1rem",
-                                    paddingInline: "1rem"
-                                },
-                            }}>
-                                Password
-                            </InputLabel>
-
-                            <Input
-                                id="password"
-                                type="password"
-                                name="password"
-                                sx={{
-                                    borderRadius: "20px",
-                                    outlineColor: theme.doctor.inputActive,
-                                    border: `2px solid ${theme.doctor.inputDefault}`,
-                                    width: "100%",
-                                    padding: "0.4rem 1rem",
-                                    fontSize: "1.4rem",
-                                    background: theme.inputBackground,
-                                    [theme.breakpoints.down("xsm")]: {
-                                        fontSize: "1rem"
-                                    },
-                                }}
-                                disableUnderline
-                                onChange={e => getCredentials(e)}
-                            />
-                        </Box>
-                        <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" }}>forgot passward</Link>
+                                >
+                                    <InputLabel
+                                        htmlFor={name}
+                                        sx={{
+                                            alignSelf: "flex-start",
+                                            paddingInline: "1rem",
+                                            fontSize: "0.8rem",
+                                            color: "#9D9D9D",
+                                            [theme.breakpoints.down("xsm")]: {
+                                                fontSize: "1rem",
+                                                paddingInline: "1rem"
+                                            },
+                                        }}
+                                    >
+                                        {label}
+                                    </InputLabel>
+    
+                                    <Input
+                                        id={name}
+                                        type={type}
+                                        name={name}
+                                        sx={{
+                                            borderRadius: "20px",
+                                            outlineColor: theme.patient.inputActive,
+                                            border: `1px solid ${theme.patient.inputDefault}`,
+                                            width: "100%",
+                                            padding: "0 1rem",
+                                            fontSize: "1rem",
+                                            background: theme.inputBackground,
+                                            [theme.breakpoints.down("xsm")]: {
+                                                fontSize: "1rem"
+                                            },
+                                        }}
+                                        disableUnderline
+                                        onChange={e => getCredentials(e)}
+                                    />
+                                </Box>
+                            ))
+                        }
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
                         <Input type="submit" value="Login"
@@ -253,7 +275,7 @@ export const LoginDoctor = () => {
                             }}
                             onClick={(e) => submitCredentials(e, creds)}
                         />
-                        <span>New User? <Link to="/register" style={{ color: theme.success }}>Register Now</Link></span>
+                        <span>Existing User? <Link to="/login-user" style={{ color: theme.success }}>Sign In Now</Link></span>
                     </Box>
                 </Box>
 
