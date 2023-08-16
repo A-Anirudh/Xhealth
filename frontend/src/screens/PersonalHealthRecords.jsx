@@ -4,23 +4,23 @@ import more from '../assets/more.svg'
 import { useGetAppointmentsQuery } from '../slices/usersApiSlice';
 import moment from 'moment';
 import { useGetAllDoctorsQuery } from '../slices/doctorsApiSlice';
+import { Link } from 'react-router-dom';
+import { useAddHealthRecordMutation, useGetHealthRecordsQuery } from '../slices/healthRecordSlice';
 
 export const PersonalHealthRecords = () => {
     const theme = useTheme();
     const { data: appointments } = useGetAppointmentsQuery();
     const { data: doctors } = useGetAllDoctorsQuery();
+    const {data: HRData} = useGetHealthRecordsQuery();
+    const [addHR] = useAddHealthRecordMutation();
     const [sortedAppointments, setSortedAppointments] = useState({});
-    const checkStatus = (status, appointmentDate) => {
-        if (status === "Expired")
-            return status;
-        if ((status === "Scheduled" || status === "In Progress") && new Date().getTime() > new Date(appointmentDate).getTime())
-            return "Expired";
-        else
-            return status;
-    }
 
     useEffect(() => {
-        const doctorDetails = appointments?.map(({ _id, doctorId, appointmentDate, appointmentStartTime, status }) => {
+
+        // addHR({record: {"asdasd": "Asdasdasdasd"}})
+        // console.log(HRData.history);
+        console.log(appointments);
+        const doctorDetails = appointments?.map(({ _id, doctorId, appointmentDate, appointmentStartTime, status }, idx) => {
             const docDetail = doctors?.allDoc?.find(({ _id }) => _id === doctorId);
             return ({
                 appointmentDate,
@@ -30,6 +30,8 @@ export const PersonalHealthRecords = () => {
                 city: docDetail?.city,
                 doctorName: docDetail?.firstName,
                 department: docDetail?.department,
+                // healthRecord: HRData ? HRData.history[idx] : "",
+                healthRecord: "https://picsum.photos/99/99",
                 _id
             })
         }).filter(app => new Date(app.appointmentDate).getFullYear() === new Date().getFullYear())
@@ -39,9 +41,10 @@ export const PersonalHealthRecords = () => {
             const month = moment(curr.appointmentDate).format("MMMM");
             return { ...acc, [month]: Array.isArray(acc[month]) ? [...acc[month], curr] : [curr] }
         }, {})
-
+        console.log(doctorDetails);
         setSortedAppointments(monthlySorted);
-    }, [appointments, doctors])
+        console.log(sortedAppointments);
+    }, [appointments, doctors, HRData])
 
     return (
         <Box display="flex" alignItems="center" flexDirection="column">
@@ -54,7 +57,6 @@ export const PersonalHealthRecords = () => {
             >
                 <Typography variant="h3">
                     Personal Health Records
-                    {console.log(sortedAppointments)}
                 </Typography>
                 {
                     sortedAppointments && Object.keys(sortedAppointments).length > 0 ?
@@ -80,17 +82,17 @@ export const PersonalHealthRecords = () => {
                                     <Typography marginLeft={4} padding="0.3rem 1rem" color="white" backgroundColor={theme["green-olive"]} display="inline-block" borderRadius={99}>
                                         {item}
                                     </Typography>
-                                    {sortedAppointments && sortedAppointments[item].map(({ _id, appointmentDate, appointmentStartTime, status, hospitalName, doctorName, state, department }) => (
+                                    {sortedAppointments && sortedAppointments[item].map(({ _id, appointmentDate, appointmentStartTime, hospitalName, doctorName, state, department, healthRecord }) => (
                                         <Box padding="1rem" borderRadius="1rem" backgroundColor="white" boxShadow="0 4px 18px rgba(0, 0, 0, 0.15)" display="flex" alignItems="center" width="100%" justifyContent="space-between">
                                             <Typography
                                                 padding="0.3rem 1.5rem"
                                                 fontWeight="bold"
-                                                backgroundColor={theme[checkStatus(status, appointmentDate)]}
+                                                backgroundColor={theme["In Progress"]}
                                                 borderRadius={99}
                                                 textAlign="center"
                                                 key={_id}
                                             >
-                                                {status}
+                                                {doctorName}
                                             </Typography>
                                             <Box
                                                 height="1.5rem"
@@ -128,9 +130,9 @@ export const PersonalHealthRecords = () => {
                                                 borderRight={`1px solid ${theme['gray-200']}`}
                                             ></Box>
                                             <Box display="flex" alignItems="center" flexDirection="column">
-                                                <Typography fontWeight="bold">
-                                                    {doctorName}
-                                                </Typography>
+                                                <Link to={healthRecord} target="_blank">
+                                                    Health Record
+                                                </Link>
                                             </Box>
                                             <Box height="1.5rem" paddingRight={1}>
                                                 <img src={more} alt="more" style={{ height: "80%" }} />

@@ -1,10 +1,10 @@
-import asyncHandler from  "express-async-handler"
+import asyncHandler from "express-async-handler"
 import healthRecordModel from "../models/healthRecordModel.js";
 import Appointment from "../models/appointmentModel.js"
 
 
-async function getHealthRecordInstance(email){
-    const userHealthRecord =await healthRecordModel.findOne({email: email})
+async function getHealthRecordInstance(email) {
+    const userHealthRecord = await healthRecordModel.findOne({ email: email })
     return userHealthRecord;
 }
 
@@ -15,24 +15,24 @@ async function getHealthRecordInstance(email){
 // }
 
 
-const getAllHealthRecords=asyncHandler(async (req,res)=>{
-    const {email}=req.body
-    const userHR=await getHealthRecordInstance(email);
-    if(userHR){
+const getAllHealthRecords = asyncHandler(async (req, res) => {
+    const { email } = req.body
+    const userHR = await getHealthRecordInstance(email);
+    if (userHR) {
         res.status(200).json(userHR);
-    }else{
-        res.status(404).json({message:"No health record found for user " + email})
+    } else {
+        res.status(404).json({ message: "No health record found for user " + email })
     }
 });
 
 
-const getAllHealthRecordsAndroid=asyncHandler(async (req,res)=>{
-    const {email}=req.headers
-    const userHR=await getHealthRecordInstance(email);
-    if(userHR){
+const getAllHealthRecordsAndroid = asyncHandler(async (req, res) => {
+    const { email } = req.headers
+    const userHR = await getHealthRecordInstance(email);
+    if (userHR) {
         res.status(200).json(userHR);
-    }else{
-        res.status(404).json({message:"No health record found for user " + email})
+    } else {
+        res.status(404).json({ message: "No health record found for user " + email })
     }
 });
 
@@ -76,35 +76,35 @@ const getAllHealthRecordsAndroid=asyncHandler(async (req,res)=>{
 
 
 
-const newHealthRecord=asyncHandler(async (req,res)=>{
-    var userHR=await getHealthRecordInstance(req.body.email);
-    if(userHR){
-        try{
-            const newRecord=req.body.record;
-            //TODO// newRecord.appointmentId=await Appointment.findOne({userId:ObjectId('64be4f42a61f3e7c8f021edf'),doctorId:ObjectId('64bd9629b4d628dc3bdc744f')})         //there is a problem in here
+const newHealthRecord = asyncHandler(async (req, res) => {
+    var userHR = await getHealthRecordInstance(req.body.email);
+    if (userHR) {
+        try {
+            const newRecord = req.body.record;
+            // TODO// newRecord.appointmentId=await Appointment.findOne({userId:ObjectId('64be4f42a61f3e7c8f021edf'),doctorId:ObjectId('64bd9629b4d628dc3bdc744f')})         //there is a problem in here
             //push newRecord to history (because its gonna be with our software >_<)
             userHR.history.push(newRecord);
             userHR.save();
-            res.status(200).json({"message":"Success"})
-        }catch(err){
+            res.status(200).json({ "message": "Success" })
+        } catch (err) {
             new Error(err.message)
         }
-    }else{
+    } else {
         //create new record
-        try{
-            const obj=new healthRecordModel();
-            obj.email=req.body.email;
-            obj.history=[req.body.record];
+        try {
+            const obj = new healthRecordModel();
+            obj.email = req.body.email;
+            obj.history = [req.body.record];
             //TODO// obj.appointmentId=await Appointment.findOne({userId:ObjectId('64be4f42a61f3e7c8f021edf'),doctorId:ObjectId('64bd9629b4d628dc3bdc744f')})         //there is a problem in here
             obj.save();
-            res.status(200).json({"message":"Success"})
-        }catch(err){
+            res.status(200).json({ "message": "Success" })
+        } catch (err) {
             new Error(err.message)
         }
     }
 });
 
-const getHealthRecordSpecific=asyncHandler(async (req,res)=>{});
+const getHealthRecordSpecific = asyncHandler(async (req, res) => { });
 
-export {getHealthRecordSpecific,getAllHealthRecords,newHealthRecord,getAllHealthRecordsAndroid};
+export { getHealthRecordSpecific, getAllHealthRecords, newHealthRecord, getAllHealthRecordsAndroid };
 
