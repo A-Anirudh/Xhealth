@@ -69,6 +69,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
 
         addDocArray(doc, d);
         addUserArray(user, d);
+        user.permissionCheck.push(doc._id);
         await user.save()
         await doc.save()
         await newAppointment.save();
@@ -129,6 +130,14 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
         const user = await User.findOne({ _id: req.user._id });
         // console.log(`user is ${user}`)
         removeUserArray(user, updatedAppointmentStatus.appointmentDate);
+        const index = user.permissionCheck.indexOf(doc._id)
+        if(newStatus!='In Progress'){
+            if(index>-1){
+                user.permissionCheck.splice(index,1)
+            }
+        }
+
+
 
         await doc.save()
         await user.save()
