@@ -183,11 +183,13 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
  */
 
 const allDoctor = asyncHandler(async (req,res) => {
-    const allDoc =await Doctor.find({});
+    const allDoc =await Doctor.find({}).select("-password");
     res.status(200).json({
         allDoc
     });
 });
+
+
 export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile,allDoctor};
 
 // Remove all elements in timeSlotsBooked array for all doctors

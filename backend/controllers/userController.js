@@ -94,6 +94,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 /**
  * @desc get user profile
  * @route GET to /api/users/profile
+ * @route GET to /api/users/profile/android
  * @access Private
  */
 const getUserProfile = asyncHandler(async (req, res) => {
