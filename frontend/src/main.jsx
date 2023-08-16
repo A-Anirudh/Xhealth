@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments } from './screens';
+import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage } from './screens';
 import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
 
 import './index.css';
@@ -64,6 +64,7 @@ const theme = createTheme({
 const AppRouter = () => (
   <Router>
     <Routes>
+      <Route path='/' element={<LandingPage/>}/>
       <Route path='login-doctor' element={<LoginDoctor />} />
       <Route path='login-hospital' element={<LoginHospital />} />
       <Route path='login-user' element={<LoginUser />} />
