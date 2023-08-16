@@ -190,6 +190,7 @@ const allDoctor = asyncHandler(async (req,res) => {
 });
 
 
+
 export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile,allDoctor};
 
 // Remove all elements in timeSlotsBooked array for all doctors
