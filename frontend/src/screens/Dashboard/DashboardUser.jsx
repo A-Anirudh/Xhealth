@@ -153,22 +153,25 @@ export const DashboardUser = () => {
               },
             }}>Appointments</Typography>
           </Link>
-          <Link to="/health-records"
-            style={{
-              gap: "6px",
-              textDecoration: 'none',
-              display: "flex",
-              cursor: "pointer",
-              alignItems: "center",
-              [theme.breakpoints.down("sm")]: {
-                fontSize: "1vw",
-                display: "none"
-              },
-            }}
-          >
-            <Typography color="white">Health Record</Typography>
-            {/* <img src={dropdown} alt="dropdown" /> */}
-          </Link>
+          <Box sx={{
+            [theme.breakpoints.down("sm")]: {
+              fontSize: "1vw",
+              display: "none"
+            },
+          }}>
+            <Link to="/health-records"
+              style={{
+                gap: "6px",
+                textDecoration: 'none',
+                display: "flex",
+                cursor: "pointer",
+                alignItems: "center",
+              }}
+            >
+              <Typography color="white">Health Record</Typography>
+              {/* <img src={dropdown} alt="dropdown" /> */}
+            </Link>
+          </Box>
           <Link to="/doctor-recommendation" style={{ textDecoration: "none" }}>
             <Typography color="white" sx={{
               cursor: "pointer",
@@ -203,6 +206,25 @@ export const DashboardUser = () => {
               zIndex={3}
               boxShadow="0 4px 4px lightgray"
             >
+              <Box
+                display="none"
+                gap={1}
+                alignItems="center"
+                sx={{
+                  cursor: "pointer",
+                  [theme.breakpoints.down("xl")]: {
+                    display: "block"
+                  }
+                }}
+              >
+                <Link to="/profile-user" style={{ textDecoration: "none" }}>
+                  <Typography sx={{
+                    cursor: "pointer",
+                    color: theme['blue-150'],
+                    fontWeight: "bold",
+                  }}>user-profile</Typography>
+                </Link>
+              </Box>
               <Box sx={{
                 [theme.breakpoints.down("xxl")]: {
                   display: "none"
@@ -211,7 +233,7 @@ export const DashboardUser = () => {
                   display: "block"
                 },
               }}>
-                <Link to="book-appointment" style={{ textDecoration: "none" }}>
+                <Link to="/appointments" style={{ textDecoration: "none" }}>
                   <Typography sx={{
                     cursor: "pointer",
                     color: theme['blue-150'],
@@ -233,11 +255,13 @@ export const DashboardUser = () => {
                   },
                 }}
               >
-                <Typography
-                  sx={{
+                <Link to="/health-records" style={{ textDecoration: "none" }}>
+                  <Typography sx={{
                     cursor: "pointer",
+                    color: theme['blue-150'],
                     fontWeight: "bold",
                   }}>Health Record</Typography>
+                </Link>
               </Box>
               <Button onClick={logoutUser} sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Logout</Button>
             </Box>
@@ -390,7 +414,7 @@ export const DashboardUser = () => {
               position: "absolute",
               left: "0",
               width: "100%",
-              textDecoration:"none"
+              textDecoration: "none"
             }}
             to="/profile-user"
           >

@@ -1,59 +1,105 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import userIcon from '../../assets/profile.png'
 import profileUser from '../../assets/profileIcon.png'
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '../../slices/usersApiSlice'
+import moment from 'moment/moment'
+import { Toaster, toast } from 'react-hot-toast'
 
 export const UserProfile = () => {
     const theme = useTheme();
-    const userDetails = {
+    const { data } = useGetUserInfoQuery();
+    const [updateUser] = useUpdateUserInfoMutation();
+    const [userDetail, setUserDetail] = useState({});
+    const setCreds = (e) => {
+        const { value, name } = e.target;
+        setUserDetail(p => ({ ...p, [name]: value }))
+    }
+    const postUserCreds = () => {
+        try {
+            const date = moment(userDetail["dateOfBirth"]).toDate();
+            const updateDateFormat = { ...userDetail, dateOfBirth: date };
+            updateUser(updateDateFormat)
+            toast.success("User Updated");
+        } catch(e) {
+            console.error(e)
+            toast.error("Error Occured! Please try again later!")
+        }
+    }
 
+    const userDetails = {
         personal: [{
             name: "First name",
-            id: "firstname"
+            id: "firstName",
+            type: "text"
         },
         {
             name: "Last name",
-            id: "lastname"
+            id: "lastName",
+            type: "text"
         },
         {
             name: "Date of Birth",
-            id: "dateOfBirth"
+            id: "dateOfBirth",
+            type: "date"
         },
         {
             name: "Blood Group",
-            id: "bloodGroup"
+            id: "bloodGroup",
+            type: "text"
         },
         {
             name: "Gender",
-            id: "gender"
+            id: "gender",
+            type: "text"
         }],
         contact: [{
             name: "Email",
-            id: "email"
+            id: "email",
+            type: "email"
         },
         {
             name: "Phone Number",
-            id: "phoneNumber"
+            id: "phoneNumber",
+            type: "number"
         },
         {
             name: "State",
-            id: "state"
+            id: "state",
+            type: "text"
         },
         {
             name: "City",
-            id: "city"
+            id: "city",
+            type: "text"
         },
         {
             name: "Pincode",
-            id: "pincode"
+            id: "pincode",
+            type: "number"
         }]
     };
+
+    useEffect(() => {
+        data && Object.keys(data).map(item => {
+            if (item === "dateOfBirth") {
+                const date = new Date(data[item]);
+                const formatDate = moment(date).format("YYYY-MM-DD")
+                setUserDetail(p => ({ ...p, [item]: formatDate }))
+            } else {
+                setUserDetail(p => ({ ...p, [item]: data[item] }))
+            }
+        })
+        console.log(data);
+    }, [data])
+
     return (
         <Box
             display="flex"
             justifyContent="center"
             marginBottom="5rem"
         >
+            <Toaster />
             <Box
                 display="flex"
                 flexDirection="column"
@@ -89,7 +135,7 @@ export const UserProfile = () => {
                         display="flex"
                         gap={4}
                     >
-                        <Button variant="contained" color="success">
+                        <Button variant="contained" color="success" onClick={postUserCreds}>
                             Update
                         </Button>
                     </Box>
@@ -100,7 +146,7 @@ export const UserProfile = () => {
                     <hr style={{ height: "2px", background: `${theme["purple-150"]}`, width: "calc(100% - 25rem)" }} />
                 </Box>
                 <Box display="flex" gap="4rem" flexWrap="wrap">
-                    {userDetails.personal.map(({ name, id }) => <Box
+                    {userDetails.personal.map(({ name, id, type }) => <Box
                         border="1px solid lightgray"
                         borderRadius="7px"
                         padding="0.3rem 1rem"
@@ -115,10 +161,14 @@ export const UserProfile = () => {
                         </Typography>
                         <TextField
                             variant="standard"
-                            margin="0"
+                            margin="none"
                             required
                             fullWidth
                             InputProps={{ disableUnderline: true }}
+                            onChange={e => setCreds(e)}
+                            name={id}
+                            value={userDetail[id]}
+                            type={type}
                         >
                         </TextField>
                     </Box>)}
@@ -129,28 +179,34 @@ export const UserProfile = () => {
                     <hr style={{ height: "2px", background: `${theme["purple-150"]}`, width: "calc(100% - 25rem)" }} />
                 </Box>
                 <Box display="flex" gap="4rem" flexWrap="wrap">
-                    {userDetails.contact.map(({ name, id }) => <Box
-                        border="1px solid lightgray"
-                        borderRadius="7px"
-                        padding="0.3rem 1rem"
-                        display="flex"
-                        alignItems="center"
-                        gap="3px"
-                        width="40%"
-                        key={id}
-                    >
-                        <Typography minWidth="max-content" fontWeight="bold" paddingRight="1rem" marginRight="1rem" borderRight="1px solid lightgray">
-                            {name}
-                        </Typography>
-                        <TextField
-                            variant="standard"
-                            margin="0"
-                            required
-                            fullWidth
-                            InputProps={{ disableUnderline: true }}
+                    {userDetails.contact.map(({ name, id, type }) =>
+                        <Box
+                            border="1px solid lightgray"
+                            borderRadius="7px"
+                            padding="0.3rem 1rem"
+                            display="flex"
+                            alignItems="center"
+                            gap="3px"
+                            width="40%"
+                            key={id}
                         >
-                        </TextField>
-                    </Box>)}
+                            <Typography minWidth="max-content" fontWeight="bold" paddingRight="1rem" marginRight="1rem" borderRight="1px solid lightgray">
+                                {name}
+                            </Typography>
+                            <TextField
+                                variant="standard"
+                                margin="none"
+                                required
+                                fullWidth
+                                InputProps={{ disableUnderline: true }}
+                                onChange={e => setCreds(e)}
+                                name={id}
+                                value={userDetail[id]}
+                                type={type}
+                            >
+                            </TextField>
+                        </Box>
+                    )}
                 </Box>
             </Box>
         </Box >
