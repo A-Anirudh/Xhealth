@@ -115,6 +115,5 @@ doctorSchema.methods.matchPasswords = async function (enterePassword) {
 }
 
 
-
 const Doctor = mongoose.model('Doctor', doctorSchema);
 export default Doctor;
