@@ -111,6 +111,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         city:req.user.city,
         pincode:req.user.pincode,
         userTimeSlots : req.user.userTimeSlot,
+        permissionCheck : req.user.permissionCheck
     }
     // console.log(user)
     res.status(200).json(user)
@@ -151,10 +152,40 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         throw new Error('User not found')
     }
 
-    
+});
+
+const updateUserPermission = asyncHandler(async (req, res) => {
+    const {updateMode, doctorId} = req.body;
+    const user = await User.findOne({_id:req.user._id});
+    const index = user.permissionCheck.indexOf(doctorId);
+
+    if (updateMode === "remove"){
+        if (index>-1){
+            user.permissionCheck.splice(index,1);
+            res.status(200).json("Doctor removed successfully");
+        } else{
+            res.status(400);
+            throw new Error("doctorID not found. Cannot remove it!")
+        }
+    } else if(updateMode === 'add'){
+        if(index===-1){
+            user.permissionCheck.push(doctorId);
+            res.status(200).json("Doctor addedd successfully");
+        } else{
+            res.status(400);
+            throw new Error("Doctor already exists in your permission list!");
+        }
+    } else{
+        res.status(400);
+        throw new Error("Performing Invalid operation!")
+    }
+
+    user.save()
 
 });
+
+
 // cron.schedule('0 0 * * *', clearUserArray);
-export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile};
+export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile,updateUserPermission};
 
 // clearUserArray()
