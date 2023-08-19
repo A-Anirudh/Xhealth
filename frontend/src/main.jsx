@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage } from './screens';
+import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, SignupDoctor } from './screens';
 import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
 
-import './index.css';
+// import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const theme = createTheme({
@@ -44,7 +44,7 @@ const theme = createTheme({
   'In Progress': "#FFFB93",
   'Cancelled': "#FF9393",
   'Expired': "#C3C3C8",
-  inputBackground: "#EEEEEE",
+  inputBackground: "#ECECEC",
   primaryText: "",
   secondaryText: "#C3C3C8",
   success: "#79AC6E",
@@ -69,6 +69,8 @@ const AppRouter = () => (
       <Route path='login-hospital' element={<LoginHospital />} />
       <Route path='login-user' element={<LoginUser />} />
       <Route path='signup-user' element={<SignupUser />} />
+      <Route path='signup-doctor' element={<SignupDoctor />} />
+
       <Route path="/" element={<UserPrivateRoutes />}>
         <Route path='dashboard-user' element={<DashboardUser />} />
         <Route path='appointments' element={<Appointments />} />

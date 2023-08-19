@@ -36,5 +36,6 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
 export const {
     useDoctorLoginMutation,
     useDoctorInfoQuery,
-    useGetAllDoctorsQuery
+    useGetAllDoctorsQuery,
+    useDoctorRegisterMutation,
 } = doctorApiSlice;

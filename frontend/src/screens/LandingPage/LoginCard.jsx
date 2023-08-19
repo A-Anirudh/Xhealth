@@ -14,7 +14,6 @@ const LoginCard = ({type,desc,link}) => {
         flexDirection:'column',
         background:'rgba(255,255,255,0.1)',
         overflow:'hidden',
-        alignItems:'center',
         backdropFilter:'blur(3px)',
         justifyContent:'space-between',}}>
         
