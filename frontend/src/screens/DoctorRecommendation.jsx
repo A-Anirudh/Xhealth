@@ -1,41 +1,16 @@
-import { Box, Input, Typography, useTheme } from '@mui/material'
+import { Box, Button, Input, Typography, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import more from '../assets/more.svg'
 import star from '../assets/vector.png';
 import search from '../assets/search.png';
-import { useGetAllDoctorsQuery } from '../slices/doctorsApiSlice';
-let debounce;
+import { Link } from 'react-router-dom';
+import { Users } from '../sdk/users';
+import { getResult } from '../utilis';
 
 export const DoctorRecommendation = () => {
     const theme = useTheme();
-    const { data: doctors } = useGetAllDoctorsQuery();
+    const user = new Users();
+    const [doctors] = user.getDoctors();
     const [doctorsData, setDoctorsData] = useState();
-
-    const getResult = (e) => {
-        clearTimeout(debounce);
-        debounce = setTimeout(() => {
-            if (e.target.value === "") {
-                setDoctorsData(doctors);
-            }
-            else {
-                const filteredDoctors = [
-                    ...doctors.allDoc.filter(item =>
-                        item.firstName.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                        item.department.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                        item.currentHospitalWorkingName.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                        item.city.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                        item.avgRating === Number(e.target.value)
-                    )
-                ]
-                setDoctorsData({ allDoc: [...filteredDoctors] });
-            }
-        }, 300)
-    }
-
-    // useEffect(() => {
-    //     const debounce = setTimeout(() => {
-    //     })
-    // }, [])
 
     useEffect(() => {
         setDoctorsData(doctors);
@@ -47,7 +22,7 @@ export const DoctorRecommendation = () => {
                 <Box paddingLeft={2}><img style={{ height: "1.5rem" }} src={search} /></Box>
                 <Input type="text"
                     sx={{ padding: "1rem", width: "100%" }}
-                    onChange={(e) => getResult(e)}
+                    onChange={(e) => getResult(e, doctors, setDoctorsData)}
                     placeholder="Search about Firstname, Department, Average Rating, Hospital Name, or City"
                     disableUnderline
                 />
@@ -106,7 +81,9 @@ export const DoctorRecommendation = () => {
                                     }
                                 </Box>
                                 <Box height="1.5rem" paddingRight={1}>
-                                    <img src={more} alt="more" style={{ height: "80%" }} />
+                                    <Button variant="contained" color="error">
+                                        <Link to="/book-appointment" style={{ textDecoration: "none", color: "white" }}>Book</Link>
+                                    </Button>
                                 </Box>
                             </Box>
                         ))}

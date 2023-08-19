@@ -4,85 +4,31 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../Login/Login.module.css";
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
-import { useUserLoginMutation } from "../../slices/usersApiSlice";
+import { useUserSignupMutation } from "../../slices/usersApiSlice";
 import { setUserCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
+import { signUpDetails } from "../../dump/";
 
 export const SignupUser = () => {
     const theme = useTheme()
     const [creds, setCreds] = useState({});
-    const [login] = useUserLoginMutation();
+    const [signup] = useUserSignupMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userInfo } = useSelector(state => state.auth);
-    const signUpDetails = [
-        {
-            "name": "firstName",
-            "type": "text",
-            "label": "First name"
-        },
-        {
-            "name": "lastName",
-            "type": "text",
-            "label": "Last name"
-        },
-        {
-            "name": "password",
-            "type": "password",
-            "label": "Password"
-        },
-        {
-            "name": "email",
-            "type": "email",
-            "label": "Email"
-        },
-        {
-            "name": "phoneNumber",
-            "type": "tel",
-            "label": "Phone number"
-        },
-        {
-            "name": "dateOfBirth",
-            "type": "date",
-            "label": "Date of Birth"
-        },
-        {
-            "name": "state",
-            "type": "text",
-            "label": "State"
-        },
-        {
-            "name": "city",
-            "type": "text",
-            "label": "City"
-        },
-        {
-            "name": "pincode",
-            "type": "text",
-            "label": "Pincode"
-        },
-        {
-            "name": "gender",
-            "type": "text",
-            "label": "Gender"
-        },
-        {
-            "name": "bloodGroup",
-            "type": "text",
-            "label": "Blood group"
-        }
-    ]
+    
 
     const getCredentials = e => {
         const { value, name } = e.target;
         setCreds(p => ({ ...p, [name]: value }));
+        console.log(creds);
     }
 
     const submitCredentials = async (e, data) => {
         try {
             e.preventDefault();
-            const res = await login(data).unwrap();
+            const res = await signup(data);
             dispatch(setUserCredentials(res));
             toast.success("Welcome User!")
         }

@@ -1,50 +1,12 @@
 import { Box, Typography, useTheme } from '@mui/material'
-import React, { useEffect, useState } from 'react'
 import more from '../assets/more.svg'
-import { useGetAppointmentsQuery } from '../slices/usersApiSlice';
 import moment from 'moment';
-import { useGetAllDoctorsQuery } from '../slices/doctorsApiSlice';
 import { Link } from 'react-router-dom';
-import { useAddHealthRecordMutation, useGetHealthRecordsQuery } from '../slices/healthRecordSlice';
+import { useAptDetails } from '../hooks';
 
 export const PersonalHealthRecords = () => {
     const theme = useTheme();
-    const { data: appointments } = useGetAppointmentsQuery();
-    const { data: doctors } = useGetAllDoctorsQuery();
-    const {data: HRData} = useGetHealthRecordsQuery();
-    const [addHR] = useAddHealthRecordMutation();
-    const [sortedAppointments, setSortedAppointments] = useState({});
-
-    useEffect(() => {
-
-        // addHR({record: {"asdasd": "Asdasdasdasd"}})
-        // console.log(HRData.history);
-        console.log(appointments);
-        const doctorDetails = appointments?.map(({ _id, doctorId, appointmentDate, appointmentStartTime, status }, idx) => {
-            const docDetail = doctors?.allDoc?.find(({ _id }) => _id === doctorId);
-            return ({
-                appointmentDate,
-                appointmentStartTime, status,
-                hospitalName: docDetail?.currentHospitalWorkingName,
-                state: docDetail?.state,
-                city: docDetail?.city,
-                doctorName: docDetail?.firstName,
-                department: docDetail?.department,
-                // healthRecord: HRData ? HRData.history[idx] : "",
-                healthRecord: "https://picsum.photos/99/99",
-                _id
-            })
-        }).filter(app => new Date(app.appointmentDate).getFullYear() === new Date().getFullYear())
-
-
-        const monthlySorted = doctorDetails?.reduce((acc, curr) => {
-            const month = moment(curr.appointmentDate).format("MMMM");
-            return { ...acc, [month]: Array.isArray(acc[month]) ? [...acc[month], curr] : [curr] }
-        }, {})
-        console.log(doctorDetails);
-        setSortedAppointments(monthlySorted);
-        console.log(sortedAppointments);
-    }, [appointments, doctors, HRData])
+    const { sortedAppointments } = useAptDetails();
 
     return (
         <Box display="flex" alignItems="center" flexDirection="column">

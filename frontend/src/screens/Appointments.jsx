@@ -1,50 +1,17 @@
-import { Box, Typography, useTheme } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import more from '../assets/more.svg'
-import { useGetAppointmentsQuery } from '../slices/usersApiSlice';
+import { Box, Button, Typography, useTheme } from '@mui/material'
+import React, { useState } from 'react'
 import moment from 'moment';
-import { useGetAllDoctorsQuery } from '../slices/doctorsApiSlice';
+import { Link } from 'react-router-dom';
+import { MoreOptions } from '../components';
+import { useAptDetails } from '../hooks';
 
 export const Appointments = () => {
     const theme = useTheme();
-    const { data: appointments } = useGetAppointmentsQuery();
-    const { data: doctors } = useGetAllDoctorsQuery();
-    const [sortedAppointments, setSortedAppointments] = useState({});
-    const checkStatus = (status, appointmentDate) => {
-        if (status === "Expired")
-            return status;
-        if ((status === "Scheduled" || status === "In Progress") && new Date().getTime() > new Date(appointmentDate).getTime())
-            return "Expired";
-        else
-            return status;
-    }
-
-    useEffect(() => {
-        const doctorDetails = appointments?.map(({ _id, doctorId, appointmentDate, appointmentStartTime, status }) => {
-            const docDetail = doctors?.allDoc?.find(({ _id }) => _id === doctorId);
-            return ({
-                appointmentDate,
-                appointmentStartTime, status,
-                hospitalName: docDetail?.currentHospitalWorkingName,
-                state: docDetail?.state,
-                city: docDetail?.city,
-                doctorName: docDetail?.firstName,
-                department: docDetail?.department,
-                _id
-            })
-        }).filter(app => new Date(app.appointmentDate).getFullYear() === new Date().getFullYear())
-
-
-        const monthlySorted = doctorDetails?.reduce((acc, curr) => {
-            const month = moment(curr.appointmentDate).format("MMMM");
-            return { ...acc, [month]: Array.isArray(acc[month]) ? [...acc[month], curr] : [curr] }
-        }, {})
-
-        setSortedAppointments(monthlySorted);
-    }, [appointments, doctors])
+    const [aptDisplay, setAptDisplay] = useState("none")
+    const { sortedAppointments, appointments } = useAptDetails();
 
     return (
-        <Box display="flex" alignItems="center" flexDirection="column">
+        <Box display="flex" alignItems="center" flexDirection="column" onClick={() => setAptDisplay("none")}>
             <Box
                 display="flex"
                 flexDirection="column"
@@ -52,10 +19,12 @@ export const Appointments = () => {
                 marginTop="5rem"
                 gap={3}
             >
-                <Typography variant="h3">
-                    Appointments
-                    {console.log(sortedAppointments)}
-                </Typography>
+                <Box display="flex" alignItems="center" width="100%">
+                    <Typography variant="h3">
+                        Appointments
+                    </Typography>
+                    <Button sx={{ marginLeft: "auto" }} variant="contained" color="success"><Link style={{ textDecoration: "none", color: "white" }} to="/book-appointment">Book Appointment</Link></Button>
+                </Box>
                 {
                     sortedAppointments && Object.keys(sortedAppointments).length > 0 ?
                         <Box
@@ -85,7 +54,7 @@ export const Appointments = () => {
                                             <Typography
                                                 padding="0.3rem 1.5rem"
                                                 fontWeight="bold"
-                                                backgroundColor={theme[checkStatus(status, appointmentDate)]}
+                                                backgroundColor={theme[status]}
                                                 borderRadius={99}
                                                 textAlign="center"
                                                 key={_id}
@@ -132,9 +101,7 @@ export const Appointments = () => {
                                                     {doctorName}
                                                 </Typography>
                                             </Box>
-                                            <Box height="1.5rem" paddingRight={1}>
-                                                <img src={more} alt="more" style={{ height: "80%" }} />
-                                            </Box>
+                                            <MoreOptions _id = {_id} aptDisplay={aptDisplay} setAptDisplay={setAptDisplay} apt={appointments} />
                                         </Box>
                                     ))}
                                 </Box>

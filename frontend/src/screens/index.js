@@ -2,6 +2,7 @@ export { UserProfile } from "./Profile/User";
 export { PersonalHealthRecords } from "./PersonalHealthRecords";
 export { DoctorRecommendation } from "./DoctorRecommendation";
 export { Appointments } from "./Appointments";
+export { BookAppointment } from "./BookAppointment";
 export { SignupUser } from "./Signup/SignupUser";
 export { DashboardDoctor } from "./Dashboard/DashboardDoctor";
 export { LoginHospital } from "./Login/LoginHospital";

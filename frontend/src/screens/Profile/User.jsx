@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import userIcon from '../../assets/profile.png'
 import profileUser from '../../assets/profileIcon.png'
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
-import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '../../slices/usersApiSlice'
 import moment from 'moment/moment'
 import { Toaster, toast } from 'react-hot-toast'
+import { Users } from '../../sdk/users'
+import { userDetails } from '../../dump'
 
 export const UserProfile = () => {
     const theme = useTheme();
-    const { data } = useGetUserInfoQuery();
-    const [updateUser] = useUpdateUserInfoMutation();
+    const user = new Users();
+    const [userInfo] = user.getUserInfo();
+    const editUser = user.editUserDetails();
     const [userDetail, setUserDetail] = useState({});
     const setCreds = (e) => {
         const { value, name } = e.target;
@@ -19,79 +21,25 @@ export const UserProfile = () => {
         try {
             const date = moment(userDetail["dateOfBirth"]).toDate();
             const updateDateFormat = { ...userDetail, dateOfBirth: date };
-            updateUser(updateDateFormat)
+            editUser(updateDateFormat)
             toast.success("User Updated");
-        } catch(e) {
+        } catch (e) {
             console.error(e)
             toast.error("Error Occured! Please try again later!")
         }
     }
 
-    const userDetails = {
-        personal: [{
-            name: "First name",
-            id: "firstName",
-            type: "text"
-        },
-        {
-            name: "Last name",
-            id: "lastName",
-            type: "text"
-        },
-        {
-            name: "Date of Birth",
-            id: "dateOfBirth",
-            type: "date"
-        },
-        {
-            name: "Blood Group",
-            id: "bloodGroup",
-            type: "text"
-        },
-        {
-            name: "Gender",
-            id: "gender",
-            type: "text"
-        }],
-        contact: [{
-            name: "Email",
-            id: "email",
-            type: "email"
-        },
-        {
-            name: "Phone Number",
-            id: "phoneNumber",
-            type: "number"
-        },
-        {
-            name: "State",
-            id: "state",
-            type: "text"
-        },
-        {
-            name: "City",
-            id: "city",
-            type: "text"
-        },
-        {
-            name: "Pincode",
-            id: "pincode",
-            type: "number"
-        }]
-    };
-
     useEffect(() => {
-        data && Object.keys(data).map(item => {
+        userInfo && Object.keys(userInfo).map(item => {
             if (item === "dateOfBirth") {
-                const date = new Date(data[item]);
+                const date = new Date(userInfo[item]);
                 const formatDate = moment(date).format("YYYY-MM-DD")
                 setUserDetail(p => ({ ...p, [item]: formatDate }))
             } else {
-                setUserDetail(p => ({ ...p, [item]: data[item] }))
+                setUserDetail(p => ({ ...p, [item]: userInfo[item] }))
             }
         })
-        console.log(data);
-    }, [data])
+    }, [userInfo])
 
     return (
         <Box
@@ -104,7 +52,6 @@ export const UserProfile = () => {
                 display="flex"
                 flexDirection="column"
                 borderRadius="2rem"
-                // overflow="hidden"
                 width="70%"
                 margin="4rem"
             >
@@ -179,7 +126,7 @@ export const UserProfile = () => {
                     <hr style={{ height: "2px", background: `${theme["purple-150"]}`, width: "calc(100% - 25rem)" }} />
                 </Box>
                 <Box display="flex" gap="4rem" flexWrap="wrap">
-                    {userDetails.contact.map(({ name, id, type }) =>
+                    {userDetails.contact.map(({ name, id, type, disabled }) =>
                         <Box
                             border="1px solid lightgray"
                             borderRadius="7px"
@@ -203,6 +150,7 @@ export const UserProfile = () => {
                                 name={id}
                                 value={userDetail[id]}
                                 type={type}
+                                disabled={disabled}
                             >
                             </TextField>
                         </Box>

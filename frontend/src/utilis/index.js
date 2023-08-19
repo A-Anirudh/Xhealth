@@ -1,0 +1,1 @@
+export { getResult } from "./searchDoc";

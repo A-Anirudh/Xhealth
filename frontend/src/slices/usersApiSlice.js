@@ -13,6 +13,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        userSignup: builder.mutation({
+            query: data => ({
+                url: `${USERS_URL}`,
+                method: 'POST',
+                body: data,
+            }),
+        }),
         getUserInfo: builder.query({
             query: () => ({
                 url: `${USERS_URL}/profile`,
@@ -46,9 +53,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         updateAppointment: builder.mutation({
             query: data => {
-                console.log(data);
                 return {
                     url: `${USERS_URL}/appointments`,
+                    method: 'POST',
+                    body: data
+                }
+            }
+        }),
+        setAppointment: builder.mutation({
+            query: data => {
+                return {
+                    url: `${USERS_URL}/appointments/book`,
                     method: 'POST',
                     body: data
                 }
@@ -59,12 +74,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useUserLoginMutation,
+    useUserSignupMutation,
     useGetUserInfoQuery,
     useGetPersonalHeathQuery,
     useGetAppointmentsQuery,
     useLogoutUserMutation,
     useUpdateAppointmentMutation,
-    useUpdateUserInfoMutation
+    useUpdateUserInfoMutation,
+    useSetAppointmentMutation
 } = usersApiSlice;
 
 
