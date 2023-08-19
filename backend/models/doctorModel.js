@@ -88,7 +88,7 @@ export const doctorSchema = mongoose.Schema({
         type:Number,
         required: true,
         default:1,
-        enum:[1,2,3,4,5]
+        enum:[0,1,2,3,4,5]
     },
     gradCollegeName:{
         type: [String],
