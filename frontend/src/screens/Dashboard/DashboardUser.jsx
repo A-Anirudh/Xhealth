@@ -43,10 +43,13 @@ export const DashboardUser = () => {
 	}
 
 	useEffect(() => {
-		refetchUser();
-		refetchHealth();
-		refetchAppointment();
-		refetchDoctors();
+		(async () => {
+			await refetchUser();
+			await refetchHealth();
+			await refetchAppointment();
+			await refetchDoctors();
+		}
+		)()
 	}, [])
 
 	useEffect(() => {

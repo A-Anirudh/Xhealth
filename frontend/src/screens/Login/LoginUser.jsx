@@ -9,12 +9,14 @@ import { setUserCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
 import { Users } from "../../sdk/users";
+let clearError
 
 export const LoginUser = () => {
     const theme = useTheme()
     const user = new Users();
     const [creds, setCreds] = useState({});
-    const login = user.login();
+    const [login, logError] = user.login();
+    const [error, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userInfo } = useSelector(state => state.auth);
@@ -27,11 +29,10 @@ export const LoginUser = () => {
     const submitCredentials = async (e, data) => {
         try {
             e.preventDefault();
-            const res = login(data);
-            dispatch(setUserCredentials(res));
-            toast.success("Welcome User!")
+            const { data: res } = await login(data);
+            res && dispatch(setUserCredentials(res));
         }
-        catch(e) {
+        catch (e) {
             e.status === 500 ? toast.error("Server Down! Please try after some time.") : toast.error("Invalid Credentials!!")
         }
     }
@@ -39,6 +40,12 @@ export const LoginUser = () => {
     useEffect(() => {
         navigate(userInfo ? "/dashboard-user" : "/login-user");
     }, [navigate, userInfo])
+
+    useEffect(() => {
+        clearTimeout(clearError);
+        setError(logError);
+        clearError = setTimeout(() => setError(""), 2000);
+    }, [logError])
 
     return (
         <Box sx={{
@@ -48,7 +55,21 @@ export const LoginUser = () => {
             alignItems: "center",
             justifyContent: "center",
         }}>
-            <Toaster />
+            <Box
+                display={error ? "block" : "none"}
+                position="absolute"
+                left="50%"
+                top="1rem"
+                zIndex="4"
+                marginTop="1rem"
+                borderRadius="0.5rem"
+                boxShadow="0 3px 5px gray"
+                fontWeight="bold"
+                padding="1rem 3rem"
+                backgroundColor={"white"}
+                sx={{ transform: "translateX(-50%)" }}
+            >{error ? error.data.message : "Booked Successfully"}
+            </Box>
             <Box sx={{
                 borderRadius: "1.4rem",
                 background: "white",
@@ -252,9 +273,9 @@ export const LoginUser = () => {
                                     fontSize: "1rem",
                                     paddingInline: "1rem"
                                 },
-                            }} 
+                            }}
                             onClick={(e) => submitCredentials(e, creds)}
-                            />
+                        />
                         <span>New User? <Link to="/signup-user" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>
