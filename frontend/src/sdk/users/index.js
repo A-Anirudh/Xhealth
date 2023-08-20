@@ -35,8 +35,8 @@ export class Users {
         return logout;
     }
     login() {
-        const [login] = useUserLoginMutation();
-        return login;
+        const [login, { error }] = useUserLoginMutation();
+        return [login, error];
     }
     getHR() {
         const { data, refetch } = useGetHealthRecordsQuery();

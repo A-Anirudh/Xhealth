@@ -1,10 +1,8 @@
 import more from '../assets/more.svg'
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import bookApt from '../assets/bookApt.png'
-import { useGetAllDoctorsQuery } from '../slices/doctorsApiSlice'
 import moment from 'moment'
-import { useGetAppointmentsQuery, useSetAppointmentMutation } from '../slices/usersApiSlice'
+import { useSetAppointmentMutation } from '../slices/usersApiSlice'
 import { Users } from '../sdk/users'
 
 
@@ -17,13 +15,16 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, apt }) => {
     const [doctor] = user.getDoctors();
     const [setApt] = useSetAppointmentMutation();
     // const { data: apt } = useGetAppointmentsQuery();
+    let myApt = apt.find(item => item._id === _id);
 
     const openDialog = () => {
+        myApt = apt.find(item => item._id === _id)
+        console.log(myApt);
+        // console.log(myApt);
+        // setMyDoc(myApt.doctorId);
+        // setDate(moment(myApt.appointmentDate).format('yyyy-MM-DDThh:mm'));
+        // setReason(myApt.reason);
         setAptDisplay(p => p === "block" ? "none" : "block")
-        const myApt = apt?.find(item => item._id === _id);
-        setMyDoc(myApt.doctorId);
-        setDate(moment(myApt.appointmentDate).format('yyyy-MM-DDThh:mm'));
-        setReason(myApt.reason);
     }
 
     const submitAppointment = async () => {
@@ -43,13 +44,16 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, apt }) => {
         }
     }
 
-    // useEffect(() => {
-    //     console.log(_id);
-    //     const myApt = apt?.find(item => item._id === _id);
-    //     setMyDoc(myApt.doctorId);
-    //     setDate(moment(myApt.appointmentDate).format('yyyy-MM-DDThh:mm'));
-    //     setReason(myApt.reason);
-    // }, [openDialog])
+    useEffect(() => {
+        // console.log(_id);
+        // const myApt = apt?.find(item => item._id === _id);
+        if (myApt) {
+            setMyDoc(myApt.doctorId);
+            setDate(moment(myApt.appointmentDate).format('yyyy-MM-DDThh:mm'));
+            setReason(myApt.reason);
+            console.log(myApt);
+        }
+    }, [myApt])
 
 
     return (
@@ -67,7 +71,7 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, apt }) => {
                 backgroundColor="white"
                 boxShadow="0 0 5px gray"
                 display={aptDisplay}
-                position="absolute"
+                position="fixed"
                 left="50%"
                 top="50%"
                 padding="1rem"
