@@ -123,7 +123,8 @@ const getDoctorProfile = asyncHandler(async (req, res) => {
         registrationNumber: req.doctor.registrationNumber,
         workingHourStart:req.doctor.workingHourStart,
         workingHourEnd:req.doctor.workingHourEnd,
-        timeSlotsBooked: req.doctor.timeSlotsBooked
+        timeSlotsBooked: req.doctor.timeSlotsBooked,
+        gradCollegeName:req.doctor.gradCollegeName
     }
     // console.log(user)
     res.status(200).json(doc)
@@ -159,6 +160,7 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
         doc.registrationNumber = req.body.registrationNumber || doc.registrationNumber;
         doc.workingHourStart = req.body.workingHourStart || doc.workingHourStart,
         doc.workingHourEnd = req.body.workingHourEnd || doc.workingHourEnd;
+        doc.gradCollegeName = req.body.gradCollegeName || doc.gradCollegeName;
         if(req.body.password){
             doc.password = req.body.password;
         }
