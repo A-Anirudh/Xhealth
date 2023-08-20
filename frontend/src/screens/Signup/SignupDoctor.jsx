@@ -152,8 +152,8 @@ export const SignupDoctor = () => {
         try {
             e.preventDefault();
             
-            const res = await register(updatedCreds).unwrap(); // Use the updatedCreds object here
-            // console.log(res);
+            const res = await register(updatedCreds); // Use the updatedCreds object here
+            console.log("res",res);
             useDispatch(setDoctorCredentials(res));
             toast.success("Welcome User!");
         } catch (e) {
@@ -172,7 +172,7 @@ export const SignupDoctor = () => {
                     height: "100vh",
                     width: "15%",
                     position: 'relative',
-                }}>
+                }}> 
 
                 <img src={img} alt="signup image" style={{ position: 'absolute', bottom: '0', width: '100%' }} />
                 <Typography sx={{ color: 'white', fontWeight: "600", fontFamily: 'Poppins', position: 'absolute', right: "0", fontSize: '5vw' }}>REGI</Typography>

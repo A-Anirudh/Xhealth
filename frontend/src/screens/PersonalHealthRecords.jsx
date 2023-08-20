@@ -1,17 +1,15 @@
-import { Box, Button, Typography, useTheme } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Typography, useTheme } from '@mui/material'
+import more from '../assets/more.svg'
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { MoreOptions } from '../components';
 import { useAptDetails } from '../hooks';
 
-export const Appointments = () => {
+export const PersonalHealthRecords = () => {
     const theme = useTheme();
-    const [aptDisplay, setAptDisplay] = useState("none")
-    const { sortedAppointments, appointments } = useAptDetails();
+    const { sortedAppointments } = useAptDetails();
 
     return (
-        <Box display="flex" alignItems="center" flexDirection="column" onClick={() => setAptDisplay("none")}>
+        <Box display="flex" alignItems="center" flexDirection="column">
             <Box
                 display="flex"
                 flexDirection="column"
@@ -19,12 +17,9 @@ export const Appointments = () => {
                 marginTop="5rem"
                 gap={3}
             >
-                <Box display="flex" alignItems="center" width="100%">
-                    <Typography variant="h3">
-                        Appointments
-                    </Typography>
-                    <Button sx={{ marginLeft: "auto" }} variant="contained" color="success"><Link style={{ textDecoration: "none", color: "white" }} to="/book-appointment">Book Appointment</Link></Button>
-                </Box>
+                <Typography variant="h3">
+                    Personal Health Records
+                </Typography>
                 {
                     sortedAppointments && Object.keys(sortedAppointments).length > 0 ?
                         <Box
@@ -49,17 +44,17 @@ export const Appointments = () => {
                                     <Typography marginLeft={4} padding="0.3rem 1rem" color="white" backgroundColor={theme["green-olive"]} display="inline-block" borderRadius={99}>
                                         {item}
                                     </Typography>
-                                    {sortedAppointments && sortedAppointments[item].map(({ _id, appointmentDate, appointmentStartTime, status, hospitalName, doctorName, state, department }) => (
+                                    {sortedAppointments && sortedAppointments[item].map(({ _id, appointmentDate, appointmentStartTime, hospitalName, doctorName, state, department, healthRecord }) => (
                                         <Box padding="1rem" borderRadius="1rem" backgroundColor="white" boxShadow="0 4px 18px rgba(0, 0, 0, 0.15)" display="flex" alignItems="center" width="100%" justifyContent="space-between">
                                             <Typography
                                                 padding="0.3rem 1.5rem"
                                                 fontWeight="bold"
-                                                backgroundColor={theme[status]}
+                                                backgroundColor={theme["In Progress"]}
                                                 borderRadius={99}
                                                 textAlign="center"
                                                 key={_id}
                                             >
-                                                {status}
+                                                {doctorName}
                                             </Typography>
                                             <Box
                                                 height="1.5rem"
@@ -97,11 +92,13 @@ export const Appointments = () => {
                                                 borderRight={`1px solid ${theme['gray-200']}`}
                                             ></Box>
                                             <Box display="flex" alignItems="center" flexDirection="column">
-                                                <Typography fontWeight="bold">
-                                                    {doctorName}
-                                                </Typography>
+                                                <Link to={healthRecord} target="_blank">
+                                                    Health Record
+                                                </Link>
                                             </Box>
-                                            <MoreOptions _id = {_id} aptDisplay={aptDisplay} setAptDisplay={setAptDisplay} apt={appointments} />
+                                            <Box height="1.5rem" paddingRight={1}>
+                                                <img src={more} alt="more" style={{ height: "80%" }} />
+                                            </Box>
                                         </Box>
                                     ))}
                                 </Box>

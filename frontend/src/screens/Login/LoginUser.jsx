@@ -8,11 +8,13 @@ import { useUserLoginMutation } from "../../slices/usersApiSlice";
 import { setUserCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
+import { Users } from "../../sdk/users";
 
 export const LoginUser = () => {
     const theme = useTheme()
+    const user = new Users();
     const [creds, setCreds] = useState({});
-    const [login] = useUserLoginMutation();
+    const login = user.login();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userInfo } = useSelector(state => state.auth);
@@ -25,12 +27,12 @@ export const LoginUser = () => {
     const submitCredentials = async (e, data) => {
         try {
             e.preventDefault();
-            const res = await login(data).unwrap();
+            const res = login(data);
             dispatch(setUserCredentials(res));
             toast.success("Welcome User!")
         }
         catch(e) {
-            toast.error("Invalid Credentials!!")
+            e.status === 500 ? toast.error("Server Down! Please try after some time.") : toast.error("Invalid Credentials!!")
         }
     }
 

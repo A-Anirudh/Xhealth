@@ -18,7 +18,7 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-        useDoctorInfo: builder.query({
+        getDoctorInfo: builder.query({
             query: () => ({
                 url: `${DOCTOR_URL}/profile`,
                 method: 'GET'
@@ -38,4 +38,5 @@ export const {
     useDoctorInfoQuery,
     useGetAllDoctorsQuery,
     useDoctorRegisterMutation,
+    useGetDoctorInfoQuery,
 } = doctorApiSlice;

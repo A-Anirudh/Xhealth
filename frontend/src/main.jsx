@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, SignupDoctor } from './screens';
+import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor } from './screens';
 import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
 
 // import './index.css';
@@ -74,6 +74,10 @@ const AppRouter = () => (
       <Route path="/" element={<UserPrivateRoutes />}>
         <Route path='dashboard-user' element={<DashboardUser />} />
         <Route path='appointments' element={<Appointments />} />
+        <Route path='book-appointment' element={<BookAppointment />} />
+        <Route path='doctor-recommendation' element={<DoctorRecommendation />} />
+        <Route path='health-records' element={<PersonalHealthRecords />} />
+        <Route path='profile-user' element={<UserProfile />} />
       </Route>
       <Route path="/" element={<DoctorPrivateRoutes />}>
         <Route path='dashboard-doctor' element={<DashboardDoctor />} />
