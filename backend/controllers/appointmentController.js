@@ -21,6 +21,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
     
     const { doctorId, appointmentDate, appointmentStartTime, reason, status } = req.body;
     // console.log(doctorId)
+
     try {
         const doc = await Doctor.findOne({ _id: doctorId })
         const user = await User.findOne({ _id: req.user._id })
@@ -41,6 +42,10 @@ const bookAppointment = asyncHandler(async (req, res) => {
         const [year, month, date] = appointmentDate.split('-')
         const [hour, min] = appointmentStartTime.split(':')
         const d = new Date(year, month-1, date, hour, min)
+        if(d.toString() < new Date().toString()){
+            res.status(400)
+            throw new Error("Appointment date cannot be before todays date!")
+        }
 
         // ? Check if doctor is free or has an appointment
         // console.log(doc)
@@ -64,6 +69,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
 
         addDocArray(doc, d);
         addUserArray(user, d);
+        user.permissionCheck.push(doc._id);
         await user.save()
         await doc.save()
         await newAppointment.save();
@@ -123,8 +129,15 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
         //   Removing from user array
         const user = await User.findOne({ _id: req.user._id });
         // console.log(`user is ${user}`)
-
         removeUserArray(user, updatedAppointmentStatus.appointmentDate);
+        const index = user.permissionCheck.indexOf(doc._id)
+        if(newStatus!='In Progress'){
+            if(index>-1){
+                user.permissionCheck.splice(index,1)
+            }
+        }
+
+
 
         await doc.save()
         await user.save()

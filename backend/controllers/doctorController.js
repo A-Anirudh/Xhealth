@@ -37,7 +37,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
     const doctorExists = await Doctor.findOne({email});
     const hospital = await Hospital.findOne({name:currentHospitalWorkingName});
 
-    console.log(hospital)
+    console.log(req.body)
     
     if (phoneNumber.length !==10){
         res.status(400);
@@ -188,6 +188,7 @@ const allDoctor = asyncHandler(async (req,res) => {
         allDoc
     });
 });
+
 
 
 export {authDoctor, registerDoctor, logoutDoctor, getDoctorProfile, updateDoctorProfile,allDoctor};

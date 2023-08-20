@@ -8,7 +8,7 @@ const appointmentRouter = express.Router();
 
 appointmentRouter.post('/book', protect, bookAppointment);
 appointmentRouter.route('/android').get(androidProtect,viewAllMyAppointments)
-appointmentRouter.route('/').delete(protect,changeAppointmentStatus).get(protect, viewAllMyAppointments).put(protect,editAppointment);
+appointmentRouter.route('/').post(protect,changeAppointmentStatus).get(protect, viewAllMyAppointments).put(protect,editAppointment);
 
 
 export default appointmentRouter;

@@ -87,7 +87,8 @@ export const doctorSchema = mongoose.Schema({
     avgRating:{
         type:Number,
         required: true,
-        default:0
+        default:1,
+        enum:[0,1,2,3,4,5]
     },
     gradCollegeName:{
         type: [String],
@@ -112,7 +113,6 @@ doctorSchema.pre('save', async function (next) {
 doctorSchema.methods.matchPasswords = async function (enterePassword) {
     return await bcrypt.compare(enterePassword, this.password);
 }
-
 
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
