@@ -51,11 +51,20 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'POST'
             })
         }),
-        updateAppointment: builder.mutation({
+        updateAppointmentStatus: builder.mutation({
             query: data => {
                 return {
                     url: `${USERS_URL}/appointments`,
                     method: 'POST',
+                    body: data
+                }
+            }
+        }),
+        editAppointment: builder.mutation({
+            query: data => {
+                return {
+                    url: `${USERS_URL}/appointments`,
+                    method: 'PUT',
                     body: data
                 }
             }
@@ -79,9 +88,10 @@ export const {
     useGetPersonalHeathQuery,
     useGetAppointmentsQuery,
     useLogoutUserMutation,
-    useUpdateAppointmentMutation,
+    useUpdateAppointmentStatusMutation,
     useUpdateUserInfoMutation,
-    useSetAppointmentMutation
+    useSetAppointmentMutation,
+    useEditAppointmentMutation
 } = usersApiSlice;
 
 
