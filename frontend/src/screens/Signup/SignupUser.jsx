@@ -1,5 +1,5 @@
 import { Box, Input, InputLabel, Typography } from "@mui/material"
-import loginThumbnail from "../../assets/userLogin.png";
+import img from '../../assets/userSU.png'
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../Login/Login.module.css";
 import { useTheme } from '@mui/material/styles';
@@ -12,6 +12,7 @@ import { signUpDetails } from "../../dump/";
 
 export const SignupUser = () => {
     const theme = useTheme()
+    const primary = '#50144C'
     const [creds, setCreds] = useState({});
     const [signup] = useUserSignupMutation();
     const dispatch = useDispatch();
@@ -42,191 +43,127 @@ export const SignupUser = () => {
     }, [navigate, userInfo])
 
     return (
-        <Box sx={{
-            background: theme.patient.background,
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-        }}>
-            <Toaster />
-            <Box sx={{
-                borderRadius: "1.4rem",
-                background: "white",
-                display: "flex",
-                overflow: "hidden",
-                height: "80%",
-                width: "70%",
-                [theme.breakpoints.down('lg')]: {
-                    width: "90%",
-                },
-                [theme.breakpoints.down("sm")]: {
-                    flexDirection: "column"
-                }
-            }}>
-                <Box sx={{
-                    background: theme.patient.primary,
-                    height: "100%",
-                    width: "35%",
-                    position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    [theme.breakpoints.down("sm")]: {
-                        width: "100%",
-                        height: "unset",
-                        paddingBlock: "1rem",
-                    },
-                }}>
-                    <Typography variant="h1" sx={{
-                        fontFamily: "Poppins",
-                        fontWeight: "bold",
-                        transform: "rotate(270deg) translateY(-7rem)",
-                        background: "linear-gradient(90deg, #C767C7 0%, rgba(255, 255, 255, 0.50) 100%)",
-                        backgroundClip: "text",
-                        textFillColor: "transparent",
-                        fontSize: "clamp(7rem, 8.5vw, 8rem)",
-                        [theme.breakpoints.down('lg')]: {
-                            transform: "rotate(270deg) translateY(-10vw)",
-                        },
-                        [theme.breakpoints.down('md')]: {
-                            transform: "rotate(270deg) translateY(-8vw)",
-                        },
-                        [theme.breakpoints.down("sm")]: {
-                            transform: "initial",
-                            fontSize: "4rem",
-                        },
-                        [theme.breakpoints.down("xsm")]: {
-                            transform: "initial",
-                            fontSize: "14vw",
-                        },
-                    }}>
-                        PATIENT
-                    </Typography>
-                    <Box sx={{
-                        [theme.breakpoints.down('sm')]: {
-                            display: "none"
-                        }
-                    }}>
-                        <img src={loginThumbnail} className={styles.coverImg} alt="patient" />
-                    </Box>
-                </Box>
-                <Box sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    justifyContent: "space-around"
-                }}
-                >
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+        <Box className="maincontainer" sx={{ display: 'flex', boxSizing: "border-box" }} >
+            <Box className='left-section'
+                sx={{
+                    backgroundColor: primary,
+                    height: "100vh",
+                    width: "15%",
+                    position: 'relative',
+                }}> 
 
-                    }}
-                    >
-                        <Typography variant="h3" sx={{
-                            fontWeight: 'bold',
-                            [theme.breakpoints.down("xsm")]: {
-                                fontSize: "9vw",
-                            },
-                        }}>
-                            Sign Up
-                        </Typography>
-                        <Typography variant="h6" sx={{
-                            color: theme.secondaryText,
-                            [theme.breakpoints.down("xsm")]: {
-                                fontSize: "5vw",
-                            },
-                        }}>
-                            Please Sign up your account
-                        </Typography>
-                    </Box>
-                    <Box sx={{
-                        display: "flex",
-                        // flexDirection: "column",
-                        width: "80%",
-                        gap: "1rem",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexWrap: "wrap"
-                    }}
-                    >
-                        {
-                            signUpDetails.map(({name, type, label}) => (
-                                <Box sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    width: "10rem",
-                                    alignItems: "center",
-                                }}
-                                >
-                                    <InputLabel
-                                        htmlFor={name}
-                                        sx={{
-                                            alignSelf: "flex-start",
-                                            paddingInline: "1rem",
-                                            fontSize: "0.8rem",
-                                            color: "#9D9D9D",
-                                            [theme.breakpoints.down("xsm")]: {
-                                                fontSize: "1rem",
-                                                paddingInline: "1rem"
-                                            },
-                                        }}
-                                    >
-                                        {label}
-                                    </InputLabel>
-    
-                                    <Input
-                                        id={name}
-                                        type={type}
-                                        name={name}
-                                        sx={{
-                                            borderRadius: "20px",
-                                            outlineColor: theme.patient.inputActive,
-                                            border: `1px solid ${theme.patient.inputDefault}`,
-                                            width: "100%",
-                                            padding: "0 1rem",
-                                            fontSize: "1rem",
-                                            background: theme.inputBackground,
-                                            [theme.breakpoints.down("xsm")]: {
-                                                fontSize: "1rem"
-                                            },
-                                        }}
-                                        disableUnderline
-                                        onChange={e => getCredentials(e)}
-                                    />
-                                </Box>
-                            ))
-                        }
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
-                        <Input type="submit" value="Login"
-                            disableUnderline
-                            sx={{
-                                borderRadius: "20px",
-                                backgroundColor: theme.success,
-                                border: "none",
-                                width: "70%",
-                                padding: "0.4rem 1rem",
-                                color: "white",
-                                fontSize: "1.4rem",
-                                fontWeight: "600",
-                                [theme.breakpoints.down("xsm")]: {
-                                    fontSize: "1rem",
-                                    paddingInline: "1rem"
-                                },
-                            }}
-                            onClick={(e) => submitCredentials(e, creds)}
-                        />
-                        <span>Existing User? <Link to="/login-user" style={{ color: theme.success }}>Sign In Now</Link></span>
-                    </Box>
-                </Box>
+                <img src={img} alt="signup image" style={{ position: 'absolute', bottom: '0', width: '100%' }} />
+                <Typography sx={{ color: 'white', fontWeight: "600", fontFamily: 'Poppins', position: 'absolute', right: "0", fontSize: '5vw' }}>REGI</Typography>
 
             </Box>
-        </Box >
+
+            <Box className='right-section' sx={{ position: 'relative', boxSizing: "border-box", width: '85%', display: 'flex', flexDirection: 'column' }}>
+                <Typography sx={{ color: primary, fontWeight: "600", fontFamily: 'Poppins', position: 'absolute', left: "0", fontSize: '5vw', top: '0' }}>STER</Typography>
+
+                {/* <Box sx={{display:'flex',backgroundColor:"red",flexDirection:'column',alignItems:'center'}}> */}
+                <Box sx={{
+                    display: "flex",
+                    // flexDirection: "column",
+                    height: '80vh',
+                    gap: "1rem",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                    // backgroundColor:'pink',
+                    marginTop: "8rem",
+                    padding: '2rem',
+                    position: 'relative'
+
+                }}
+                >
+                    {
+                        signUpDetails.map(({ name, type, label }) => (
+                            <Box key={name} sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                width: "26rem",
+                                alignItems: "center",
+                            }}
+                            >
+                                <InputLabel
+                                    htmlFor={name}
+                                    sx={{
+                                        alignSelf: "flex-start",
+                                        paddingInline: "1rem",
+                                        fontSize: "1.2rem",
+                                        fontFamily: 'Poppins',
+                                        color: primary,
+
+                                        [theme.breakpoints.down("xsm")]: {
+                                            fontSize: "1rem",
+                                            paddingInline: "1rem"
+                                        },
+                                    }}
+                                >
+                                    {label}
+                                </InputLabel>
+
+                                <Input
+                                    id={name}
+                                    type={type}
+                                    name={name}
+                                    sx={{
+                                        borderRadius: "5px",
+                                        // outlineColor: theme.patient.inputActive,
+                                        // border: `1px solid ${theme.patient.inputDefault}`,
+                                        width: "100%",
+                                        padding: "0 1rem",
+                                        height: '3rem',
+                                        fontSize: "1rem",
+                                        fontFamily: 'Poppins',
+                                        backgroundColor: theme.inputBackground,
+
+                                        [theme.breakpoints.down("xsm")]: {
+                                            fontSize: "1rem"
+                                        },
+
+
+                                        "&:focus": {
+
+                                        },
+                                    }}
+                                    disableUnderline
+                                    onChange={e => getCredentials(e)}
+                                />
+                            </Box>
+                        ))
+                    }
+
+
+                    <Input type="submit" value="Register"
+                        disableUnderline
+                        sx={{
+                            borderRadius: "20px",
+                            backgroundColor: theme.success,
+                            border: "none",
+                            marginTop: '0',
+                            width: "400px",
+                            padding: "0.4rem 1rem",
+                            color: "white",
+                            fontSize: "1.4rem",
+                            fontWeight: "600",
+                            [theme.breakpoints.down("xsm")]: {
+                                fontSize: "1rem",
+                                paddingInline: "1rem"
+                            },
+
+
+
+                        }}
+                        onClick={(e) => submitCredentials(e, creds)}
+                    />
+                </Box>
+
+                {/* </Box> */}
+
+            </Box>
+
+        </Box>
     )
 }
 

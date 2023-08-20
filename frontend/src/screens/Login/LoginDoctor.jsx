@@ -253,7 +253,7 @@ export const LoginDoctor = () => {
                             }}
                             onClick={(e) => submitCredentials(e, creds)}
                         />
-                        <span>New User? <Link to="/register" style={{ color: theme.success }}>Register Now</Link></span>
+                        <span>New User? <Link to="/signup-doctor" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>
 
