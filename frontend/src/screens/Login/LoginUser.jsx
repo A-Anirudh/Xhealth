@@ -30,6 +30,7 @@ export const LoginUser = () => {
         try {
             e.preventDefault();
             const { data: res } = await login(data);
+            console.log(res);
             res && dispatch(setUserCredentials(res));
         }
         catch (e) {
@@ -68,7 +69,7 @@ export const LoginUser = () => {
                 padding="1rem 3rem"
                 backgroundColor={"white"}
                 sx={{ transform: "translateX(-50%)" }}
-            >{error ? error.data.message : "Booked Successfully"}
+            >{error && error?.data?.message}
             </Box>
             <Box sx={{
                 borderRadius: "1.4rem",

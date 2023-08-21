@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Users } from "../sdk/users";
-import { useUpdateAppointmentMutation } from "../slices/usersApiSlice";
+import { useUpdateAppointmentStatusMutation } from "../slices/usersApiSlice";
 import moment from "moment";
 
 export const useAptDetails = () => {
@@ -8,7 +8,7 @@ export const useAptDetails = () => {
     const [appointments] = user.getAppointments();
     const [doctors] = user.getDoctors();
     const [sortedAppointments, setSortedAppointments] = useState({});
-    const [updateApt] = useUpdateAppointmentMutation();
+    const [updateApt] = useUpdateAppointmentStatusMutation();
     
     // TODO: ADD HR DATA
 

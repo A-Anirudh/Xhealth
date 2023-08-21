@@ -9,6 +9,19 @@ export const Appointments = () => {
     const theme = useTheme();
     const [aptDisplay, setAptDisplay] = useState("none")
     const { sortedAppointments, appointments } = useAptDetails();
+    const [myDoc, setMyDoc] = useState("")
+    const [date, setDate] = useState("")
+    const [reason, setReason] = useState("")
+    const [aptId, setAptId] = useState("")
+
+    const openDialog = (myid) => {
+        const myApt = appointments.find(item => item._id === myid)
+        setMyDoc(myApt.doctorId);
+        setDate(moment(myApt.appointmentDate).format('yyyy-MM-DDThh:mm'));
+        setReason(myApt.reason);
+        setAptDisplay(p => p === "block" ? "none" : "block")
+        setAptId(myid)
+    }
 
     return (
         <Box display="flex" alignItems="center" flexDirection="column" onClick={() => setAptDisplay("none")}>
@@ -101,11 +114,36 @@ export const Appointments = () => {
                                                     {doctorName}
                                                 </Typography>
                                             </Box>
-                                            <MoreOptions _id = {_id} aptDisplay={aptDisplay} setAptDisplay={setAptDisplay} apt={appointments} />
+                                            <Box
+                                                height="1.5rem"
+                                                paddingRight={1}
+                                                padding="0 0.5rem"
+                                                boxSizing={"border-box"}
+                                                outline="1px solid black"
+                                                sx={{ cursor: "pointer", userSelect: "none" }}
+                                                onClick={e => {
+                                                    e.stopPropagation()
+                                                    openDialog(_id)
+                                                }}
+                                            >
+                                                |
+                                            </Box>
                                         </Box>
                                     ))}
                                 </Box>
                             ))}
+                            <MoreOptions
+                                _id={aptId}
+                                aptDisplay={aptDisplay}
+                                setAptDisplay={setAptDisplay}
+                                apt={appointments}
+                                myDoc={myDoc}
+                                setMyDoc={setMyDoc}
+                                date={date}
+                                setDate={setDate}
+                                reason={reason}
+                                setReason={setReason}
+                            />
                         </Box> :
                         <Typography variant="h5" padding="1rem" color="white" textAlign="center" backgroundColor={theme["green-olive"]} display="inline-block" borderRadius={99}>
                             No Appointments Booked!
