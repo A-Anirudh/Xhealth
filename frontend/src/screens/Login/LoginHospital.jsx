@@ -7,6 +7,36 @@ import { useTheme } from '@mui/material/styles';
 export const LoginHospital = () => {
 
     const theme = useTheme()
+    const hospital = new Hospital();
+    const login = hospital.login();
+    const [creds, setCreds] = useState({});
+    const { hospitalInfo } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const getCredentials = e => {
+        const { value, name } = e.target;
+        setCreds(p => ({ ...p, [name]: value }));
+    }
+
+    const submitCredentials = async (e, data) => {
+        try {
+            e.preventDefault();
+            // console.log(login(data));
+            const { data: res } = await login(data);
+            console.log(res);
+            res && dispatch(setHospitalCredentials(res));
+        }
+        catch (e) {
+            e.status === 500 ? toast.error("Server Down! Please try after some time.") : toast.error("Invalid Credentials!!")
+        }
+    }
+
+    useEffect(() => {
+        navigate(hospitalInfo ? "/dashboard-hospital" : "/login-hospital");
+    }, [navigate, hospitalInfo])
+
+
 
     return (
         <Box sx={{
@@ -138,19 +168,25 @@ export const LoginHospital = () => {
                                 Email
                             </InputLabel>
 
-                            <Input id="email" type="email" sx={{
-                                borderRadius: "20px",
-                                outlineColor: theme.hospital.inputActive,
-                                border: `2px solid ${theme.hospital.inputDefault}`,
-                                width: "100%",
-                                padding: "0.4rem 1rem",
-                                fontSize: "1.4rem",
-                                background: theme.inputBackground,
-                                [theme.breakpoints.down("xsm")]: {
-                                    fontSize: "1rem"
-                                },
-                            }}
-                            disableUnderline />
+                            <Input 
+                                id="email" 
+                                type="email" 
+                                name="email"
+                                sx={{
+                                    borderRadius: "20px",
+                                    outlineColor: theme.hospital.inputActive,
+                                    border: `2px solid ${theme.hospital.inputDefault}`,
+                                    width: "100%",
+                                    padding: "0.4rem 1rem",
+                                    fontSize: "1.4rem",
+                                    background: theme.inputBackground,
+                                    [theme.breakpoints.down("xsm")]: {
+                                        fontSize: "1rem"
+                                    },
+                                }}
+                            disableUnderline 
+                            onChange={e => getCredentials(e)}
+                            />
                         </Box>
                         <Box sx={{
                             display: "flex",
@@ -172,7 +208,7 @@ export const LoginHospital = () => {
                                 Password
                             </InputLabel>
 
-                            <Input id="password" type="password" sx={{
+                            <Input id="password" type="password" name="password" sx={{
                                 borderRadius: "20px",
                                 outlineColor: theme.hospital.inputActive,
                                 border: `2px solid ${theme.hospital.inputDefault}`,
