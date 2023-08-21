@@ -1,12 +1,45 @@
 import { Box, Input, InputLabel, Typography } from "@mui/material"
 import loginThumbnail from "../../assets/userHospital.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import { useTheme } from '@mui/material/styles';
+import { Hospital } from "../../sdk/hospitals";
+import { useEffect, useState } from "react";
+import { setHospitalCredentials } from "../../slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const LoginHospital = () => {
 
     const theme = useTheme()
+    const hospital = new Hospital();
+    const login = hospital.login();
+    const [creds, setCreds] = useState({});
+    const { hospitalInfo } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const getCredentials = e => {
+        const { value, name } = e.target;
+        setCreds(p => ({ ...p, [name]: value }));
+    }
+
+    const submitCredentials = async (e, data) => {
+        try {
+            e.preventDefault();
+            const { data: res } = await login(data);
+            console.log(res);
+            res && dispatch(setHospitalCredentials(res));
+        }
+        catch (e) {
+            e.status === 500 ? toast.error("Server Down! Please try after some time.") : toast.error("Invalid Credentials!!")
+        }
+    }
+
+    useEffect(() => {
+        navigate(hospitalInfo ? "/dashboard-hospital" : "/login-hospital");
+    }, [navigate, hospitalInfo])
+
+
 
     return (
         <Box sx={{
@@ -150,7 +183,9 @@ export const LoginHospital = () => {
                                     fontSize: "1rem"
                                 },
                             }}
-                            disableUnderline />
+                            disableUnderline 
+                            onChange={e => getCredentials(e)}
+                            />
                         </Box>
                         <Box sx={{
                             display: "flex",
@@ -184,7 +219,9 @@ export const LoginHospital = () => {
                                     fontSize: "1rem"
                                 },
                             }}
-                            disableUnderline />
+                            disableUnderline 
+                            onChange={e => getCredentials(e)}
+                            />
                         </Box>
                         <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" }}>forgot passward</Link>
                     </Box>
@@ -204,7 +241,9 @@ export const LoginHospital = () => {
                                 fontSize: "1rem",
                                 paddingInline: "1rem"
                             },
-                        }} />
+                        }} 
+                        onClick={(e) => submitCredentials(e, creds)}
+                        />
                         <span>New User? <Link to="/register" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>

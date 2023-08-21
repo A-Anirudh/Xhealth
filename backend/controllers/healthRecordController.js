@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler"
 import healthRecordModel from "../models/healthRecordModel.js";
 import Appointment from "../models/appointmentModel.js"
+import User from "../models/userModel.js";
+import Doctor from "../models/doctorModel.js";
 
 
 async function getHealthRecordInstance(email) {
@@ -17,11 +19,29 @@ async function getHealthRecordInstance(email) {
 
 const getAllHealthRecords = asyncHandler(async (req, res) => {
     const { email } = req.body
-    const userHR = await getHealthRecordInstance(email);
-    if (userHR) {
-        res.status(200).json(userHR);
-    } else {
-        res.status(404).json({ message: "No health record found for user " + email })
+    const user = await User.findOne({ email: email })
+
+    if (req.user) {
+
+        const userHR = await getHealthRecordInstance(email);
+        if (userHR) {
+            res.status(200).json(userHR);
+        } else {
+            res.status(404).json({ message: "No health record found for user " + email })
+        }
+
+    } else if (req.doctor) {
+        if (user.permissionCheck.includes(req.doctor._id)) {
+            const userHR = await getHealthRecordInstance(email);
+            if (userHR) {
+                res.status(200).json(userHR);
+            } else {
+                res.status(404).json({ message: "No health record found for user " + email })
+            }
+        } else {
+            res.status(400)
+            throw new Error("Doctor does not have access to this patients health record")
+        }
     }
 });
 
@@ -81,19 +101,19 @@ const newHealthRecord = asyncHandler(async (req, res) => {
     console.log(req.body.record)
     if (userHR) {
         try {
-            if(req.body.record){
+            if (req.body.record) {
 
-            
-            const newRecord = req.body.record;
-            // TODO// newRecord.appointmentId=await Appointment.findOne({userId:ObjectId('64be4f42a61f3e7c8f021edf'),doctorId:ObjectId('64bd9629b4d628dc3bdc744f')})         //there is a problem in here
-            //push newRecord to history (because its gonna be with our software >_<)
-            userHR.history.push(newRecord);
-            userHR.save();
-            res.status(200).json({ "message": "Success" })
-            } else{
+
+                const newRecord = req.body.record;
+                // TODO// newRecord.appointmentId=await Appointment.findOne({userId:ObjectId('64be4f42a61f3e7c8f021edf'),doctorId:ObjectId('64bd9629b4d628dc3bdc744f')})         //there is a problem in here
+                //push newRecord to history (because its gonna be with our software >_<)
+                userHR.history.push(newRecord);
+                userHR.save();
+                res.status(200).json({ "message": "Success" })
+            } else {
                 res.status(400)
                 throw new Error("Record needed in body")
-                
+
             }
         } catch (err) {
             res.status(400)
