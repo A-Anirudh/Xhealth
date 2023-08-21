@@ -42,6 +42,9 @@ const getAllHealthRecords = asyncHandler(async (req, res) => {
             res.status(400)
             throw new Error("Doctor does not have access to this patients health record")
         }
+    } else {
+        res.status(400)
+        throw new Error("Permision denied")
     }
 });
 
