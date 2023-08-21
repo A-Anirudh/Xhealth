@@ -14,12 +14,12 @@ let clearError
 export const LoginUser = () => {
     const theme = useTheme()
     const user = new Users();
-    const [creds, setCreds] = useState({});
     const [login, logError] = user.login();
     const [error, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userInfo } = useSelector(state => state.auth);
+    const [creds, setCreds] = useState({});
 
     const getCredentials = e => {
         const { value, name } = e.target;
