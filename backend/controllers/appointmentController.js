@@ -210,4 +210,4 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
 
 export { bookAppointment, viewAllMyAppointments, changeAppointmentStatus, editAppointment, getAppointmentDetailBasedOnDoctor };
 
-// TODO: Change CRON NODE so that the array does not refresh everyday.. Just remove that one particular date once the appointment is completed.
+// TODO: 

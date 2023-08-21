@@ -1,13 +1,16 @@
 import asyncHandler from "express-async-handler"
 import healthRecordModel from "../models/healthRecordModel.js";
-import Appointment from "../models/appointmentModel.js"
 import User from "../models/userModel.js";
-import Doctor from "../models/doctorModel.js";
 
 
 async function getHealthRecordInstance(email) {
-    const userHealthRecord = await healthRecordModel.findOne({ email: email })
-    return userHealthRecord;
+    if (email) {
+        const userHealthRecord = await healthRecordModel.findOne({ email: email })
+        return userHealthRecord;
+    } else {
+        res.status(400)
+        throw new Error("Email not found")
+    }
 }
 
 
