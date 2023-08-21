@@ -1,4 +1,5 @@
 export { UserProfile } from "./Profile/User";
+export { DoctorProfile } from "./Profile/Doctor";
 export { PersonalHealthRecords } from "./PersonalHealthRecords";
 export { DoctorRecommendation } from "./DoctorRecommendation";
 export { Appointments } from "./Appointments";

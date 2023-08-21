@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import userIcon from '../../assets/profile.png'
-import profileUser from '../../assets/profileIcon.png'
+import maleIcon from '../../assets/maleUserIcon.png'
+import femaleIcon from '../../assets/femaleUserIcon.png'
+
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
 import moment from 'moment/moment'
 import { Toaster, toast } from 'react-hot-toast'
 import { Users } from '../../sdk/users'
 import { userDetails } from '../../dump'
+import { useNavigate } from 'react-router-dom'
 
 export const UserProfile = () => {
+
     const theme = useTheme();
     const user = new Users();
     const [userInfo] = user.getUserInfo();
@@ -40,7 +44,7 @@ export const UserProfile = () => {
             }
         })
     }, [userInfo])
-
+console.log(userDetail)
     return (
         <Box
             display="flex"
@@ -64,17 +68,18 @@ export const UserProfile = () => {
                     padding="0 4rem"
                     borderRadius="2rem 2rem 0 0"
                 >
-                    <Typography fontSize="4rem" fontWeight="600" sx={{
+                    <Typography fontSize="4rem" fontWeight="700" sx={{
                         background: "linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0.00) 100%)",
                         backgroundClip: "text",
-                        "text-fill-color": "transparent"
+                        "text-fill-color": "transparent",
+                        fontFamily:'Poppins'
                     }}>
                         PROFILE
                     </Typography>
                     <img src={userIcon} style={{ height: "90%", marginLeft: "auto" }} />
                 </Box>
                 <Box padding="0 4rem" display="flex">
-                    <img src={profileUser} style={{ marginTop: "-2rem" }} />
+                {userDetail.gender=='Male'?(<img src={maleIcon} style={{ marginTop: "-2rem" }} />):(<img src={femaleIcon} style={{ marginTop: "-2rem" }} />)}
                     <Box
                         marginLeft="auto"
                         padding="2rem"
@@ -82,14 +87,18 @@ export const UserProfile = () => {
                         display="flex"
                         gap={4}
                     >
-                        <Button variant="contained" color="success" onClick={postUserCreds}>
+
+                    <Button variant="contained"  onClick={postUserCreds} sx={{backgroundColor:'#3DB491',fontFamily:'Poppins',fontSize:'1rem',borderRadius:'2rem',textTransform:"capitalize"}}>
                             Update
                         </Button>
+
+                      
                     </Box>
+
                 </Box>
                 <Box display="flex" alignItems="center" margin="2rem 0">
                     <hr style={{ height: "2px", background: `${theme["purple-150"]}`, width: "5%" }} />
-                    <Typography fontWeight="600" fontSize="2rem" padding="0 0.5rem" width="max-content" color={`${theme["purple-150"]}`}>Personal Information</Typography>
+                    <Typography fontWeight="600" fontSize="1.8rem" padding="0 0.5rem" width="max-content" fontFamily='Poppins' color={`${theme["purple-150"]}`}>Personal Information</Typography>
                     <hr style={{ height: "2px", background: `${theme["purple-150"]}`, width: "calc(100% - 25rem)" }} />
                 </Box>
                 <Box display="flex" gap="4rem" flexWrap="wrap">
@@ -103,7 +112,7 @@ export const UserProfile = () => {
                         width="40%"
                         key={id}
                     >
-                        <Typography minWidth="max-content" fontWeight="bold" paddingRight="1rem" marginRight="1rem" borderRight="1px solid lightgray">
+                        <Typography fontFamily='poppins' minWidth="max-content" fontWeight="bold" paddingRight="1rem" marginRight="1rem" borderRight="1px solid lightgray">
                             {name}
                         </Typography>
                         <TextField
@@ -122,7 +131,7 @@ export const UserProfile = () => {
                 </Box>
                 <Box display="flex" alignItems="center" margin="2rem 0">
                     <hr style={{ height: "2px", background: `${theme["purple-150"]}`, width: "5%" }} />
-                    <Typography fontWeight="600" fontSize="2rem" padding="0 0.5rem" width="max-content" color={`${theme["purple-150"]}`}>Contact Information</Typography>
+                    <Typography fontFamily='poppins' fontWeight="600" fontSize="1.8rem" padding="0 0.5rem" width="max-content" color={`${theme["purple-150"]}`}>Contact Information</Typography>
                     <hr style={{ height: "2px", background: `${theme["purple-150"]}`, width: "calc(100% - 25rem)" }} />
                 </Box>
                 <Box display="flex" gap="4rem" flexWrap="wrap">
@@ -136,8 +145,9 @@ export const UserProfile = () => {
                             gap="3px"
                             width="40%"
                             key={id}
+                            
                         >
-                            <Typography minWidth="max-content" fontWeight="bold" paddingRight="1rem" marginRight="1rem" borderRight="1px solid lightgray">
+                            <Typography fontFamily='poppins' minWidth="max-content" fontWeight="bold" paddingRight="1rem" marginRight="1rem" borderRight="1px solid lightgray">
                                 {name}
                             </Typography>
                             <TextField

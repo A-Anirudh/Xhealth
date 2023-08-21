@@ -29,7 +29,14 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
                 url: `${DOCTOR_URL}/all`,
                 method: 'GET'
             })
-        })
+        }),
+        updateDoctorInfo: builder.mutation({
+            query: data => ({
+                url: `${DOCTOR_URL}/profile`,
+                method: 'PUT',
+                body: data
+            })
+        }),
     })
 })
 
@@ -38,5 +45,6 @@ export const {
     useDoctorInfoQuery,
     useGetAllDoctorsQuery,
     useDoctorRegisterMutation,
-    useGetDoctorInfoQuery,
+    useGetDoctorInfoQuery,//profile
+    useUpdateDoctorInfoMutation,//update
 } = doctorApiSlice;
