@@ -37,6 +37,12 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        getDoctorApt: builder.query({
+            query: () => ({
+                url: `/api/users/appointments/doctor`,
+                method: 'GET'
+            })
+        }),
     })
 })
 
@@ -47,4 +53,5 @@ export const {
     useDoctorRegisterMutation,
     useGetDoctorInfoQuery,//profile
     useUpdateDoctorInfoMutation,//update
+    useGetDoctorAptQuery,
 } = doctorApiSlice;

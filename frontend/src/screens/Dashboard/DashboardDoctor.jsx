@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Users } from '../../sdk/users';
 import { useTheme } from '@emotion/react';
 import { Box, Button, Grid, Typography } from '@mui/material';
@@ -11,23 +11,27 @@ import bw from "../../assets/bw.png";
 import bp from "../../assets/bp.png";
 import gl from "../../assets/gl.png";
 import { Link } from "react-router-dom";
-
+import AppointmentCard from './AppointmentCard';
 export const DashboardDoctor = () => {
-  const theme = useTheme();
+	const theme = useTheme();
 	const user = new Users();
-  const[doctorInfo,refetchDoctor]= user.getDoctorInfo();
-  
-  useEffect(() => {
-     (async () => {
-      await refetchDoctor()
-    })
-  }, [])
-  
+	const [doctorInfo, refetchDoctor] = user.getDoctorInfo();
+	const [aptBasedOnDoc, refetchapt] = user.getDocApt();
 
 
-  return (
-    <Grid className="main-container" container
-    >
+	useEffect(() => {
+		(async () => {
+			await refetchDoctor()
+
+		})
+	}, [])
+if(!aptBasedOnDoc) return "loading"
+console.log(aptBasedOnDoc)
+
+
+	return (
+		<Grid className="main-container" container
+		>
 			<Grid
 				item
 				xl={12}
@@ -86,8 +90,8 @@ export const DashboardDoctor = () => {
 								fontWeight="bold"
 								justifyContent="center"
 								alignItems="center"
-                fontFamily="Poppins"
-                fontSize="2.8rem"
+								fontFamily="Poppins"
+								fontSize="2.8rem"
 								sx={{
 									[theme.breakpoints.down("sm")]: {
 										fontSize: "2rem",
@@ -101,7 +105,7 @@ export const DashboardDoctor = () => {
 								<Typography
 									variant="h3"
 									fontWeight="bold"
-                fontFamily="Poppins"
+									fontFamily="Poppins"
 
 									color={`${theme["purple-500"]}`}
 									sx={{
@@ -130,7 +134,7 @@ export const DashboardDoctor = () => {
 							</Typography>
 							<Typography
 								variant="h5"
-                fontFamily="Poppins"
+								fontFamily="Poppins"
 
 								sx={{
 									display: "inline",
@@ -168,8 +172,8 @@ export const DashboardDoctor = () => {
 						},
 					}}
 				>
-                
-					<Typography variant="h5"fontFamily="Poppins" fontWeight={500} color={theme["blue-150"]} margin={0}>Profile</Typography>
+
+					<Typography variant="h5" fontFamily="Poppins" fontWeight={500} color={theme["blue-150"]} margin={0}>Profile</Typography>
 					<Link
 						style={{
 							alignItems: "center",
@@ -186,20 +190,22 @@ export const DashboardDoctor = () => {
 						to="/profile-doctor"
 					>
 						<img src={boyimg} alt="user avatar" />
-                
-						
-            <Typography fontFamily="Poppins" color='black' fontSize='2rem' fontWeight='700'variant="h5">{doctorInfo?.firstName}</Typography>
-						<Typography fontFamily="Poppins" color={theme['gray-200']} fontSize='1rem'variant="h5">{doctorInfo?.department}</Typography>
+
+
+						<Typography fontFamily="Poppins" color='black' fontSize='2rem' fontWeight='700' variant="h5">{doctorInfo?.firstName}</Typography>
+						<Typography fontFamily="Poppins" color={theme['gray-200']} fontSize='1rem' variant="h5">{doctorInfo?.department}</Typography>
 
 					</Link>
 				</Grid>
 			</Grid>
 
 
-      <Grid item xl={12} margin="4rem 6rem 2rem" borderRadius='1rem' backgroundColor={theme.doctor.background}>
+			<Grid item xl={12} margin="4rem 6rem 2rem" borderRadius='1rem' backgroundColor={theme.doctor.background}>
+				
+				{Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard name={`Patient ${item}`} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime} id={aptBasedOnDoc.apts[Number(item)].userId}/>) )}
 
-      </Grid>
-    </Grid>
-  )
+			</Grid>
+		</Grid>
+	)
 }
 
