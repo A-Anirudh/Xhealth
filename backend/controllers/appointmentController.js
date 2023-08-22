@@ -200,8 +200,15 @@ const editAppointment = asyncHandler(async (req, res) => {
 const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
     const doctorId = req.doctor._id;
     const apts = await Appointment.find({ doctorId: doctorId });
+    const users_array = []
+    for (let i = 0; i < apts.length; i++) {
+        let user = await User.findOne({ _id: apts[i].userId })
+            .select("-password");
+        users_array.push(user)
+    }
+
     if (apts) {
-        res.status(200).json({ apts })
+        res.status(200).json({ apts, users_array })
     } else {
         res.status(400)
         throw new Error("appointment not found")
@@ -209,5 +216,3 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
 });
 
 export { bookAppointment, viewAllMyAppointments, changeAppointmentStatus, editAppointment, getAppointmentDetailBasedOnDoctor };
-
-// TODO: Change CRON NODE so that the array does not refresh everyday.. Just remove that one particular date once the appointment is completed.
