@@ -30,7 +30,7 @@ console.log(aptBasedOnDoc)
 
 
 	return (
-		<Grid className="main-container" container
+		<Grid className="main-container" container  
 		>
 			<Grid
 				item
@@ -200,9 +200,23 @@ console.log(aptBasedOnDoc)
 			</Grid>
 
 
-			<Grid item xl={12} margin="4rem 6rem 2rem" borderRadius='1rem' backgroundColor={theme.doctor.background}>
+			<Grid className='cards-container'
+			item xl={12}
+			display='flex'
+			flexDirection='column'
+			 margin="4rem" 
+			 borderRadius='1rem'
+			  backgroundColor={theme.doctor.background}
+			   width='100% '
+			   padding='2rem' 
+			   alignItems='center' 
+			   justifyContent='center' 
+			   overflow='auto' 
+			   gap='1rem'
+			//    maxHeight='100vh'
+			   >
 				
-				{Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard name={`Patient ${item}`} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime} id={aptBasedOnDoc.apts[Number(item)].userId}/>) )}
+				{Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard idx={Number(item)+1}name={aptBasedOnDoc.users_array[Number(item)].firstName+"\t"+aptBasedOnDoc.users_array[Number(item)].lastName} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime+"\thrs"} id={aptBasedOnDoc.apts[Number(item)].userId}/>) )}
 
 			</Grid>
 		</Grid>
