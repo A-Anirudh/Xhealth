@@ -11,7 +11,8 @@ healthRecordsRouter.route("/android/all").get(androidProtect, getAllHealthRecord
 healthRecordsRouter.route("/android/user").get(androidProtect, getUserProfile)
 
 healthRecordsRouter.get('/doctor', (protect, getHealthRecordSpecific))
-healthRecordsRouter.route("/").get(protect, getAllHealthRecords).post(protect, newHealthRecord)
+// healthRecordsRouter.route("/").get(protect, getAllHealthRecords).post(protect, newHealthRecord)
+healthRecordsRouter.route("/").post(protect, getAllHealthRecords).post(protect, newHealthRecord)
 
 
 
