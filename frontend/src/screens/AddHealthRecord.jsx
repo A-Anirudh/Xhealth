@@ -4,12 +4,16 @@ import { Users } from '../sdk/users';
 import { useAddHealthRecordMutation, useGetHealthRecordsMutation } from '../slices/healthRecordSlice';
 import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 import { format } from 'date-fns';
-
+import { useTheme } from '@emotion/react';
+import ClearIcon from '@mui/icons-material/Clear';
 
 export const AddHealthRecord = () => {
   const patientEmail = useSelector(state => state.patientId);
   const doctorMail=useSelector(state=>state.auth.doctorInfo.email)
   const user = new Users();
+  const theme = useTheme();
+  
+
 
   // const [records] = useGetHealthRecordsMutation();
   const [addRecord] = useAddHealthRecordMutation()
@@ -27,7 +31,7 @@ export const AddHealthRecord = () => {
   const [allmeds, setallmeds] = useState([{ 'name': '', 'dosage': 0, 'perDay': 0, 'gap': 0, 'timings': [] }])
   const [timing, settiming] = useState([generateEmptyTimings(0)]);
   const [immu, setimmu] = useState([{ 'name': '', 'dosage': '' }])
-  const [scans, setScans] = useState([{'name':'','pdfLink':'','typeOf':''}])
+  const [scans, setScans] = useState([{'name':'','pdfLink':'','typeOf':''}]) //todo:encodedPDF->(entire pdf)->(base64string)
   //---------Dynamic input fields states-------
 
   const [newRecord, setnewRecord] = useState({  
@@ -35,7 +39,7 @@ export const AddHealthRecord = () => {
     'record': {
       'doctorId': 'docId',//get from the local storage
 
-      'diagnosis': {
+      'diagnoses': {
         'data': '',
         'problems': '',//assign to problem array
       },
@@ -71,11 +75,11 @@ export const AddHealthRecord = () => {
   }
 
 
-  useEffect(() => {
-    return async () => {
-      await records({ email: patientEmail }).unwrap().then((data) => setallRecords(data))
-    }
-  }, [patientEmail])
+  // useEffect(() => {
+  //   return async () => {
+  //     await records({ email: patientEmail }).unwrap().then((data) => setallRecords(data))
+  //   }
+  // }, [patientEmail])
 
   if ( !newRecord) return "loading"
 
@@ -91,8 +95,8 @@ export const AddHealthRecord = () => {
   const handleOtherChange=(e)=>{
     const{name,value}=e.target
     console.log("name",name,'value',value)
-    if(name=='diagnosis'){
-      setnewRecord({...newRecord,record:{...newRecord.record,diagnosis:{...newRecord.record.diagnosis,data:value}}})
+    if(name=='diagnoses'){
+      setnewRecord({...newRecord,record:{...newRecord.record,diagnoses:{...newRecord.record.diagnoses,data:value}}})
     }
     else if(name=='startDate'){
       setnewRecord({...newRecord,record:{...newRecord.record,medications:{...newRecord.record.medications,startDate:value}}})
@@ -113,7 +117,7 @@ export const AddHealthRecord = () => {
       updatedProblems[i] = value;
       setnewRecord((prev) => {
         const prevValue = { ...prev };
-        prevValue.record.diagnosis.problems = updatedProblems;
+        prevValue.record.diagnoses.problems = updatedProblems;
         return prevValue;
       });
       return updatedProblems;
@@ -129,7 +133,7 @@ export const AddHealthRecord = () => {
       ...prev,
       record: {
         ...prev.record,
-        diagnosis: {
+        diagnoses: {
           ...prev.record.diagnosis,
           problems: updatedProblems,
         },
@@ -293,39 +297,39 @@ export const AddHealthRecord = () => {
   //-------Required Functions-----
   // console.log('record', newRecord)
   return (
-    <Grid>
+    <Grid sx={{margin:'2rem 10rem',boxSizing:'border-box'}}>
 
-      <Box backgroundColor='blue' color='white' className='title&button' display='flex' justifyContent='space-between' >
-        <Typography variant='h3'>Add Patient Health Record </Typography>
-        <Button sx={{ color: 'white' }} onClick={handleOnSubmit}>Add new Record</Button>
+      <Box  color={theme.doctor.primary} className='title&button' display='flex' justifyContent='space-between' alignItems='center' padding={1} margin={2} >
+        <Typography fontFamily='poppins' fontWeight='600' variant='h4'>Add Patient Health Record </Typography>
+        <Button sx={{ color: 'white',backgroundColor:`${theme['green-btn']}`,textTransform:'capitalize',fontFamily:'poppins',fontSize:'1.2vw',padding:'0rem 2vw',borderRadius:"10px",'&:hover':{backgroundColor:"white",color:`${theme['green-btn']}`,outline:`2px solid ${theme['green-btn']}`},boxShadow:'0px 4px 11px 0px rgba(0, 0, 0, 0.25);' }} onClick={handleOnSubmit}>Add new Record</Button>
       </Box>
 
-      <Box className='diagnosis' backgroundColor='green' display='flex' flexDirection='column'>
+      <Box className='diagnosis' padding={1} margin={2}  display='flex' flexDirection='column'>
         <Box display='flex' width='100%' alignItems='center'>
-          <Typography variant='h4'>Diagnosis</Typography>
-          <Box width='100%' height="2px" backgroundColor='grey'></Box>
+          <Typography sx={{fontFamily:'poppins',fontWeight:'600',fontSize:'2vw',color:`${theme['grey-heading']}`}}>Diagnosis</Typography>
+          <Box width='100%' height="2px" backgroundColor={theme['grey-heading']}></Box>
         </Box>
-        <Box className='inputField' display='flex'>
-          <Typography className='label'>Diagnosis</Typography>
-          <TextField sx={{ backgroundColor: 'white' }} name='diagnosis' value={newRecord.record.diagnosis.data} onChange={(e)=>handleOtherChange(e)}></TextField>
+        <Box className='inputField' backgroundColor=''marginTop={2} sx={{width:'100%',border:`1px solid ${theme['grey-border']}`,borderRadius:'10px',height:'5vh'}}display='flex' alignItems='center'>
+          <Typography fontFamily='poppins' fontWeight="600" fontSize='1.0vw'padding='0.1rem 2rem' borderRight={`2px solid ${theme['grey-border']}`} className='label'>Diagnosis</Typography>
+          <Input type='text' disableUnderline sx={{fontFamily:"poppins",marginInline:'2rem',width:"100%",}} name='diagnoses' value={newRecord.record.diagnoses.data} onChange={(e)=>handleOtherChange(e)}></Input>
         </Box>
       </Box>
 
-      <Box className='problems' backgroundColor='maroon' display='flex' flexDirection='column'>
+      <Box className='problems' padding={1} margin={2}  display='flex' flexDirection='column'>
         <Box display='flex' width='100%' alignItems='center'>
-          <Typography variant='h4'>Problems</Typography>
+          <Typography sx={{fontFamily:'poppins',fontWeight:'600',fontSize:'2vw',color:`${theme['grey-heading']}`}}>Problems</Typography>
           <Box width='100%' height="2px" backgroundColor='grey'></Box>
         </Box>
 
-        <Button sx={{ color: 'white', width: '5rem' }} onClick={addProblem}>Add</Button>
+        <Button sx={{ color: 'white',backgroundColor:`${theme['green-btn']}`,textTransform:'capitalize',fontFamily:'poppins',fontSize:'1vw',padding:'0rem 2vw',borderRadius:"10px",'&:hover':{backgroundColor:"white",color:`${theme['green-btn']}`,outline:`2px solid ${theme['green-btn']}`},width:'2vw',boxShadow:'0px 4px 11px 0px rgba(0, 0, 0, 0.25);' }} onClick={addProblem}>Add</Button>
 
-        <Box className='problemsHolder' display='flex' backgroundColor='gray'>
+        <Box className='problemsHolder' display='flex' backgroundColor={theme['grey-bg']} padding={2} margin={2} borderRadius={2} flexWrap={'wrap'} gap='1rem'  alignItems={'left'}>
           {problems.map((val, i) =>
-            <Box key={i} className='problemCard'>
-              <Box className='inputField' display='flex' color='white'>
-                <Typography className='label'>Problem</Typography>
-                <TextField sx={{ backgroundColor: 'white' }} value={val} onChange={(e) => handleProblemChange(e, i)}></TextField>
-                <Button onClick={handleProblemRemove}>Cancel</Button>
+            <Box key={i} className='problemCard' >
+              <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                <Typography className='label' color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`} >Problem</Typography>
+                <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }}  value={val} onChange={(e) => handleProblemChange(e, i)}></Input>
+                <Button onClick={handleProblemRemove} ><ClearIcon sx={{color:`${theme.Cancelled}`}} /></Button>
               </Box>
             </Box>
           )}
@@ -333,57 +337,60 @@ export const AddHealthRecord = () => {
         </Box>
       </Box>
 
-      <Box className='medicines' backgroundColor='maroon' display='flex' flexDirection='column'>
+      <Box className='medicines'  padding={1} margin={2}  display='flex' flexDirection='column'>
         <Box display='flex' width='100%' alignItems='center'>
-          <Typography variant='h4'>Medicines</Typography>
+          <Typography sx={{fontFamily:'poppins',fontWeight:'600',fontSize:'2vw',color:`${theme['grey-heading']}`}}>Medicines</Typography>
           <Box width='100%' height="2px" backgroundColor='grey'></Box>
         </Box>
-        <Box display='flex' alignItems='center' justifyContent='space-between'>
-          <Box display={'flex'}>
-            <Typography >Start Date</Typography >
-            <Input type='date' disableUnderline name='startDate' value={newRecord.record.medications.startDate} onChange={(e)=>handleOtherChange(e)}></Input>
+        <Box display='flex' alignItems='center'flexWrap={'wrap'}  margin={2} gap={'1rem'}>
+
+          <Box display={'flex'}  color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+            <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`} >Start Date</Typography >
+            <Input type='date'  disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} name='startDate' value={newRecord.record.medications.startDate} onChange={(e)=>handleOtherChange(e)}></Input>
           </Box>
-          <Box display={'flex'}>
-            <Typography >End Date</Typography >
-            <Input type='date' disableUnderline name='endDate' value={newRecord.record.medications.endDate} onChange={(e)=>handleOtherChange(e)}></Input>
+
+          <Box display={'flex'}  color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+            <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>End Date</Typography >
+            <Input type='date' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} name='endDate' value={newRecord.record.medications.endDate} onChange={(e)=>handleOtherChange(e)}></Input>
           </Box>
 
         </Box>
-        <Button sx={{ color: 'white', width: '5rem' }} onClick={addMedication}>Add</Button>
-        <Box className='problemsHolder' display='flex' backgroundColor='gray'>
+        <Button sx={{ color: 'white',backgroundColor:`${theme['green-btn']}`,textTransform:'capitalize',fontFamily:'poppins',fontSize:'1vw',padding:'0rem 2vw',borderRadius:"10px",'&:hover':{backgroundColor:"white",color:`${theme['green-btn']}`,outline:`2px solid ${theme['green-btn']}`},width:'2vw',boxShadow:'0px 4px 11px 0px rgba(0, 0, 0, 0.25);' }}  onClick={addMedication}>Add</Button>
+        <Box className='medicineHolder' display='flex' backgroundColor={theme['grey-bg']} padding={4} margin={2} borderRadius={2} flexWrap={'wrap'} gap='1rem'  alignItems={'left'} >
           {allmeds.map((value, j) => {
             const { name, dosage, perDay, gap, timings } = value;
             return (
-              <Box key={j} className='problemCard' display='flex' flexDirection={'column'} backgroundColor='pink'>
-                <Box display='flex' alignItems='center' justifyContent='space-between'>
-                  <Typography className='label'>Medicine</Typography>
-                  <Button onClick={() => handleRemoveMedication(j)}>Cancel</Button>
+              <Box key={j} className='problemCard' display='flex' flexDirection={'column'} backgroundColor={theme['purple-bg']} paddingX={2} paddingY={2} borderRadius={3} width={"25vw"} gap={'0.8rem'}>
+                <Box display='flex' alignItems='center' justifyContent='space-between' marginX={'1rem'}>
+                  <Typography className='label' sx={{fontFamily:'poppins',fontSize:'1.5vw',fontWeight:'500',color:`${theme['magenta']}`}} >Medicine</Typography>
+                  <Button onClick={() => handleRemoveMedication(j)}><ClearIcon sx={{color:`${theme.Cancelled}`}} /></Button>
                 </Box>
-                <Box className='inputField' display='flex' color='white'>
-                  <Typography className='label'>Name</Typography>
-                  <TextField sx={{ backgroundColor: 'white', width: '100%' }} value={name} name='name' onChange={(e) => handleMedicationChange(e, j)}></TextField>
+                <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}className='label'>Name</Typography>
+                  <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={name} name='name' onChange={(e) => handleMedicationChange(e, j)}></Input>
                 </Box>
-                <Box display='flex' alignItems='center' justifyContent='space-between'>
-                  <Box className='inputField' display='flex' color='white'>
-                    <Typography className='label'>Dosage</Typography>
-                    <TextField sx={{ backgroundColor: 'white' }} value={dosage} name='dosage' onChange={(e) => handleMedicationChange(e, j)}></TextField>
+
+                
+                  <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'} >
+                    <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>Dosage</Typography>
+                    <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={dosage} name='dosage' onChange={(e) => handleMedicationChange(e, j)}></Input>
                   </Box>
-                  <Box className='inputField' display='flex' color='white'>
-                    <Typography className='label'>Per day</Typography>
-                    <TextField sx={{ backgroundColor: 'white' }} value={perDay} name='perDay' onChange={(e) => handleMedicationChange(e, j)}></TextField>
+                  <Box className='inputField'  display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                    <Typography color={'black'} fontFamily={'poppins'} paddingX={'1rem'}   fontWeight={'600'}borderRight={`2px solid ${theme['grey-border']}`}>Per day</Typography>
+                    <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={perDay} name='perDay' onChange={(e) => handleMedicationChange(e, j)}></Input>
                   </Box>
-                </Box>
-                <Box className='inputField' display='flex' color='white'>
-                  <Typography className='label'>Gap</Typography>
-                  <TextField sx={{ backgroundColor: 'white' }} value={gap} name='gap' onChange={(e) => handleMedicationChange(e, j)}></TextField>
+                
+                <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>Gap</Typography>
+                  <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={gap} name='gap' onChange={(e) => handleMedicationChange(e, j)}></Input>
                 </Box>
 
 
                 {timings.map((val, i) => {
                   return (<Box key={i} className='problemCard'>
-                    <Box className='inputField' display='flex' color='white'>
-                      <Typography className='label'>Time</Typography>
-                      <Input type='time' disableUnderline sx={{ backgroundColor: 'white' }} value={timing[j][i]} onChange={(e) => handleTimeChange(e, i, j)}></Input>
+                    <Box className='inputField' display='flex'  padding={2}  height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                      <Typography color={`${theme['magenta']}`}  fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>Time</Typography>
+                      <Input type='time'  disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' ,color:`${theme['magenta']}`,fontWeight:'600'}} value={timing[j][i]} onChange={(e) => handleTimeChange(e, i, j)}></Input>
 
                     </Box>
                   </Box>)
@@ -396,30 +403,31 @@ export const AddHealthRecord = () => {
 
       </Box>
 
-      <Box className='immunization' backgroundColor='red' display='flex' flexDirection='column'>
+      <Box className='immunization' padding={1} margin={2}  display='flex' flexDirection='column'>
         <Box display='flex' width='100%' alignItems='center'>
-          <Typography variant='h4'>Immunizations</Typography>
+          <Typography sx={{fontFamily:'poppins',fontWeight:'600',fontSize:'2vw',color:`${theme['grey-heading']}`}}>Immunizations</Typography>
           <Box width='100%' height="2px" backgroundColor='grey'></Box>
         </Box>
 
-        <Button sx={{ color: 'white', width: '5rem' }} onClick={addImmunization}>Add</Button>
-        <Box className='immuHolder' display='flex' backgroundColor='gray'>
+        <Button sx={{ color: 'white',backgroundColor:`${theme['green-btn']}`,textTransform:'capitalize',fontFamily:'poppins',fontSize:'1vw',padding:'0rem 2vw',borderRadius:"10px",'&:hover':{backgroundColor:"white",color:`${theme['green-btn']}`,outline:`2px solid ${theme['green-btn']}`},width:'2vw',boxShadow:'0px 4px 11px 0px rgba(0, 0, 0, 0.25);' }} 
+   onClick={addImmunization}>Add</Button>
+        <Box className='immuHolder'  display='flex' backgroundColor={theme['grey-bg']} padding={2} margin={2} borderRadius={2} flexWrap={'wrap'} gap='1rem'  alignItems={'left'}>
           {immu.map((value, j) => {
             const { name, dosage } = value;
             return (
-              <Box key={j} className='problemCard' display='flex' flexDirection={'column'} backgroundColor='pink'>
+              <Box key={j} className='problemCard' display='flex' flexDirection={'column'} backgroundColor={theme['purple-bg']} paddingX={2} paddingY={2} borderRadius={3} width={"25vw"} gap={'0.8rem'}>
                 <Box display='flex' alignItems='center' justifyContent='space-between'>
-                  <Typography className='label'>Immunization</Typography>
-                  <Button onClick={() => handleRemoveImmu(j)}>Cancel</Button>
+                  <Typography className='label' sx={{fontFamily:'poppins',fontSize:'1.5vw',fontWeight:'500',color:`${theme['magenta']}`}}>Immunization</Typography>
+                  <Button onClick={() => handleRemoveImmu(j)}><ClearIcon sx={{color:`${theme.Cancelled}`}} /></Button>
                 </Box>
-                <Box className='inputField' display='flex' color='white'>
-                  <Typography className='label'>Name</Typography>
-                  <TextField sx={{ backgroundColor: 'white', width: '100%' }} value={name} name='name' onChange={(e) => handleImmuChange(e, j)}></TextField>
+                <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>Name</Typography>
+                  <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={name} name='name' onChange={(e) => handleImmuChange(e, j)}></Input>
                 </Box>
 
-                <Box className='inputField' display='flex' color='white'>
-                  <Typography className='label'>Dosage</Typography>
-                  <TextField sx={{ backgroundColor: 'white' }} value={dosage} name='dosage' onChange={(e) => handleImmuChange(e, j)}></TextField>
+                <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>Dosage</Typography>
+                  <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={dosage} name='dosage' onChange={(e) => handleImmuChange(e, j)}></Input>
                 </Box>
 
 
@@ -432,34 +440,35 @@ export const AddHealthRecord = () => {
 
       </Box>
 
-      <Box className='scans' backgroundColor='cyan' display='flex' flexDirection='column'>
+      <Box className='scans' padding={1} margin={2}  display='flex' flexDirection='column'>
         <Box display='flex' width='100%' alignItems='center'>
-          <Typography variant='h4'>Scans</Typography>
+          <Typography sx={{fontFamily:'poppins',fontWeight:'600',fontSize:'2vw',color:`${theme['grey-heading']}`}}>Scans</Typography>
           <Box width='100%' height="2px" backgroundColor='grey'></Box>
         </Box>
 
-        <Button sx={{ color: 'white', width: '5rem' }} onClick={addScans}>Add</Button>
-        <Box className='immuHolder' display='flex' backgroundColor='gray'>
+        <Button sx={{ color: 'white',backgroundColor:`${theme['green-btn']}`,textTransform:'capitalize',fontFamily:'poppins',fontSize:'1vw',padding:'0rem 2vw',borderRadius:"10px",'&:hover':{backgroundColor:"white",color:`${theme['green-btn']}`,outline:`2px solid ${theme['green-btn']}`},width:'2vw',boxShadow:'0px 4px 11px 0px rgba(0, 0, 0, 0.25);' }} 
+ onClick={addScans}>Add</Button>
+        <Box className='immuHolder'  display='flex' backgroundColor={theme['grey-bg']} padding={2} margin={2} borderRadius={2} flexWrap={'wrap'} gap='1rem'  alignItems={'left'}>
           {scans.map((value, j) => {
             const { name, pdfLink,typeOf} = value;
             return (
-              <Box key={j} className='scanCard' display='flex' flexDirection={'column'} backgroundColor='pink'>
+              <Box key={j} className='scanCard' display='flex' flexDirection={'column'} backgroundColor={theme['purple-bg']} paddingX={2} paddingY={2} borderRadius={3} width={"25vw"} gap={'0.8rem'}>
                 <Box display='flex' alignItems='center' justifyContent='space-between'>
-                  <Typography className='label'>Scan</Typography>
-                  <Button onClick={() => handleRemoveScan(j)}>Cancel</Button>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}sx={{fontFamily:'poppins',fontSize:'1.5vw',fontWeight:'500',color:`${theme['magenta']}`}}>Scan</Typography>
+                  <Button onClick={() => handleRemoveScan(j)}><ClearIcon sx={{color:`${theme.Cancelled}`}} /></Button>
                 </Box>
-                <Box className='inputField' display='flex' color='white'>
-                  <Typography className='label'>Name</Typography>
-                  <TextField sx={{ backgroundColor: 'white', width: '100%' }} value={name} name='name' onChange={(e) => handleScanChange(e, j)}></TextField>
+                <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>Name</Typography>
+                  <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={name} name='name' onChange={(e) => handleScanChange(e, j)}></Input>
                 </Box>
 
-                <Box className='inputField' display='flex' color='white'>
-                  <Typography className='label'>PDF link</Typography>
-                  <TextField sx={{ backgroundColor: 'white' }} value={pdfLink} name='pdfLink' onChange={(e) => handleScanChange(e, j)}></TextField>
+                <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>PDF link</Typography>
+                  <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={pdfLink} name='pdfLink' onChange={(e) => handleScanChange(e, j)}></Input>
                 </Box>
-                <Box className='inputField' display='flex' color='white'>
-                  <Typography className='label'>Type of</Typography>
-                  <TextField sx={{ backgroundColor: 'white' }} value={typeOf} name='typeOf' onChange={(e) => handleScanChange(e, j)}></TextField>
+                <Box className='inputField' display='flex' color='white' padding={2} height='5vh' alignItems='center' border={`1px solid ${theme['grey-border']}`} backgroundColor='white'borderRadius={'0.6rem'}>
+                  <Typography color={'black'} fontFamily={'poppins'} fontWeight={'600'} paddingX={'1rem'} paddingY={'0.1rem'} backgroundColor='' borderRight={`2px solid ${theme['grey-border']}`}>Type of</Typography>
+                  <Input type='text' disableUnderline sx={{ backgroundColor: 'white',fontFamily:'poppins',paddingInline:'2rem' }} value={typeOf} name='typeOf' onChange={(e) => handleScanChange(e, j)}></Input>
                 </Box>
 
 

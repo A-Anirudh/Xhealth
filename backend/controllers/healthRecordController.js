@@ -104,13 +104,14 @@ const getAllHealthRecordsAndroid = asyncHandler(async (req, res) => {
 
 const newHealthRecord = asyncHandler(async (req, res) => {
     var userHR = await getHealthRecordInstance(req.body.email);
-    console.log(req.body.record)
+    // console.log(req.body.record)
     if (userHR) {
         try {
             if (req.body.record) {
 
 
                 const newRecord = req.body.record;
+
                 // TODO// newRecord.appointmentId=await Appointment.findOne({userId:ObjectId('64be4f42a61f3e7c8f021edf'),doctorId:ObjectId('64bd9629b4d628dc3bdc744f')})         //there is a problem in here
                 //push newRecord to history (because its gonna be with our software >_<)
                 userHR.history.push(newRecord);
