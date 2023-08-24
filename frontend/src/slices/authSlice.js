@@ -7,6 +7,9 @@ const initialState = {
   doctorInfo: localStorage.getItem('doctorInfo')
     ? JSON.parse(localStorage.getItem('doctorInfo'))
     : null,
+  hospitalInfo: localStorage.getItem('hospitalInfo')
+    ? JSON.parse(localStorage.getItem('hospitalInfo'))
+    : null,
 };
 
 const authSlice = createSlice({

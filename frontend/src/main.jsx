@@ -6,6 +6,8 @@ import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, AddHealthRecord } from './screens';
 import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
+import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, DashboardHospital, SignupHospital } from './screens';
+import { DoctorPrivateRoutes, UserPrivateRoutes, HospitalPrivateRoutes } from './components';
 
 // import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -78,6 +80,7 @@ const AppRouter = () => (
       <Route path='login-user' element={<LoginUser />} />
       <Route path='signup-user' element={<SignupUser />} />
       <Route path='signup-doctor' element={<SignupDoctor />} />
+      <Route path='signup-hospital' element={<SignupHospital />} />
 
       <Route path="/" element={<UserPrivateRoutes />}>
         <Route path='dashboard-user' element={<DashboardUser />} />
@@ -92,7 +95,10 @@ const AppRouter = () => (
         <Route path='profile-doctor' element={<DoctorProfile />} />
         <Route path='add-record' element={<AddHealthRecord/>}/>
       </Route>
+      <Route path="/" element={<HospitalPrivateRoutes />}>
 
+      </Route>
+        <Route path="dashboard-hospital" element={<DashboardHospital />} />
     </Routes>
   </Router>
 );
