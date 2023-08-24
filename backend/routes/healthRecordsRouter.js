@@ -11,10 +11,10 @@ healthRecordsRouter.route("/android/all").get(androidProtect, getAllHealthRecord
 healthRecordsRouter.route("/android/user").get(androidProtect, getUserProfile)
 
 healthRecordsRouter.get('/doctor', (protect, getHealthRecordSpecific))
-// healthRecordsRouter.route("/").get(protect, getAllHealthRecords).post(protect, newHealthRecord)
-healthRecordsRouter.route("/").get(protect, getAllHealthRecords).post(protect, newHealthRecord)
 
+healthRecordsRouter.route("/").post(protect, newHealthRecord)
 
+healthRecordsRouter.route("/getAll").post(protect, getAllHealthRecords)
 
 //Dynamic access to doctors 
 //TODO: implement new protect as user may add doctors to allow permission to see their health records
