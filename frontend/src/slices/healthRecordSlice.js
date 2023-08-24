@@ -1,12 +1,12 @@
 import { apiSlice } from "./apiSlice";
 
-const HR_URL = "/api/users/healthRecords/";
+const HR_URL = "/api/users/healthRecords";
 
 export const healthRecordSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getHealthRecords: builder.mutation({
             query: (data) => ({
-                url: `${HR_URL}`,
+                url: `${HR_URL}/getAll`,
                 method: 'POST',
                 body:data
             })

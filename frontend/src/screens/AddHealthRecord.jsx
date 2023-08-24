@@ -11,7 +11,7 @@ export const AddHealthRecord = () => {
   const doctorMail=useSelector(state=>state.auth.doctorInfo.email)
   const user = new Users();
 
-  const [records] = useGetHealthRecordsMutation();
+  // const [records] = useGetHealthRecordsMutation();
   const [addRecord] = useAddHealthRecordMutation()
   const [allRecords, setallRecords] = useState()
 
@@ -77,7 +77,7 @@ export const AddHealthRecord = () => {
     }
   }, [patientEmail])
 
-  if (!allRecords || !newRecord) return "loading"
+  if ( !newRecord) return "loading"
 
   //-------Required Functions-----
 

@@ -143,4 +143,3 @@ const newHealthRecord = asyncHandler(async (req, res) => {
 const getHealthRecordSpecific = asyncHandler(async (req, res) => { });
 
 export { getHealthRecordSpecific, getAllHealthRecords, newHealthRecord, getAllHealthRecordsAndroid };
-
