@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import { useGetAllDoctorsQuery, useGetDoctorAptQuery, useGetDoctorInfoQuery, useUpdateDoctorInfoMutation } from "../../slices/doctorsApiSlice";
-import { useGetHealthRecordsQuery } from "../../slices/healthRecordSlice";
+import { useGetHealthRecordsMutation } from "../../slices/healthRecordSlice";
 import { useGetAppointmentsQuery, useGetPersonalHeathQuery, useGetUserInfoQuery, useLogoutUserMutation, useSetAppointmentMutation, useUpdateUserInfoMutation, useUserLoginMutation } from "../../slices/usersApiSlice";
 import moment from "moment";
 
@@ -43,7 +43,7 @@ export class Users {
         return [login, error];
     }
     getHR() {
-        const { data, refetch } = useGetHealthRecordsQuery();
+        const { data, refetch } = useGetHealthRecordsMutation();
         return [data, refetch];
     }
 

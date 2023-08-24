@@ -216,7 +216,7 @@ console.log(aptBasedOnDoc)
 			//    maxHeight='100vh'
 			   >
 				
-				{Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard idx={Number(item)+1}name={aptBasedOnDoc.users_array[Number(item)].firstName+"\t"+aptBasedOnDoc.users_array[Number(item)].lastName} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime+"\thrs"} id={aptBasedOnDoc.apts[Number(item)].userId}/>) )}
+				{Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard idx={Number(item)+1}name={aptBasedOnDoc.users_array[Number(item)].firstName+"\t"+aptBasedOnDoc.users_array[Number(item)].lastName} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime+"\thrs"} id={aptBasedOnDoc.users_array[Number(item)].email}/>) )}
 
 			</Grid>
 		</Grid>
