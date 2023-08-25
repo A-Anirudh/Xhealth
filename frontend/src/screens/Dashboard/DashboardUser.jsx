@@ -81,8 +81,8 @@ export const DashboardUser = () => {
 					},
 				}}
 			>
-				<Link style={{ textDecoration: "none" }}>
-					<Typography
+				<Link to='/' style={{ textDecoration: "none" }}>
+					<Typography fontFamily='poppins'
 						variant="h4"
 						fontWeight="bold"
 						color="white"
@@ -104,7 +104,7 @@ export const DashboardUser = () => {
 					alignItems="center"
 				>
 					<Link to="/appointments" style={{ textDecoration: "none" }}>
-						<Typography color="white" sx={{
+						<Typography fontFamily='poppins' color="white" sx={{
 							cursor: "pointer",
 							[theme.breakpoints.down("sm")]: {
 								fontSize: "1vw",
@@ -127,12 +127,12 @@ export const DashboardUser = () => {
 								alignItems: "center",
 							}}
 						>
-							<Typography color="white">Health Record</Typography>
+							<Typography fontFamily='poppins' color="white">Health Record</Typography>
 							{/* <img src={dropdown} alt="dropdown" /> */}
 						</Link>
 					</Box>
 					<Link to="/doctor-recommendation" style={{ textDecoration: "none" }}>
-						<Typography color="white" sx={{
+						<Typography fontFamily='poppins' color="white" sx={{
 							cursor: "pointer",
 							[theme.breakpoints.down("sm")]: {
 								fontSize: "1vw",
@@ -177,7 +177,7 @@ export const DashboardUser = () => {
 								}}
 							>
 								<Link to="/profile-user" style={{ textDecoration: "none" }}>
-									<Typography sx={{
+									<Typography fontFamily='poppins' sx={{
 										cursor: "pointer",
 										color: theme['blue-150'],
 										fontWeight: "bold",
@@ -193,7 +193,7 @@ export const DashboardUser = () => {
 								},
 							}}>
 								<Link to="/appointments" style={{ textDecoration: "none" }}>
-									<Typography sx={{
+									<Typography fontFamily='poppins' sx={{
 										cursor: "pointer",
 										color: theme['blue-150'],
 										fontWeight: "bold",
@@ -215,7 +215,7 @@ export const DashboardUser = () => {
 								}}
 							>
 								<Link to="/health-records" style={{ textDecoration: "none" }}>
-									<Typography sx={{
+									<Typography fontFamily='poppins' sx={{
 										cursor: "pointer",
 										color: theme['blue-150'],
 										fontWeight: "bold",
@@ -278,7 +278,7 @@ export const DashboardUser = () => {
 								},
 							}}
 						>
-							<Typography
+							<Typography fontFamily='poppins'
 								variant="h3"
 								display="flex"
 								gap={2}
@@ -295,7 +295,7 @@ export const DashboardUser = () => {
 									},
 								}}
 							>
-								<Typography
+								<Typography fontFamily='poppins'
 									variant="h3"
 									fontWeight="bold"
 									color={`${theme["purple-500"]}`}
@@ -323,7 +323,7 @@ export const DashboardUser = () => {
 								</Typography>
 								{userInfo?.firstName}!
 							</Typography>
-							<Typography
+							<Typography fontFamily='poppins'
 								variant="h5"
 								sx={{
 									display: "inline",
@@ -361,7 +361,7 @@ export const DashboardUser = () => {
 						},
 					}}
 				>
-					<Typography variant="h5" color={theme["blue-150"]} margin={0}>Profile</Typography>
+					<Typography fontFamily='poppins' variant="h5" color={theme["blue-150"]} margin={0}>Profile</Typography>
 					<Link
 						style={{
 							alignItems: "center",
@@ -378,7 +378,7 @@ export const DashboardUser = () => {
 						to="/profile-user"
 					>
 						<img src={boyimg} alt="user avatar" />
-						<Typography variant="h5">{userInfo?.firstName}</Typography>
+						<Typography fontFamily='poppins' variant="h5">{userInfo?.firstName}</Typography>
 					</Link>
 				</Grid>
 			</Grid>
@@ -412,7 +412,7 @@ export const DashboardUser = () => {
 						},
 					}}
 				>
-					<Typography
+					<Typography fontFamily='poppins'
 						backgroundColor="white"
 						padding="0.7rem 1.5rem"
 						variant="h5"
@@ -422,7 +422,7 @@ export const DashboardUser = () => {
 					>
 						Diabetes Medication
 					</Typography>
-					<Typography
+					<Typography fontFamily='poppins'
 						backgroundColor={theme["green-olive"]}
 						padding="1rem 2rem"
 						fontWeight="bold"
@@ -452,7 +452,7 @@ export const DashboardUser = () => {
 						},
 					}}
 				>
-					<Typography variant="h5" fontWeight="bold" color="white" paddingLeft={2}>
+					<Typography fontFamily='poppins' variant="h5" fontWeight="bold" color="white" paddingLeft={2}>
 						Appointments
 					</Typography>
 					{latestAppointments?.length > 0 ? latestAppointments.map(({ name, doctorName, hospitalName, appointmentDate }, idx) => (
@@ -466,7 +466,7 @@ export const DashboardUser = () => {
 							key={idx}
 						>
 							<Box backgroundColor="white" minWidth="10rem">
-								<Typography
+								<Typography fontFamily='poppins'
 									variant="h5"
 									fontWeight="bold"
 									padding="1rem 1.5rem"
@@ -489,14 +489,14 @@ export const DashboardUser = () => {
 										display="flex"
 										flexDirection="column"
 									>
-										<Typography variant="h5">
+										<Typography fontFamily='poppins' variant="h5">
 											{doctorName}
 										</Typography>
-										<Typography fontSize={15} color={theme['gray-200']} marginTop={-0.5}>
+										<Typography fontFamily='poppins' fontSize={15} color={theme['gray-200']} marginTop={-0.5}>
 											{hospitalName}
 										</Typography>
 									</Box>
-									<Typography fontSize={15} marginLeft="auto">
+									<Typography fontFamily='poppins' fontSize={15} marginLeft="auto">
 										{moment(appointmentDate).format('DD/MM/YYYY')}
 									</Typography>
 								</Box>
@@ -512,7 +512,7 @@ export const DashboardUser = () => {
 						marginBottom={1}
 					>
 						<Box backgroundColor="white" width="100%">
-							<Typography
+							<Typography fontFamily='poppins'
 								variant="h5"
 								fontWeight="bold"
 								padding="1rem 1.5rem"
@@ -546,29 +546,29 @@ export const DashboardUser = () => {
 					<Box marginBottom={2}>
 						<img src={heart} alt="heartRate" />
 					</Box>
-					<Typography variant="h6">Heart Rate</Typography>
-					<Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.heartRate : "-"} bpm</Typography>
+					<Typography fontFamily='poppins' variant="h6">Heart Rate</Typography>
+					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.heartRate : "-"} bpm</Typography>
 				</Grid>
 				<Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
 					<Box marginBottom={2}>
 						<img src={bp} alt="bloodpressure" />
 					</Box>
-					<Typography variant="h6">Blood pressure</Typography>
-					<Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.bloodPressure : "-/-"}</Typography>
+					<Typography fontFamily='poppins' variant="h6">Blood pressure</Typography>
+					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.bloodPressure : "-/-"}</Typography>
 				</Grid>
 				<Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
 					<Box marginBottom={2}>
 						<img src={bw} alt="body weight" />
 					</Box>
-					<Typography variant="h6">Body Weight</Typography>
-					<Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.weight : "-"} kg</Typography>
+					<Typography fontFamily='poppins' variant="h6">Body Weight</Typography>
+					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.weight : "-"} kg</Typography>
 				</Grid>
 				<Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
 					<Box marginBottom={2}>
 						<img src={gl} alt="glucose level" />
 					</Box>
-					<Typography variant="h6">Glucose Levels</Typography>
-					<Typography variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.glucose : "-"}</Typography>
+					<Typography fontFamily='poppins' variant="h6">Glucose Levels</Typography>
+					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.glucose : "-"}</Typography>
 				</Grid>
 			</Grid>
 		</Grid >

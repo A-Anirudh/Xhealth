@@ -12,12 +12,17 @@ import bp from "../../assets/bp.png";
 import gl from "../../assets/gl.png";
 import { Link } from "react-router-dom";
 import AppointmentCard from './AppointmentCard';
+import { doctorLogout } from '../../slices/authSlice';
+import { toast } from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 export const DashboardDoctor = () => {
 	const theme = useTheme();
 	const user = new Users();
+	const [userOptions, setUserOptions] = useState(false);
 	const [doctorInfo, refetchDoctor] = user.getDoctorInfo();
 	const [aptBasedOnDoc, refetchapt] = user.getDocApt();
-
+	const logout = user.logoutDoctor();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		(async () => {
@@ -25,13 +30,115 @@ export const DashboardDoctor = () => {
 
 		})
 	}, [])
+
+
+	const logoutUser = async () => {
+		try {
+			await logout();
+			dispatch(doctorLogout());
+			setUserOptions(false);
+		} catch (e) {
+			console.error(e);
+			toast.error("Something went wrong")
+		}
+	}
 if(!aptBasedOnDoc) return "loading"
 console.log(aptBasedOnDoc)
 
 
 	return (
-		<Grid className="main-container" container  
-		>
+		<Grid className="main-container" container> 
+			<Grid
+				item
+				xl lg md sm xs xsm
+				sx={{
+					background: theme["purple-500"],
+					padding: "1.5rem 2rem",
+					display: "flex",
+					alignItems: "center",
+					borderRadius: "0 0 1rem 1rem",
+					[theme.breakpoints.down("xsm")]: {
+						padding: "0.7rem 2rem",
+					},
+				}}
+			>
+				<Link to='/'style={{ textDecoration: "none" }}>
+					<Typography fontFamily='Poppins'
+						variant="h4"
+						fontWeight="bold"
+						color="white"
+						sx={{
+							cursor: "pointer",
+							[theme.breakpoints.down("sm")]: {
+								fontSize: "5vw"
+							},
+						}}
+
+					>
+						XHealth
+					</Typography>
+				</Link>
+				<Link  to="/dashboard-doctor" style={{ textDecoration: "none" ,marginInline:'2rem'}}>
+						<Typography fontFamily='Poppins' color="white" sx={{
+							cursor: "pointer",
+							[theme.breakpoints.down("sm")]: {
+								fontSize: "1vw",
+								display: "none"
+							},
+						}}>Dashboard</Typography>
+					</Link>
+
+				
+				<Box
+					marginLeft="auto"
+					display="flex"
+					gap={4}
+					alignItems="center">
+
+					<Box sx={{
+						[theme.breakpoints.down("sm")]: {
+							fontSize: "1vw",
+							display: "none"
+						},
+					}}>
+
+					</Box>
+
+					<Box sx={
+						{
+							cursor: "pointer",
+							position: "relative"
+						}
+					}
+					>
+						<img onClick={() => setUserOptions(p => !p)} src={userProfile} alt="user image" />
+						<Box
+							display={userOptions ? "flex" : "none"}
+							backgroundColor="white"
+							padding="0.5rem 1rem"
+							borderRadius={1}
+							position="absolute"
+							left={-40}
+							sx={{ transform: "translate(-50%, 10%)" }}
+							minWidth="max-content"
+							textAlign="center"
+							color={theme['blue-150']}
+							flexDirection="column"
+							gap={1}
+							fontSize={4}
+							zIndex={3}
+							boxShadow="0 4px 4px lightgray"
+						>
+
+
+							<Link to='/profile-doctor'><Button  sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Profile</Button></Link>
+
+							<Button onClick={logoutUser} sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Logout</Button>
+						</Box>
+					</Box>
+				</Box>
+			</Grid> 
+		
 			<Grid
 				item
 				xl={12}
@@ -55,6 +162,7 @@ console.log(aptBasedOnDoc)
 					overflow="hidden"
 					border={`4px solid ${theme.doctor.primary}`}
 				>
+					
 					<Box
 						display="flex"
 						alignItems="center"

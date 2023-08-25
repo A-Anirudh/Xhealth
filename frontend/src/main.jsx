@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, AddHealthRecord } from './screens';
-import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, DashboardHospital, SignupHospital } from './screens';
+// import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, AddHealthRecord } from './screens';
+// import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
+import { AddHealthRecord,LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, DashboardHospital, SignupHospital } from './screens';
 import { DoctorPrivateRoutes, UserPrivateRoutes, HospitalPrivateRoutes } from './components';
 
 // import './index.css';
