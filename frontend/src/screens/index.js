@@ -1,3 +1,4 @@
+export { DoctorAppointments } from "./DoctorAppointments";
 export { SignupHospital } from "./Signup/SignupHospital";
 export { DashboardHospital } from "./Dashboard/DashboardHospital";
 export { UserProfile } from "./Profile/User";

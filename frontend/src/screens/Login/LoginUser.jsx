@@ -99,7 +99,7 @@ export const LoginUser = () => {
                         paddingBlock: "1rem",
                     },
                 }}>
-                    <Typography fontFamily='Poppins'variant="h1" sx={{ fontFamily:'Poppins',
+                    <Typography fontFamily='Poppins'variant="h1" sx={{
                         fontFamily: "Poppins",
                         fontWeight: "bold",
                         transform: "rotate(270deg) translateY(-7rem)",

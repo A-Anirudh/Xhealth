@@ -147,7 +147,7 @@ const getHealthRecordSpecific = asyncHandler(async (req, res) => { });
 const storeDocument=(req,res)=>{
     const {documentBase64,key}=req.body;
         // console.log(documentBase64);
-        // console.log(key)
+        console.log(key)
             var params = {
                 Body: documentBase64.toString(),
                 Bucket: "cloud-object-storage-cos-standard-wwf", 
