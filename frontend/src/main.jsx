@@ -4,8 +4,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile } from './screens';
-import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
+// import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, AddHealthRecord } from './screens';
+// import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
+import { AddHealthRecord,LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, DashboardHospital, SignupHospital } from './screens';
+import { DoctorPrivateRoutes, UserPrivateRoutes, HospitalPrivateRoutes } from './components';
 
 // import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -44,6 +46,14 @@ const theme = createTheme({
   'In Progress': "#FFFB93",
   'Cancelled': "#FF9393",
   'Expired': "#C3C3C8",
+  'purple-heading':'#5A4B9A',
+  'purple-bg':'#DFD7FF',
+  'green-btn':'#51AD49',
+  'grey-heading':'#969696',
+  'magenta':'#6C002E',
+  'grey-border':'#BEBEBE',
+  'grey-bg':'#F6F6F6',
+
   inputBackground: "#ECECEC",
   primaryText: "",
   secondaryText: "#C3C3C8",
@@ -70,6 +80,7 @@ const AppRouter = () => (
       <Route path='login-user' element={<LoginUser />} />
       <Route path='signup-user' element={<SignupUser />} />
       <Route path='signup-doctor' element={<SignupDoctor />} />
+      <Route path='signup-hospital' element={<SignupHospital />} />
 
       <Route path="/" element={<UserPrivateRoutes />}>
         <Route path='dashboard-user' element={<DashboardUser />} />
@@ -82,8 +93,12 @@ const AppRouter = () => (
       <Route path="/" element={<DoctorPrivateRoutes />}>
         <Route path='dashboard-doctor' element={<DashboardDoctor />} />
         <Route path='profile-doctor' element={<DoctorProfile />} />
+        <Route path='add-record' element={<AddHealthRecord/>}/>
       </Route>
+      <Route path="/" element={<HospitalPrivateRoutes />}>
 
+      </Route>
+        <Route path="dashboard-hospital" element={<DashboardHospital />} />
     </Routes>
   </Router>
 );

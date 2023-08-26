@@ -13,7 +13,7 @@ import { signUpDetails } from "../../dump/";
 export const SignupUser = () => {
     const theme = useTheme()
     const primary = '#50144C'
-    const [creds, setCreds] = useState({});
+    const [creds, setCreds] = useState({gender:'',bloodGroup:""});
     const [signup] = useUserSignupMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -30,7 +30,8 @@ export const SignupUser = () => {
         try {
             e.preventDefault();
             const res = await signup(data);
-            dispatch(setUserCredentials(res));
+            console.log(res.error)
+            !res.error&&dispatch(setUserCredentials(res));
             toast.success("Welcome User!")
         }
         catch (e) {
@@ -77,7 +78,137 @@ export const SignupUser = () => {
                 }}
                 >
                     {
-                        signUpDetails.map(({ name, type, label }) => (
+                        signUpDetails.map(({ name, type, label }) => {
+                        
+                            if (name == 'gender') {
+
+                                return (
+                                    <Box key={name} sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "26rem",
+                                        alignItems: "center",
+                                    }}>
+                                        <InputLabel
+                                            htmlFor={name}
+                                            sx={{
+                                                alignSelf: "flex-start",
+                                                paddingInline: "1rem",
+                                                fontSize: "1.2rem",
+                                                fontFamily: 'Poppins',
+                                                color: "#216eb5",
+
+                                                [theme.breakpoints.down("xsm")]: {
+                                                    fontSize: "1rem",
+                                                    paddingInline: "1rem"
+                                                },
+                                            }}
+                                        >
+                                            {label}
+                                        </InputLabel>
+                                        <select required style={{
+                                            borderRadius: "5px",
+                                            // outlineColor: theme.patient.inputActive,
+                                            // border: `1px solid ${theme.patient.inputDefault}`,
+                                            outline: 'none',
+                                            border: 'none',
+                                            width: "100%",
+                                            padding: "0 1rem",
+                                            height: '3rem',
+                                            fontSize: "1rem",
+                                            fontFamily: 'Poppins',
+                                            backgroundColor: theme.inputBackground,
+                                            "@media (maxWidth: 449.95px)": {
+                                                fontSize: "1rem",
+                                                paddingInline: "1rem"
+                                            },
+
+
+                                            "&:focus": {
+
+                                            },
+                                        }}
+
+                                            key={name} value={creds.gender}  onChange={(e) => { setCreds(p => ({ ...p, 'gender': e.target.value })); console.log(creds) }}>
+                                            <option value="Male">Male</option   >
+                                            <option value="Female">Female</option   >
+
+                                        </select></Box>
+                                )
+                            }
+
+
+                            else if (name == 'bloodGroup') {
+
+                                return (
+                                    <Box key={name} sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "26rem",
+                                        alignItems: "center",
+                                    }}>
+                                        <InputLabel
+                                            htmlFor={name}
+                                            sx={{
+                                                alignSelf: "flex-start",
+                                                paddingInline: "1rem",
+                                                fontSize: "1.2rem",
+                                                fontFamily: 'Poppins',
+                                                color: "#216eb5",
+
+                                                [theme.breakpoints.down("xsm")]: {
+                                                    fontSize: "1rem",
+                                                    paddingInline: "1rem"
+                                                },
+                                            }}
+                                        >
+                                            {label}
+                                        </InputLabel>
+                                        <select style={{
+                                            borderRadius: "5px",
+                                            // outlineColor: theme.patient.inputActive,
+                                            // border: `1px solid ${theme.patient.inputDefault}`,
+                                            outline: 'none',
+                                            border: 'none',
+                                            width: "100%",
+                                            padding: "0 1rem",
+                                            height: '3rem',
+                                            fontSize: "1rem",
+                                            fontFamily: 'Poppins',
+                                            backgroundColor: theme.inputBackground,
+
+                                            "@media (maxWidth: 449.95px)": {
+                                                fontSize: "1rem",
+                                                paddingInline: "1rem"
+                                            },
+
+                                            "&:focus": {
+
+                                            },
+                                        }}
+
+                                            key={name} value={creds.bloodGroup}  onChange={(e) => { setCreds(p => ({ ...p, 'bloodGroup': e.target.value })); console.log(creds) }}>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+
+                                        </select></Box>
+                                )
+                            }
+
+
+
+
+                        
+                        
+                        
+                        
+                         else{ return(
                             <Box key={name} sx={{
                                 display: "flex",
                                 flexDirection: "column",
@@ -131,7 +262,7 @@ export const SignupUser = () => {
                                     onChange={e => getCredentials(e)}
                                 />
                             </Box>
-                        ))
+                        )}})
                     }
 
 
