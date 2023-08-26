@@ -50,6 +50,7 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
                 method: 'POST'
             })
         }),
+
     })
 })
 

@@ -1,6 +1,6 @@
 import express from "express"
 import { androidProtect, protect } from "../middleware/authMiddleware.js"
-import { getAllHealthRecords, getHealthRecordSpecific, newHealthRecord, getAllHealthRecordsAndroid } from "../controllers/healthRecordController.js";
+import { getAllHealthRecords, getHealthRecordSpecific, newHealthRecord, getAllHealthRecordsAndroid, getDocument, storeDocument } from "../controllers/healthRecordController.js";
 import { getUserProfile } from "../controllers/userController.js";
 
 const healthRecordsRouter = express.Router()
@@ -15,6 +15,8 @@ healthRecordsRouter.get('/doctor', (protect, getHealthRecordSpecific))
 healthRecordsRouter.route("/").post(protect, newHealthRecord)
 
 healthRecordsRouter.route("/getAll").post(protect, getAllHealthRecords)
+
+healthRecordsRouter.get("/key/:keyId",protect, getDocument).post("/addPdf",protect,storeDocument)
 
 //Dynamic access to doctors 
 //TODO: implement new protect as user may add doctors to allow permission to see their health records
