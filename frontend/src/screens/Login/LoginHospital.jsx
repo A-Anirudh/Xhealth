@@ -26,10 +26,9 @@ export const LoginHospital = () => {
     const submitCredentials = async (e, data) => {
         try {
             e.preventDefault();
-            // console.log(login(data));
             const { data: res } = await login(data);
-            console.log(res);
             res && dispatch(setHospitalCredentials(res));
+            console.log(hospitalInfo);
         }
         catch (e) {
             e.status === 500 ? toast.error("Server Down! Please try after some time.") : toast.error("Invalid Credentials!!")
@@ -37,6 +36,7 @@ export const LoginHospital = () => {
     }
 
     useEffect(() => {
+        console.log(hospitalInfo);
         navigate(hospitalInfo ? "/dashboard-hospital" : "/login-hospital");
     }, [navigate, hospitalInfo])
 
@@ -249,7 +249,7 @@ export const LoginHospital = () => {
                         }} 
                         onClick={(e) => submitCredentials(e, creds)}
                         />
-                        <span>New User? <Link to="/register" style={{ color: theme.success }}>Register Now</Link></span>
+                        <span>New User? <Link to="/signup-hospital" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>
 

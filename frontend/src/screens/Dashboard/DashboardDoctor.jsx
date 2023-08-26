@@ -27,7 +27,6 @@ export const DashboardDoctor = () => {
 	useEffect(() => {
 		(async () => {
 			await refetchDoctor()
-
 		})
 	}, [])
 
@@ -42,9 +41,6 @@ export const DashboardDoctor = () => {
 			toast.error("Something went wrong")
 		}
 	}
-if(!aptBasedOnDoc) return "loading"
-console.log(aptBasedOnDoc)
-
 
 	return (
 		<Grid className="main-container" container> 
@@ -321,10 +317,9 @@ console.log(aptBasedOnDoc)
 			   justifyContent='center' 
 			   overflow='auto' 
 			   gap='1rem'
-			//    maxHeight='100vh'
 			   >
 				
-				{Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard idx={Number(item)+1}name={aptBasedOnDoc.users_array[Number(item)].firstName+"\t"+aptBasedOnDoc.users_array[Number(item)].lastName} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime+"\thrs"} id={aptBasedOnDoc.users_array[Number(item)].email}/>) )}
+				{aptBasedOnDoc ? Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard idx={Number(item)+1}name={aptBasedOnDoc.users_array[Number(item)].firstName+"\t"+aptBasedOnDoc.users_array[Number(item)].lastName} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime+"\thrs"} id={aptBasedOnDoc.users_array[Number(item)].email}/>) ) : <h1>No Appointments Present</h1>}
 
 			</Grid>
 		</Grid>
