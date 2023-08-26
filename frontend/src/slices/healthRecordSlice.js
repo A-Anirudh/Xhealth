@@ -18,7 +18,15 @@ export const healthRecordSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        uploadPdf: builder.mutation({
+            query: (data) => ({
+                url: `${HR_URL}/addPdf`,
+                method: 'POST',
+                body:data,
+                headers: {"Content-type": "application/json; charset=UTF-8"}      
+            })
+        }),
     })
 })
 
-export const { useGetHealthRecordsMutation, useAddHealthRecordMutation } = healthRecordSlice;
+export const { useGetHealthRecordsMutation, useAddHealthRecordMutation,useUploadPdfMutation } = healthRecordSlice;
