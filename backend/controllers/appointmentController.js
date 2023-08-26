@@ -199,20 +199,41 @@ const editAppointment = asyncHandler(async (req, res) => {
 
 const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
     const doctorId = req.doctor._id;
-    const apts = await Appointment.find({ doctorId: doctorId });
-    const users_array = []
-    for (let i = 0; i < apts.length; i++) {
-        let user = await User.findOne({ _id: apts[i].userId })
-            .select("-password");
-        users_array.push(user)
+    const postDoctorId  = req.body._id;
+    if (postDoctorId){
+        const apts = await Appointment.find({ doctorId: postDoctorId });
+        const users_array = []
+        for (let i = 0; i < apts.length; i++) {
+            let user = await User.findOne({ _id: apts[i].userId })
+                .select("-password");
+            users_array.push(user)
+        }
+    
+        if (apts) {
+            res.status(200).json({ apts, users_array })
+        } else {
+            res.status(400)
+            throw new Error("appointment not found")
+        }
+    
+
+    } else{
+        const apts = await Appointment.find({ doctorId: doctorId });
+        const users_array = []
+        for (let i = 0; i < apts.length; i++) {
+            let user = await User.findOne({ _id: apts[i].userId })
+                .select("-password");
+            users_array.push(user)
+        }
+    
+        if (apts) {
+            res.status(200).json({ apts, users_array })
+        } else {
+            res.status(400)
+            throw new Error("appointment not found")
+        }
     }
 
-    if (apts) {
-        res.status(200).json({ apts, users_array })
-    } else {
-        res.status(400)
-        throw new Error("appointment not found")
-    }
 });
 
 export { bookAppointment, viewAllMyAppointments, changeAppointmentStatus, editAppointment, getAppointmentDetailBasedOnDoctor };

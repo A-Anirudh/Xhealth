@@ -3,6 +3,9 @@ import { androidProtect, protect } from "../middleware/authMiddleware.js"
 import { getAllHealthRecords, getHealthRecordSpecific, newHealthRecord, getAllHealthRecordsAndroid, getDocument, storeDocument } from "../controllers/healthRecordController.js";
 import { getUserProfile } from "../controllers/userController.js";
 
+
+
+
 const healthRecordsRouter = express.Router()
 //to get health records associated with a particular doctor
 
