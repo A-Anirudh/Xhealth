@@ -56,9 +56,9 @@ const registerUser = asyncHandler(async (req, res) => {
         lastName,
         phoneNumber,
         dateOfBirth, 
-        gender, 
-        state, 
-        bloodGroup, 
+        gender: gender.charAt(0).toUpperCase() + gender.slice(1), 
+        state:state.charAt(0).toUpperCase() + state.slice(1), 
+        bloodGroup:bloodGroup.charAt(0).toUpperCase() + bloodGroup.slice(1), 
         city, 
         pincode
     });
@@ -134,8 +134,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         user.email = req.body.email || user.email;
         user.bloodGroup = req.body.bloodGroup || user.bloodGroup;
         user.dateOfBirth = req.body.dateOfBirth || user.dateOfBirth;
-        user.gender = req.body.gender || user.gender;
-        user.state = req.body.state || user.state;
+        user.gender = req.body.gender.charAt(0).toUpperCase() + req.body.gender.slice(1) || user.gender;
+        user.state = req.body.state.charAt(0).toUpperCase() + req.body.state.slice(1) || user.state;
         user.city = req.body.city || user.city;
         user.pincode = req.body.pincode || user.pincode;     
         if(req.body.password){
