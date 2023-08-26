@@ -78,7 +78,7 @@ export const LoginDoctor = () => {
                         paddingBlock: "1rem",
                     },
                 }}>
-                    <Typography variant="h1" sx={{
+                    <Typography fontFamily='Poppins' variant="h1" sx={{
                         fontFamily: "Poppins",
                         fontWeight: "bold",
                         transform: "rotate(270deg) translateY(-7rem)",
@@ -127,7 +127,7 @@ export const LoginDoctor = () => {
 
                     }}
                     >
-                        <Typography variant="h3" sx={{
+                        <Typography fontFamily='Poppins' variant="h3"  sx={{
                             fontWeight: 'bold',
                             [theme.breakpoints.down("xsm")]: {
                                 fontSize: "9vw",
@@ -135,7 +135,7 @@ export const LoginDoctor = () => {
                         }}>
                             Login
                         </Typography>
-                        <Typography variant="h6" sx={{
+                        <Typography fontFamily='Poppins' variant="h6" sx={{
                             color: theme.secondaryText,
                             [theme.breakpoints.down("xsm")]: {
                                 fontSize: "5vw",
@@ -159,11 +159,12 @@ export const LoginDoctor = () => {
                             alignItems: "center",
                         }}
                         >
-                            <InputLabel htmlFor="email" sx={{
+                            <InputLabel fontFamily='Poppins' htmlFor="email" sx={{
                                 alignSelf: "flex-start",
                                 paddingInline: "2rem",
                                 fontSize: "1.1rem",
                                 color: "#9D9D9D",
+                                fontFamily:'Poppins',
                                 [theme.breakpoints.down("xsm")]: {
                                     fontSize: "1rem",
                                     paddingInline: "1rem"
@@ -183,6 +184,7 @@ export const LoginDoctor = () => {
                                     width: "100%",
                                     padding: "0.4rem 1rem",
                                     fontSize: "1.4rem",
+                                    fontFamily:'Poppins',
                                     background: theme.inputBackground,
                                     [theme.breakpoints.down("xsm")]: {
                                         fontSize: "1rem"
@@ -199,11 +201,12 @@ export const LoginDoctor = () => {
                             alignItems: "center",
                         }}
                         >
-                            <InputLabel htmlFor="password" sx={{
+                            <InputLabel fontFamily='Poppins' htmlFor="password" sx={{
                                 alignSelf: "flex-start",
                                 paddingInline: "2rem",
                                 fontSize: "1.1rem",
                                 color: "#9D9D9D",
+                                fontFamily:'Poppins',
                                 [theme.breakpoints.down("xsm")]: {
                                     fontSize: "1rem",
                                     paddingInline: "1rem"
@@ -218,6 +221,7 @@ export const LoginDoctor = () => {
                                 name="password"
                                 sx={{
                                     borderRadius: "20px",
+                                    fontFamily:'Poppins',
                                     outlineColor: theme.doctor.inputActive,
                                     border: `2px solid ${theme.doctor.inputDefault}`,
                                     width: "100%",
@@ -232,12 +236,13 @@ export const LoginDoctor = () => {
                                 onChange={e => getCredentials(e)}
                             />
                         </Box>
-                        <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" }}>forgot passward</Link>
+                        <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" ,fontFamily:'Poppins',}}>Forgot password</Link>
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
                         <Input type="submit" value="Login"
                             disableUnderline
                             sx={{
+                                fontFamily:'Poppins',
                                 borderRadius: "20px",
                                 backgroundColor: theme.success,
                                 border: "none",
@@ -253,7 +258,7 @@ export const LoginDoctor = () => {
                             }}
                             onClick={(e) => submitCredentials(e, creds)}
                         />
-                        <span>New User? <Link to="/signup-doctor" style={{ color: theme.success }}>Register Now</Link></span>
+                        <span style={{fontFamily:'Poppins',}}>New User? <Link to="/signup-doctor" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>
 

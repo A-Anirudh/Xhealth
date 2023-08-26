@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import userIcon from '../../assets/profileDoc.png'
 import maleIcon from '../../assets/maleDoc.png'
 import femaleIcon from '../../assets/femaleDoc.png'
-import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
+import { Box, Button, TextField, Typography, useTheme,InputLabel } from '@mui/material'
 import moment from 'moment/moment'
 import { Toaster, toast } from 'react-hot-toast'
 import { Users } from '../../sdk/users'
 import { doctorDetails } from '../../dump'
+import { Link } from 'react-router-dom'
 
 
 export const DoctorProfile = () => {
@@ -14,7 +15,7 @@ export const DoctorProfile = () => {
     const user = new Users();
     const [doctorInfo] = user.getDoctorInfo();
     const editDoctor = user.editDoctorDetails();
-    const [doctorDetail, setDoctorDetail] = useState({});
+    const [doctorDetail, setDoctorDetail] = useState({'gender':'','bloodGroup':''});
 
     const setCreds = (e) => {
         const { value, name } = e.target;
@@ -45,14 +46,21 @@ export const DoctorProfile = () => {
         })
     }, [doctorInfo])
 
+    useEffect(() => {
+      console.log('doctor detail',doctorDetail);
+    
+    }, [doctorDetail])
+    
+
 if(!doctorInfo)return "loading"
-console.log("check",doctorInfo)
+
     return(<Box
         display="flex"
         justifyContent="center"
         marginBottom="5rem"
     >
         <Toaster />
+
         <Box
             display="flex"
             flexDirection="column"
@@ -89,9 +97,12 @@ console.log("check",doctorInfo)
                     display="flex"
                     gap={4}
                 >
-                    <Button variant="contained"  onClick={postUserCreds} sx={{backgroundColor:'#3DB491',fontFamily:'Poppins',fontSize:'1rem',borderRadius:'2rem',textTransform:"capitalize"}}>
+                    <Link to="/dashboard-doctor"><Button variant="contained"   sx={{backgroundColor:`${theme['Cancelled']}`,fontFamily:'Poppins',fontSize:'1rem',borderRadius:'2rem',textTransform:"capitalize"}}>
+                        Cancel
+                    </Button></Link>
+                    <Link to="/dashboard-doctor"><Button variant="contained"  onClick={postUserCreds} sx={{backgroundColor:'#3DB491',fontFamily:'Poppins',fontSize:'1rem',borderRadius:'2rem',textTransform:"capitalize"}}>
                         Update
-                    </Button>
+                    </Button></Link>
                 </Box>
             </Box>
             <Box display="flex" alignItems="center" margin="2rem 0">
@@ -100,7 +111,8 @@ console.log("check",doctorInfo)
                 <hr style={{ height: "2px", background: `${theme["blue-150"]}`, width: "calc(100% - 25rem)" }} />
             </Box>
             <Box display="flex" gap="4rem" flexWrap="wrap">
-                {doctorDetails.personal.map(({ name, id, type,disabled }) => <Box
+                {doctorDetails.personal.map(({ name, id, type,disabled }) => {
+                                        return(<Box
                     border="1px solid lightgray"
                     borderRadius="7px"
                     padding="0.3rem 1rem"
@@ -114,7 +126,6 @@ console.log("check",doctorInfo)
                         {name}
                     </Typography>
                     <TextField
-                    
                         variant="standard"
                         margin="none"
                         required
@@ -127,7 +138,12 @@ console.log("check",doctorInfo)
                         disabled={disabled}
                     >
                     </TextField>
-                </Box>)}
+                </Box>)})
+                
+                }
+
+
+
             </Box>
             <Box display="flex" alignItems="center" margin="2rem 0">
                 <hr style={{ height: "2px", background: `${theme.doctor.primary}`, width: "5%" }} />

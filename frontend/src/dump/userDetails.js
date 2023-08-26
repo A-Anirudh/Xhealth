@@ -21,13 +21,13 @@ export const userDetails = {
         name: "Blood Group",
         id: "bloodGroup",
         type: "text",
-        disabled: ""
+        disabled: "disabled"
     },
     {
         name: "Gender",
         id: "gender",
         type: "text",
-        disabled: ""
+        disabled: "disabled"
     }],
     contact: [{
         name: "Email",

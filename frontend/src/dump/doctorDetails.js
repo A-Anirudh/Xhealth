@@ -21,13 +21,13 @@ export const doctorDetails = {
         name: "Blood Group",
         id: "bloodGroup",
         type: "text",
-        disabled: ""
+        disabled: "disabled"
     },
     {
         name: "Gender",
         id: "gender",
         type: "text",
-        disabled: ""
+        disabled: "disabled"
     },
     {
         name: "Qualification",
