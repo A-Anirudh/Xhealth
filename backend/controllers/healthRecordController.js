@@ -171,13 +171,15 @@ const getDocument=(req,res)=>{
     .on('complete',(response)=>{
         // Get the base64 encoded PDF from your server
         pdfBase64="non"
-        if(response.data.Body)
-        
-        var pdfBase64 = response.data.Body?.toString();
-        
-        // Set the content type and send the base64 encoded PDF as the response body
-        res.setHeader('Content-Type', 'application/pdf');
-        res.send(Buffer.from(pdfBase64, 'base64'));
+        console.log(reqest.data)
+        if(response.data.Body){
+            var pdfBase64 = response.data.Body?.toString();
+            // Set the content type and send the base64 encoded PDF as the response body
+            res.setHeader('Content-Type', 'application/pdf');
+            res.send(Buffer.from(pdfBase64, 'base64'));
+        }
+            
+
     }).on('error',(error)=>{
         res.status(404).json(error)
     })
