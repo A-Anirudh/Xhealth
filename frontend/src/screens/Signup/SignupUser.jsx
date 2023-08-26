@@ -96,7 +96,7 @@ export const SignupUser = () => {
                                                 paddingInline: "1rem",
                                                 fontSize: "1.2rem",
                                                 fontFamily: 'Poppins',
-                                                color: "#216eb5",
+                                                color: primary,
 
                                                 [theme.breakpoints.down("xsm")]: {
                                                     fontSize: "1rem",
@@ -154,7 +154,7 @@ export const SignupUser = () => {
                                                 paddingInline: "1rem",
                                                 fontSize: "1.2rem",
                                                 fontFamily: 'Poppins',
-                                                color: "#216eb5",
+                                                color: primary,
 
                                                 [theme.breakpoints.down("xsm")]: {
                                                     fontSize: "1rem",
