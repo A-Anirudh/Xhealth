@@ -40,7 +40,7 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
         getDoctorApt: builder.query({
             query: () => ({
                 url: `/api/users/appointments/doctor`,
-                method: 'GET'
+                method: 'POST'
             })
         }),
 
