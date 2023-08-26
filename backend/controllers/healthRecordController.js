@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler"
 import healthRecordModel from "../models/healthRecordModel.js";
 import User from "../models/userModel.js";
-import cos from "../config/cos.js";
+import { cos } from "../config/cos.js";
 
 async function getHealthRecordInstance(email) {
     if (email) {
