@@ -171,6 +171,7 @@ const getDocument=(req,res)=>{
         // Get the base64 encoded PDF from your server
         pdfBase64="non"
         if(response.data.Body)
+        
         var pdfBase64 = response.data.Body?.toString();
         
         // Set the content type and send the base64 encoded PDF as the response body
