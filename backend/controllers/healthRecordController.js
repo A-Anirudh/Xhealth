@@ -171,7 +171,6 @@ const getDocument=(req,res)=>{
     .on('complete',(response)=>{
         // Get the base64 encoded PDF from your server
         pdfBase64="non"
-        console.log(response.data)
         if(response.data.Body)
         
         var pdfBase64 = response.data.Body?.toString();

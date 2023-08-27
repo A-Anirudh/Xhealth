@@ -33,7 +33,7 @@ const authSlice = createSlice({
       localStorage.removeItem('doctorInfo');
     },
     setHospitalCredentials: (state, action) => {
-      state.doctorInfo = action.payload;
+      state.hospitalInfo = action.payload;
       localStorage.setItem('hospitalInfo', JSON.stringify(action.payload));
     },
     hospitalLogout: (state, action) => {
