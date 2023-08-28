@@ -198,9 +198,9 @@ const editAppointment = asyncHandler(async (req, res) => {
 })
 
 const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
-    console.log(req.doctor);
     const doctorId = req.doctor._id;
     const postDoctorId  = req.body._id;
+    console.log(req.body)
     if (postDoctorId){
         const apts = await Appointment.find({ doctorId: postDoctorId });
         const users_array = []
