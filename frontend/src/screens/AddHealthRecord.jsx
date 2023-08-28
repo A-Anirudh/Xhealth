@@ -6,10 +6,11 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { useTheme } from '@emotion/react';
 import ClearIcon from '@mui/icons-material/Clear';
+import { Link } from 'react-router-dom';
 
 export const AddHealthRecord = () => {
   const patientEmail = useSelector(state => state.patientId);
-  const doctorMail = useSelector(state => state.auth.doctorInfo.email)
+  const doctorId = useSelector(state => state.auth.doctorInfo._id)
   const user = new Users();
   const theme = useTheme();
   const link = 'common_url/'
@@ -18,7 +19,7 @@ export const AddHealthRecord = () => {
 
   // const [records] = useGetHealthRecordsMutation();
   const [addRecord] = useAddHealthRecordMutation()
-  const [uploadPdf] = useUploadPdfMutation();
+  const [uploadPdf] = useUploadPdfMutation(); 
   const [allRecords, setallRecords] = useState()
 
 
@@ -40,7 +41,7 @@ export const AddHealthRecord = () => {
   const [newRecord, setnewRecord] = useState({
     'email': patientEmail,
     'record': {
-      'doctorId': 'docId',//get from the local storage
+      'doctorId': doctorId, //get from the local storage
 
       'diagnoses': {
         'data': '',
@@ -55,27 +56,11 @@ export const AddHealthRecord = () => {
 
       'immunizations': [],//assign of immunizationArray
 
-      'scans': [{}]//assign to scansArray
-
+      'scans': [{}],//assign to scansArray
+      'time':new Date(),
     }
 
   })
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "name") {
-      setnewRecord((prev) => {
-        const prevValue = { ...prev };
-        prevValue.name.data = value;
-        return prevValue
-      })
-    }
-
-    else { setnewRecord((prev) => { return { ...prev, [name]: value } }); }
-
-    console.log(newRecord)
-  }
 
 
   // useEffect(() => {
@@ -90,9 +75,9 @@ export const AddHealthRecord = () => {
 
   const handleOnSubmit = () => {
     console.log("submitting", newRecord);
-    console.log('Submiiting PDF Body : ',body)
+    console.log('Submiiting PDF Body : ', body)
     const data = addRecord(newRecord)
-    for(let i=0;i<body.length;i++){
+    for (let i = 0; i < body.length; i++) {
       uploadPdf(body[i])
     }
     console.log('data added', data.unwrap())
@@ -141,7 +126,7 @@ export const AddHealthRecord = () => {
       record: {
         ...prev.record,
         diagnoses: {
-          ...prev.record.diagnosis,
+          ...prev.record.diagnoses,
           problems: updatedProblems,
         },
       },
@@ -266,12 +251,12 @@ export const AddHealthRecord = () => {
   }
   //----Dynamic immunization----
 
-  
+
 
   //----Dynamic Scans----
   const addScans = () => {
     setScans([...scans, { 'name': '', 'pdfLink': '', 'typeOf': '' }])
-    setBody([...body,''])
+    setBody([...body, ''])
   }
   const handleRemoveScan = (i) => {
     const updateScans = [...scans]
@@ -286,8 +271,8 @@ export const AddHealthRecord = () => {
       },
     }));
 
-    const updateBody=[...body]
-    updateBody.splice(i,1)
+    const updateBody = [...body]
+    updateBody.splice(i, 1)
     setBody(updateBody)
   }
   const handleScanChange = (e, i) => {
@@ -296,26 +281,26 @@ export const AddHealthRecord = () => {
       const key = e.target.files[0].name;
       const updateScans = [...scans]
       updateScans[i]['name'] = key
-      updateScans[i]['pdfLink'] = link+key
+      updateScans[i]['pdfLink'] = link + key
       setScans(updateScans)
       setnewRecord({ ...newRecord, 'record': { ...newRecord['record'], 'scans': scans } })
-      
+
       //encoding
-      const file= e.target.files[0];
-      const reader=new FileReader ();
+      const file = e.target.files[0];
+      const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = function () {
-      const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
-      const updateBody=[...body]
-      updateBody[i]=JSON.stringify({
-        documentBase64:base64String,
-        key:key
-    });
-    setBody(updateBody)
- }
+        const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+        const updateBody = [...body]
+        updateBody[i] = JSON.stringify({
+          documentBase64: base64String,
+          key: key
+        });
+        setBody(updateBody)
+      }
 
-     
-      
+
+
     }
     else {
       const updateScans = [...scans]
@@ -325,9 +310,9 @@ export const AddHealthRecord = () => {
 
   }
   //----Dynamic Scans----
-useEffect(() => {
+  useEffect(() => {
 
- console.log("Body",body)
+    console.log("Body", body)
 
   }, [body])
 
@@ -343,6 +328,57 @@ useEffect(() => {
   // console.log('record', newRecord)
   return (
     <Grid sx={{ margin: '2rem 10rem', boxSizing: 'border-box' }}>
+      <Grid
+        item
+        xl lg md sm xs xsm
+        sx={{
+          background: theme["purple-500"],
+          padding: "1.5rem 2rem",
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "0 0 1rem 1rem",
+          [theme.breakpoints.down("xsm")]: {
+            padding: "0.7rem 2rem",
+          },
+        }}
+      >
+        <Link to='/' style={{ textDecoration: "none" }}>
+          <Typography fontFamily='Poppins'
+            variant="h4"
+            fontWeight="bold"
+            color="white"
+            sx={{
+              cursor: "pointer",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "5vw"
+              },
+            }}
+
+          >
+            XHealth
+          </Typography>
+        </Link>
+        <Link to="/dashboard-doctor" style={{ textDecoration: "none", marginInline: '2rem' }}>
+          <Typography fontFamily='Poppins' color="white" sx={{
+            cursor: "pointer",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: "1vw",
+              display: "none"
+            },
+          }}>Dashboard</Typography>
+        </Link>
+        <Link to="/view-all-records" style={{ textDecoration: "none", marginInline: '2rem' }}>
+          <Typography fontFamily='Poppins' color="white" sx={{
+            cursor: "pointer",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: "1vw",
+              display: "none"
+            },
+          }}>View all records</Typography>
+        </Link>
+
+
+      </Grid>
 
       <Box color={theme.doctor.primary} className='title&button' display='flex' justifyContent='space-between' alignItems='center' padding={1} margin={2} >
         <Typography fontFamily='poppins' fontWeight='600' variant='h4'>Add Patient Health Record </Typography>

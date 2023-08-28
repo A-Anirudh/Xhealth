@@ -30,7 +30,8 @@ const healthRecords=new Schema({
             name:String,
             pdfLink:String,
             typeOf:String
-        }]
+        }],
+        time:String,
     }]
 })
 

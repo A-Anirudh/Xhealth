@@ -30,6 +30,11 @@ export const DashboardDoctor = () => {
 		})
 	}, [])
 
+	useEffect(() => {
+console.log('Appointments',aptBasedOnDoc)
+	}, [aptBasedOnDoc])
+	
+
 
 	const logoutUser = async () => {
 		try {
@@ -319,7 +324,7 @@ export const DashboardDoctor = () => {
 			   gap='1rem'
 			   >
 				
-				{aptBasedOnDoc ? Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard idx={Number(item)+1}name={aptBasedOnDoc.users_array[Number(item)].firstName+"\t"+aptBasedOnDoc.users_array[Number(item)].lastName} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime+"\thrs"} id={aptBasedOnDoc.users_array[Number(item)].email}/>) ) : <h1>No Appointments Present</h1>}
+				{aptBasedOnDoc ? Object.keys(aptBasedOnDoc.apts)?.map((item) => (<AppointmentCard aptid={aptBasedOnDoc.apts[Number(item)]._id} idx={Number(item)+1}name={aptBasedOnDoc.users_array[Number(item)].firstName+"\t"+aptBasedOnDoc.users_array[Number(item)].lastName} time={aptBasedOnDoc.apts[Number(item)].appointmentStartTime+"\thrs"} id={aptBasedOnDoc.users_array[Number(item)].email}/>) ) : <h1>No Appointments Present</h1>}
 
 			</Grid>
 		</Grid>
