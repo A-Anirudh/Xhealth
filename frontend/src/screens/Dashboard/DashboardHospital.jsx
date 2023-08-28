@@ -3,7 +3,7 @@ import { Users } from '../../sdk/users';
 import { useTheme } from '@emotion/react';
 import { Box, Button, Grid, Typography, TextField } from '@mui/material';
 import userProfile from "../../assets/profile.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { hospitalLogout } from '../../slices/authSlice';
 import { toast } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
@@ -25,10 +25,22 @@ export const DashboardHospital = () => {
   const [categorizedDoctors, setCategorizedDoctors] = useState();
   const [searchRes, setSearchRes] = useState([]);
   const [doctorApt] = useDoctorAppointmentsMutation();
-
+  const navigate=useNavigate()
+  // console.log(appointments)
   const searchDoc = e => {
     const res = getDoctors && getDoctors?.allDoc?.filter(item => e === "" ? false : item.firstName.toLowerCase().includes(e.toLowerCase()) || item.lastName.toLowerCase().includes(e.toLowerCase()))
     setSearchRes(res);
+    // console.log("res doc search",res)
+  }
+
+  const handleSelectDoc = (e) =>{
+    const docName=e.target.innerText
+    console.log("input",docName)
+    const res = getDoctors && getDoctors?.allDoc?.filter(item => docName === "" ? false : item.firstName.toLowerCase().includes(docName.toLowerCase()) || item.lastName.toLowerCase().includes(docName.toLowerCase()))
+    setSearchRes(res);
+    console.log("res doc search",res[0]._id)
+    navigate(`/doctor/appointments/${res[0]._id}`)
+    
   }
 
   const logoutUser = async () => {
@@ -73,12 +85,12 @@ export const DashboardHospital = () => {
     }
   }, [appointments, getDoctors])
 
-  useEffect(() => {
-    (async () => {
-      const res = await doctorApt({ '_id': "64cead652a1fae980800d582" });
-      console.log(res);
-    })()
-  }, [doctorApt])
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await doctorApt({ '_id': "64cead652a1fae980800d582" });
+  //     console.log("res",res);
+  //   })()
+  // }, [doctorApt])
 
   return (
     <Grid className="main-container" container>
@@ -209,11 +221,12 @@ export const DashboardHospital = () => {
               top="4rem"
             >
               {
-                searchRes.map(item => <Typography padding="0.5rem 1rem" sx={{
+                searchRes.map(item => <Typography onClick={(e)=>handleSelectDoc(e)}  value={item.firstName} padding="0.5rem 1rem" sx={{
                   cursor: "pointer",
                   '&:hover': {
                     backgroundColor: theme.hospital.background
-                  }
+                  },
+                  
                 }}>{item.firstName}</Typography>)
               }
             </Box>
