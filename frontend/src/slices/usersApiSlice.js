@@ -45,6 +45,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'GET'
             })
         }),
+        getAllAppointments: builder.query({
+            query: () => ({
+                url: `${USERS_URL}/appointments/all`,
+                method: 'GET'
+            })
+        }),
         logoutUser: builder.mutation({
             query: () => ({
                 url: `${USERS_URL}/logout`,
@@ -99,7 +105,8 @@ export const {
     useUpdateUserInfoMutation,
     useSetAppointmentMutation,
     useEditAppointmentMutation,
-    useDoctorAppointmentsMutation
+    useDoctorAppointmentsMutation,
+    useGetAllAppointmentsQuery
 } = usersApiSlice;
 
 

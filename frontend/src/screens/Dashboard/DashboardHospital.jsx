@@ -18,7 +18,7 @@ export const DashboardHospital = () => {
   const hospital = new Hospital();
   const [userOptions, setUserOptions] = useState(false);
   const logout = hospital.logout();
-  const [appointments] = user.getAppointments();
+  const [appointments] = user.getAllAppointments();
   const [getDoctors] = user.getDoctors();
   const dispatch = useDispatch();
   const [categorizedApt, setCategorizedApt] = useState();
