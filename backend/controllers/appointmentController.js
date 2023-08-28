@@ -94,6 +94,10 @@ const viewAllMyAppointments = asyncHandler(async (req, res) => {
     res.status(200).json(sortedAppointments)
 })
 
+const allAppointments = asyncHandler(async (req,res)=>{
+    const allAppointments = await Appointment.find({})
+    res.status(200).json(allAppointments)
+})
 
 // @desc Update appointment status
 // route : POST /api/users/appointments
@@ -237,4 +241,4 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
 
 });
 
-export { bookAppointment, viewAllMyAppointments, changeAppointmentStatus, editAppointment, getAppointmentDetailBasedOnDoctor };
+export { bookAppointment, viewAllMyAppointments,allAppointments, changeAppointmentStatus, editAppointment, getAppointmentDetailBasedOnDoctor };
