@@ -13,4 +13,4 @@ var config = {
 
 var cos = new S3(config);
 
-export {cos}
+export  {cos}

@@ -5,12 +5,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setPatientId } from '../../slices/patientIdSlice'
 import { useTheme } from '@emotion/react'
-const AppointmentCard = ({idx,name,time,id}) => {
+import { setAptId } from '../../slices/aptIdSlice'
+const AppointmentCard = ({aptid,idx,name,time,id}) => {
+  
     const dispatch=useDispatch();
     const theme = useTheme();
 
     const setId = async (id)=>{
         dispatch(setPatientId(id))
+        // dispatch(setAptId)
     } 
 
   const newLocal = `#736f0b`

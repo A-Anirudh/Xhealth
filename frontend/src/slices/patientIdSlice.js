@@ -7,7 +7,6 @@ const patientIdSlice = createSlice({
   initialState,
   reducers: {
     setPatientId: (state, action) => {
-      
       return action.payload; // Update the state by returning the new value
     },
   },
