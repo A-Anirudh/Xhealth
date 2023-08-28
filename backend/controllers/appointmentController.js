@@ -94,6 +94,19 @@ const viewAllMyAppointments = asyncHandler(async (req, res) => {
     res.status(200).json(sortedAppointments)
 })
 
+const allAppointments = asyncHandler(async (req,res)=>{
+    const allAppointments = await Appointment.find({})
+    const users_array = []
+    for(let i=0;i<allAppointments.length;i++){
+        let user = await User.findOne({ _id: allAppointments[i].userId })
+                .select("-password");
+            users_array.push({id:user._id,name:`${user.firstName} ${user.lastName}`})
+            
+    }
+    console.log("uar",(users_array))
+    res.status(200).json({"apt_data":allAppointments,"user_data":users_array})
+    
+})
 
 // @desc Update appointment status
 // route : POST /api/users/appointments
@@ -238,4 +251,4 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
 
 });
 
-export { bookAppointment, viewAllMyAppointments, changeAppointmentStatus, editAppointment, getAppointmentDetailBasedOnDoctor };
+export { bookAppointment, viewAllMyAppointments,allAppointments, changeAppointmentStatus, editAppointment, getAppointmentDetailBasedOnDoctor };

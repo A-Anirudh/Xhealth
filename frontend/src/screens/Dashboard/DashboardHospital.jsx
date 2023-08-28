@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Users } from '../../sdk/users';
-import { useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react'; 
 import { Box, Button, Grid, Typography, TextField } from '@mui/material';
 import userProfile from "../../assets/profile.svg";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,37 +11,43 @@ import '../../global.css'
 import moment from "moment"
 import { useDoctorAppointmentsMutation } from '../../slices/usersApiSlice';
 import { Hospital } from '../../sdk/hospitals';
+import { Dna } from 'react-loader-spinner';
+import { setPatientId } from '../../slices/patientIdSlice';
 
 export const DashboardHospital = () => {
   const theme = useTheme();
   const user = new Users();
-  const hospital = new Hospital();
+  const hospital = new Hospital(); 
   const [userOptions, setUserOptions] = useState(false);
-  const logout = hospital.logout();
-  const [appointments] = user.getAppointments();
+  const logout = hospital.logout(); 
+  const [appointments] = user.getAllAppointments();
   const [getDoctors] = user.getDoctors();
   const dispatch = useDispatch();
   const [categorizedApt, setCategorizedApt] = useState();
-  const [categorizedDoctors, setCategorizedDoctors] = useState();
+  const [categorizedDoctors, setCategorizedDoctors] = useState(); 
   const [searchRes, setSearchRes] = useState([]);
   const [doctorApt] = useDoctorAppointmentsMutation();
-  const navigate=useNavigate()
-  // console.log(appointments)
+  const navigate = useNavigate()
+  if (!appointments) return (<h1 style={{ fontFamily: 'poppins', color: '#5c9670' }} >
+    <Dna visible={true} height="80" width="80" ariaLabel="dna-loading"wrapperStyle={{}} wrapperClass="dna-wrapper"/>{'\u00A0'}Loading</h1>)
+
+  console.log(appointments)
   const searchDoc = e => {
     const res = getDoctors && getDoctors?.allDoc?.filter(item => e === "" ? false : item.firstName.toLowerCase().includes(e.toLowerCase()) || item.lastName.toLowerCase().includes(e.toLowerCase()))
     setSearchRes(res);
     // console.log("res doc search",res)
   }
 
-  const handleSelectDoc = (e) =>{
-    const docName=e.target.innerText
-    console.log("input",docName)
-    const res = getDoctors && getDoctors?.allDoc?.filter(item => docName === "" ? false : item.firstName.toLowerCase().includes(docName.toLowerCase()) || item.lastName.toLowerCase().includes(docName.toLowerCase()))
-    setSearchRes(res);
-    console.log("res doc search",res[0]._id)
-    navigate(`/doctor/appointments/${res[0]._id}`)
+  const handleSelectDoc = (e) => {
+    const docName = e.target.innerText   
     
-  }
+    const res = getDoctors && getDoctors?.allDoc?.filter(item => docName === "" ? false : item.firstName.toLowerCase().includes(docName.toLowerCase()) || item.lastName.toLowerCase().includes(docName.toLowerCase()))
+    setSearchRes(res); console.log("input", res);
+    console.log("res doc search", res[0]._id)
+   
+    navigate(`/doctor/appointments/${res[0].firstName}/${res[0]._id}`)
+
+  } 
 
   const logoutUser = async () => {
     try {
@@ -50,14 +56,14 @@ export const DashboardHospital = () => {
       setUserOptions(false);
     } catch (e) {
       console.error(e);
-      toast.error("Something went wrong")
+      toast.error("Something went wrong") 
     }
   }
 
   useEffect(() => {
     if (getDoctors && appointments) {
       // console.log(getDoctors);
-      const allApt = appointments?.reduce((acc, curr) => {
+      const allApt = appointments?.apt_data?.reduce((acc, curr) => {
         const newApt = {
           ...acc,
           [curr.doctorId]: acc[curr.doctorId] ? [...acc[curr.doctorId], curr] : [curr]
@@ -83,7 +89,7 @@ export const DashboardHospital = () => {
       setCategorizedDoctors(categDoc);
       setCategorizedApt(categApt);
     }
-  }, [appointments, getDoctors])
+  }, [getDoctors,appointments])
 
   // useEffect(() => {
   //   (async () => {
@@ -188,11 +194,11 @@ export const DashboardHospital = () => {
           <Typography display="flex" width="100%" position="sticky" padding="1.5rem 0" backgroundColor="white" top="0" variant='h4'>Appointments</Typography>
           {
             categorizedApt && categorizedApt.map((item, idx) => (
-              <Box borderRadius={4} backgroundColor={theme.hospital.background} padding={2} display="flex" gap="1rem" flexDirection="column">
+              <Box borderRadius={4} key={idx}backgroundColor={theme.hospital.background} padding={2} display="flex" gap="1rem" flexDirection="column">
                 <Typography variant="h5">{item.name}</Typography>
                 {item.apts.map(apt => <Typography display="flex" gap="2rem" backgroundColor="white" padding={2} borderRadius={4}><span><strong>Date:</strong> {moment(apt.appointmentDate).format("DD/MM/YYYY")}</span> <span><strong>Time:</strong> {apt.appointmentStartTime}</span> <span><strong>Reason:</strong> {apt.reason}</span></Typography>)}
               </Box>
-            ))
+            )) 
           }
         </Grid>
         <Grid item xl={6}
@@ -221,12 +227,12 @@ export const DashboardHospital = () => {
               top="4rem"
             >
               {
-                searchRes.map(item => <Typography onClick={(e)=>handleSelectDoc(e)}  value={item.firstName} padding="0.5rem 1rem" sx={{
+                searchRes.map(item => <Typography onClick={(e) => handleSelectDoc(e)} value={item.firstName} padding="0.5rem 1rem" sx={{
                   cursor: "pointer",
                   '&:hover': {
                     backgroundColor: theme.hospital.background
                   },
-                  
+
                 }}>{item.firstName}</Typography>)
               }
             </Box>

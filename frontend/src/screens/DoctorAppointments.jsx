@@ -7,9 +7,9 @@ export const DoctorAppointments = () => {
     const theme = useTheme();
     const [sortedAppointments, setSortedAppointments] = useState([]);
     // useEffect(() => {
-        
+
     // })
-    
+
 
     return (
         <Box display="flex" alignItems="center" flexDirection="column" onClick={() => setAptDisplay("none")}>

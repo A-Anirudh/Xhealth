@@ -100,7 +100,7 @@ const AppRouter = () => (
       <Route path="/" element={<HospitalPrivateRoutes />}>
         <Route path='doctor-appointments' element={<DoctorAppointments />} />
         <Route path="dashboard-hospital" element={<DashboardHospital />} />
-        <Route path="doctor/appointments/:id" element={<ViewAppointments/>} />
+        <Route path="doctor/appointments/:docname/:id" element={<ViewAppointments/>} />
       </Route>
     </Routes>
   </Router>
