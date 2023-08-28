@@ -78,6 +78,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 }
             }
         }),
+        doctorAppointments: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}/appointments/doctor`,
+                method: 'POST',
+                body: data
+            })
+        })
     })
 });
 
@@ -91,7 +98,8 @@ export const {
     useUpdateAppointmentStatusMutation,
     useUpdateUserInfoMutation,
     useSetAppointmentMutation,
-    useEditAppointmentMutation
+    useEditAppointmentMutation,
+    useDoctorAppointmentsMutation
 } = usersApiSlice;
 
 

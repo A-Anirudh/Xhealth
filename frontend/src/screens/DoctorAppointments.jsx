@@ -2,26 +2,14 @@ import { Box, Button, Typography, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { MoreOptions } from '../components';
-import { useAptDetails } from '../hooks';
 
 export const DoctorAppointments = () => {
     const theme = useTheme();
-    const [aptDisplay, setAptDisplay] = useState("none")
-    const { sortedAppointments, appointments } = useAptDetails();
-    const [myDoc, setMyDoc] = useState("")
-    const [date, setDate] = useState("")
-    const [reason, setReason] = useState("")
-    const [aptId, setAptId] = useState("")
-
-    const openDialog = (myid) => {
-        const myApt = appointments.find(item => item._id === myid)
-        setMyDoc(myApt.doctorId);
-        setDate(moment(myApt.appointmentDate).format('yyyy-MM-DDThh:mm'));
-        setReason(myApt.reason);
-        setAptDisplay(p => p === "block" ? "none" : "block")
-        setAptId(myid)
-    }
+    const [sortedAppointments, setSortedAppointments] = useState([]);
+    // useEffect(() => {
+        
+    // })
+    
 
     return (
         <Box display="flex" alignItems="center" flexDirection="column" onClick={() => setAptDisplay("none")}>
@@ -36,7 +24,6 @@ export const DoctorAppointments = () => {
                     <Typography variant="h3">
                         Appointments
                     </Typography>
-                    <Button sx={{ marginLeft: "auto" }} variant="contained" color="success"><Link style={{ textDecoration: "none", color: "white" }} to="/book-appointment">Book Appointment</Link></Button>
                 </Box>
                 {
                     sortedAppointments && Object.keys(sortedAppointments).length > 0 ?
@@ -132,18 +119,6 @@ export const DoctorAppointments = () => {
                                     ))}
                                 </Box>
                             ))}
-                            <MoreOptions
-                                _id={aptId}
-                                aptDisplay={aptDisplay}
-                                setAptDisplay={setAptDisplay}
-                                apt={appointments}
-                                myDoc={myDoc}
-                                setMyDoc={setMyDoc}
-                                date={date}
-                                setDate={setDate}
-                                reason={reason}
-                                setReason={setReason}
-                            />
                         </Box> :
                         <Typography variant="h5" padding="1rem" color="white" textAlign="center" backgroundColor={theme["green-olive"]} display="inline-block" borderRadius={99}>
                             No Appointments Booked!

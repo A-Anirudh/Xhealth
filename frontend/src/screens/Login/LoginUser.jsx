@@ -30,7 +30,7 @@ export const LoginUser = () => {
         try {
             e.preventDefault();
             const { data: res } = await login(data);
-            
+
             res && dispatch(setUserCredentials(res));
         }
         catch (e) {
@@ -49,7 +49,8 @@ export const LoginUser = () => {
     }, [logError])
 
     return (
-        <Box sx={{ fontFamily:'Poppins',
+        <Box sx={{
+            fontFamily: 'Poppins',
             background: theme.patient.background,
             height: "100vh",
             display: "flex",
@@ -67,11 +68,12 @@ export const LoginUser = () => {
                 boxShadow="0 3px 5px gray"
                 fontWeight="bold"
                 padding="1rem 3rem"
-                backgroundColor={"white"}
-                sx={{ fontFamily:'Poppins', transform: "translateX(-50%)" }}
+                backgroundColor={"#ffbbbb"}
+                sx={{ fontFamily: 'Poppins', transform: "translateX(-50%)" }}
             >{error && error?.data?.message}
             </Box>
-            <Box sx={{ fontFamily:'Poppins',
+            <Box sx={{
+                fontFamily: 'Poppins',
                 borderRadius: "1.4rem",
                 background: "white",
                 display: "flex",
@@ -85,7 +87,8 @@ export const LoginUser = () => {
                     flexDirection: "column"
                 }
             }}>
-                <Box sx={{ fontFamily:'Poppins',
+                <Box sx={{
+                    fontFamily: 'Poppins',
                     background: theme.patient.primary,
                     height: "100%",
                     width: "40%",
@@ -99,7 +102,7 @@ export const LoginUser = () => {
                         paddingBlock: "1rem",
                     },
                 }}>
-                    <Typography fontFamily='Poppins'variant="h1" sx={{
+                    <Typography fontFamily='Poppins' variant="h1" sx={{
                         fontFamily: "Poppins",
                         fontWeight: "bold",
                         transform: "rotate(270deg) translateY(-7rem)",
@@ -124,7 +127,8 @@ export const LoginUser = () => {
                     }}>
                         PATIENT
                     </Typography>
-                    <Box sx={{ fontFamily:'Poppins',
+                    <Box sx={{
+                        fontFamily: 'Poppins',
                         [theme.breakpoints.down('sm')]: {
                             display: "none"
                         }
@@ -132,7 +136,8 @@ export const LoginUser = () => {
                         <img src={loginThumbnail} className={styles.coverImg} alt="patient" />
                     </Box>
                 </Box>
-                <Box sx={{ fontFamily:'Poppins',
+                <Box sx={{
+                    fontFamily: 'Poppins',
                     display: "flex",
                     flexDirection: "column",
                     height: "100%",
@@ -141,14 +146,16 @@ export const LoginUser = () => {
                     justifyContent: "space-around"
                 }}
                 >
-                    <Box sx={{ fontFamily:'Poppins',
+                    <Box sx={{
+                        fontFamily: 'Poppins',
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
 
                     }}
                     >
-                        <Typography fontFamily='Poppins'variant="h3" sx={{ fontFamily:'Poppins',
+                        <Typography fontFamily='Poppins' variant="h3" sx={{
+                            fontFamily: 'Poppins',
                             fontWeight: 'bold',
                             [theme.breakpoints.down("xsm")]: {
                                 fontSize: "9vw",
@@ -156,7 +163,8 @@ export const LoginUser = () => {
                         }}>
                             Login
                         </Typography>
-                        <Typography fontFamily='Poppins'variant="h6" sx={{ fontFamily:'Poppins',
+                        <Typography fontFamily='Poppins' variant="h6" sx={{
+                            fontFamily: 'Poppins',
                             color: theme.secondaryText,
                             [theme.breakpoints.down("xsm")]: {
                                 fontSize: "5vw",
@@ -165,7 +173,8 @@ export const LoginUser = () => {
                             Please login to your account
                         </Typography>
                     </Box>
-                    <Box sx={{ fontFamily:'Poppins',
+                    <Box sx={{
+                        fontFamily: 'Poppins',
                         display: "flex",
                         flexDirection: "column",
                         width: "70%",
@@ -173,7 +182,8 @@ export const LoginUser = () => {
                         alignItems: "center",
                     }}
                     >
-                        <Box sx={{ fontFamily:'Poppins',
+                        <Box sx={{
+                            fontFamily: 'Poppins',
                             display: "flex",
                             flexDirection: "column",
                             width: "100%",
@@ -182,7 +192,8 @@ export const LoginUser = () => {
                         >
                             <InputLabel
                                 htmlFor="email"
-                                sx={{ fontFamily:'Poppins',
+                                sx={{
+                                    fontFamily: 'Poppins',
                                     alignSelf: "flex-start",
                                     paddingInline: "2rem",
                                     fontSize: "1.1rem",
@@ -200,7 +211,8 @@ export const LoginUser = () => {
                                 id="email"
                                 type="email"
                                 name="email"
-                                sx={{ fontFamily:'Poppins',
+                                sx={{
+                                    fontFamily: 'Poppins',
                                     borderRadius: "20px",
                                     outlineColor: theme.patient.inputActive,
                                     border: `2px solid ${theme.patient.inputDefault}`,
@@ -216,14 +228,16 @@ export const LoginUser = () => {
                                 onChange={e => getCredentials(e)}
                             />
                         </Box>
-                        <Box sx={{ fontFamily:'Poppins',
+                        <Box sx={{
+                            fontFamily: 'Poppins',
                             display: "flex",
                             flexDirection: "column",
                             width: "100%",
                             alignItems: "center",
                         }}
                         >
-                            <InputLabel htmlFor="password" sx={{ fontFamily:'Poppins',
+                            <InputLabel htmlFor="password" sx={{
+                                fontFamily: 'Poppins',
                                 alignSelf: "flex-start",
                                 paddingInline: "2rem",
                                 fontSize: "1.1rem",
@@ -240,7 +254,8 @@ export const LoginUser = () => {
                                 id="password"
                                 type="password"
                                 name="password"
-                                sx={{ fontFamily:'Poppins',
+                                sx={{
+                                    fontFamily: 'Poppins',
                                     borderRadius: "20px",
                                     outlineColor: theme.patient.inputActive,
                                     border: `2px solid ${theme.patient.inputDefault}`,
@@ -258,10 +273,11 @@ export const LoginUser = () => {
                         </Box>
                         <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" }}>Forgot password</Link>
                     </Box>
-                    <Box sx={{ fontFamily:'Poppins', display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
+                    <Box sx={{ fontFamily: 'Poppins', display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
                         <Input type="submit" value="Login"
                             disableUnderline
-                            sx={{ fontFamily:'Poppins',
+                            sx={{
+                                fontFamily: 'Poppins',
                                 borderRadius: "20px",
                                 backgroundColor: theme.success,
                                 border: "none",

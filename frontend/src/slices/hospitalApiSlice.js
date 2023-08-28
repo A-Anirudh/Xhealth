@@ -25,12 +25,12 @@ export const hospitalApiSlice = apiSlice.injectEndpoints({
                 url: `${HOSPITAL_URL}/logout`,
                 method: 'POST',
             })
-        }),
+        })
     })
 })
 
 export const {
     useHospitalLoginMutation,
     useHospitalLogoutMutation,
-    useHospitalRegisterMutation    
+    useHospitalRegisterMutation
 } = hospitalApiSlice;

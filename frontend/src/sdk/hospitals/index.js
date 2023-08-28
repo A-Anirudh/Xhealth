@@ -4,8 +4,8 @@ export class Hospital {
     constructor() {}
 
     login() {
-        const [loginHospital] = useHospitalLoginMutation();
-        return loginHospital
+        const [loginHospital, { error }] = useHospitalLoginMutation();
+        return [loginHospital, error]
     }
 
     logout() {

@@ -4,23 +4,27 @@ import { useTheme } from '@emotion/react';
 import { Box, Button, Grid, Typography, TextField } from '@mui/material';
 import userProfile from "../../assets/profile.svg";
 import { Link } from "react-router-dom";
-import { doctorLogout } from '../../slices/authSlice';
+import { hospitalLogout } from '../../slices/authSlice';
 import { toast } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import '../../global.css'
 import moment from "moment"
+import { useDoctorAppointmentsMutation } from '../../slices/usersApiSlice';
+import { Hospital } from '../../sdk/hospitals';
 
 export const DashboardHospital = () => {
   const theme = useTheme();
   const user = new Users();
+  const hospital = new Hospital();
   const [userOptions, setUserOptions] = useState(false);
-  const logout = user.logoutDoctor();
+  const logout = hospital.logout();
   const [appointments] = user.getAppointments();
   const [getDoctors] = user.getDoctors();
   const dispatch = useDispatch();
   const [categorizedApt, setCategorizedApt] = useState();
   const [categorizedDoctors, setCategorizedDoctors] = useState();
   const [searchRes, setSearchRes] = useState([]);
+  const [doctorApt] = useDoctorAppointmentsMutation();
 
   const searchDoc = e => {
     const res = getDoctors && getDoctors?.allDoc?.filter(item => e === "" ? false : item.firstName.toLowerCase().includes(e.toLowerCase()) || item.lastName.toLowerCase().includes(e.toLowerCase()))
@@ -30,7 +34,7 @@ export const DashboardHospital = () => {
   const logoutUser = async () => {
     try {
       await logout();
-      dispatch(doctorLogout());
+      dispatch(hospitalLogout());
       setUserOptions(false);
     } catch (e) {
       console.error(e);
@@ -40,6 +44,7 @@ export const DashboardHospital = () => {
 
   useEffect(() => {
     if (getDoctors && appointments) {
+      // console.log(getDoctors);
       const allApt = appointments?.reduce((acc, curr) => {
         const newApt = {
           ...acc,
@@ -62,11 +67,18 @@ export const DashboardHospital = () => {
           [curr.department]: acc[curr.department] ? [...acc[curr.department], curr] : [curr]
         }
       }, {})
-      console.log(categDoc);
+      // console.log(categDoc);
       setCategorizedDoctors(categDoc);
       setCategorizedApt(categApt);
     }
   }, [appointments, getDoctors])
+
+  useEffect(() => {
+    (async () => {
+      const res = await doctorApt({ '_id': "64cead652a1fae980800d582" });
+      console.log(res);
+    })()
+  }, [doctorApt])
 
   return (
     <Grid className="main-container" container>
@@ -100,17 +112,6 @@ export const DashboardHospital = () => {
             XHealth
           </Typography>
         </Link>
-        <Link to="/dashboard-doctor" style={{ textDecoration: "none", marginInline: '2rem' }}>
-          <Typography fontFamily='Poppins' color="white" sx={{
-            cursor: "pointer",
-            [theme.breakpoints.down("sm")]: {
-              fontSize: "1vw",
-              display: "none"
-            },
-          }}>Dashboard</Typography>
-        </Link>
-
-
         <Box
           marginLeft="auto"
           display="flex"
@@ -151,10 +152,6 @@ export const DashboardHospital = () => {
               zIndex={3}
               boxShadow="0 4px 4px lightgray"
             >
-
-
-              <Link to='/profile-doctor'><Button sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Profile</Button></Link>
-
               <Button onClick={logoutUser} sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Logout</Button>
             </Box>
           </Box>
@@ -166,19 +163,17 @@ export const DashboardHospital = () => {
         display='flex'
         margin="4rem"
         width='100% '
-        alignItems='center'
+        alignItems='flex-start'
         gap='1rem'
       >
         <Grid item xl={6}
-          padding='2rem'
           borderRadius="1rem"
-          sx={{ border: `5px solid ${theme["green-olive"]}`, height: "24rem", overflowY: "scroll" }}
           className="scroll-type"
           display="flex"
           flexDirection="column"
           gap="1rem"
         >
-          <Typography variant='h4'>Appointments</Typography>
+          <Typography display="flex" width="100%" position="sticky" padding="1.5rem 0" backgroundColor="white" top="0" variant='h4'>Appointments</Typography>
           {
             categorizedApt && categorizedApt.map((item, idx) => (
               <Box borderRadius={4} backgroundColor={theme.hospital.background} padding={2} display="flex" gap="1rem" flexDirection="column">
@@ -191,14 +186,13 @@ export const DashboardHospital = () => {
         <Grid item xl={6}
           padding='0 2rem 2rem'
           borderRadius="1rem"
-          sx={{ border: `5px solid ${theme["green-olive"]}`, height: "24rem", overflowY: "scroll" }}
           className="scroll-type"
           display="flex"
           flexDirection="column"
           gap="1rem"
           position="relative"
         >
-          <Box display="flex" width="100%" position="sticky" padding = "1.5rem 0" backgroundColor="white" top="0">
+          <Box display="flex" width="100%" position="sticky" padding="1.5rem 0" backgroundColor="white" top="0">
             <Typography variant='h4'>Doctors</Typography>
             <TextField type="text" variant="standard" sx={{ marginLeft: "auto" }} placeholder='Search Doctors' onChange={e => searchDoc(e.target.value)} />
             <Box
@@ -216,7 +210,7 @@ export const DashboardHospital = () => {
             >
               {
                 searchRes.map(item => <Typography padding="0.5rem 1rem" sx={{
-                  cursor:"pointer",
+                  cursor: "pointer",
                   '&:hover': {
                     backgroundColor: theme.hospital.background
                   }
@@ -235,23 +229,6 @@ export const DashboardHospital = () => {
             }
           </Box>
         </Grid>
-      </Grid>
-      <Grid className='cards-container'
-        item xl={12}
-        display='flex'
-        flexDirection='column'
-        margin="0 4rem"
-        borderRadius='1rem'
-        backgroundColor={theme.hospital.background}
-        width='100% '
-        padding='2rem'
-        alignItems='center'
-        justifyContent='center'
-        overflow='auto'
-        gap='1rem'
-      >
-
-        <h1>No Patients Present</h1>
       </Grid>
     </Grid>
   )
