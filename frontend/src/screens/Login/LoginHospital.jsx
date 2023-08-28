@@ -7,13 +7,15 @@ import { Hospital } from "../../sdk/hospitals";
 import { useEffect, useState } from "react";
 import { setHospitalCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+let clearError
 
 export const LoginHospital = () => {
 
     const theme = useTheme()
     const hospital = new Hospital();
-    const login = hospital.login();
+    const [login, logError] = hospital.login();
     const [creds, setCreds] = useState({});
+    const [error, setError] = useState("");
     const { hospitalInfo } = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -40,6 +42,11 @@ export const LoginHospital = () => {
         navigate(hospitalInfo ? "/dashboard-hospital" : "/login-hospital");
     }, [navigate, hospitalInfo])
 
+    useEffect(() => {
+        clearTimeout(clearError);
+        setError(logError);
+        clearError = setTimeout(() => setError(""), 2000);
+    }, [logError])
 
 
     return (
@@ -50,6 +57,21 @@ export const LoginHospital = () => {
             alignItems: "center",
             justifyContent: "center",
         }}>
+            <Box
+                display={error ? "block" : "none"}
+                position="absolute"
+                left="50%"
+                top="1rem"
+                zIndex="4"
+                marginTop="1rem"
+                borderRadius="0.5rem"
+                boxShadow="0 3px 5px gray"
+                fontWeight="bold"
+                padding="1rem 3rem"
+                backgroundColor={"#ffbbbb"}
+                sx={{ fontFamily: 'Poppins', transform: "translateX(-50%)" }}
+            >{error && error?.data?.message}
+            </Box>
             <Box sx={{
                 borderRadius: "1.4rem",
                 background: "white",
@@ -172,9 +194,9 @@ export const LoginHospital = () => {
                                 Email
                             </InputLabel>
 
-                            <Input 
-                                id="email" 
-                                type="email" 
+                            <Input
+                                id="email"
+                                type="email"
                                 name="email"
                                 sx={{
                                     borderRadius: "20px",
@@ -188,8 +210,8 @@ export const LoginHospital = () => {
                                         fontSize: "1rem"
                                     },
                                 }}
-                            disableUnderline 
-                            onChange={e => getCredentials(e)}
+                                disableUnderline
+                                onChange={e => getCredentials(e)}
                             />
                         </Box>
                         <Box sx={{
@@ -224,30 +246,30 @@ export const LoginHospital = () => {
                                     fontSize: "1rem"
                                 },
                             }}
-                            disableUnderline 
-                            onChange={e => getCredentials(e)}
+                                disableUnderline
+                                onChange={e => getCredentials(e)}
                             />
                         </Box>
                         <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" }}>forgot passward</Link>
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
-                        <Input type="submit" value="Login" 
-                        disableUnderline
-                        sx={{
-                            borderRadius: "20px",
-                            backgroundColor: theme.success,
-                            border: "none",
-                            width: "70%",
-                            padding: "0.4rem 1rem",
-                            color: "white",
-                            fontSize: "1.4rem",
-                            fontWeight: "600",
-                            [theme.breakpoints.down("xsm")]: {
-                                fontSize: "1rem",
-                                paddingInline: "1rem"
-                            },
-                        }} 
-                        onClick={(e) => submitCredentials(e, creds)}
+                        <Input type="submit" value="Login"
+                            disableUnderline
+                            sx={{
+                                borderRadius: "20px",
+                                backgroundColor: theme.success,
+                                border: "none",
+                                width: "70%",
+                                padding: "0.4rem 1rem",
+                                color: "white",
+                                fontSize: "1.4rem",
+                                fontWeight: "600",
+                                [theme.breakpoints.down("xsm")]: {
+                                    fontSize: "1rem",
+                                    paddingInline: "1rem"
+                                },
+                            }}
+                            onClick={(e) => submitCredentials(e, creds)}
                         />
                         <span>New User? <Link to="/signup-hospital" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>

@@ -198,6 +198,7 @@ const editAppointment = asyncHandler(async (req, res) => {
 })
 
 const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
+    console.log(req.doctor);
     const doctorId = req.doctor._id;
     const postDoctorId  = req.body._id;
     if (postDoctorId){

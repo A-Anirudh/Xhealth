@@ -8,14 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDoctorCredentials } from "../../slices/authSlice";
 import { Toaster, toast } from "react-hot-toast";
 import { useDoctorLoginMutation } from "../../slices/doctorsApiSlice";
+let clearError
 
 export const LoginDoctor = () => {
     const theme = useTheme()
     const [creds, setCreds] = useState({});
-    const [login] = useDoctorLoginMutation();
+    const [login, { error: logError }] = useDoctorLoginMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { doctorInfo } = useSelector(state => state.auth);
+    const [error, setError] = useState("");
 
     const getCredentials = e => {
         const { value, name } = e.target;
@@ -40,6 +42,11 @@ export const LoginDoctor = () => {
         navigate(doctorInfo ? "/dashboard-doctor" : "/login-doctor");
     }, [navigate, doctorInfo])
 
+    useEffect(() => {
+        clearTimeout(clearError);
+        setError(logError);
+        clearError = setTimeout(() => setError(""), 2000);
+    }, [logError])
 
     return (
         <Box sx={{
@@ -49,7 +56,21 @@ export const LoginDoctor = () => {
             alignItems: "center",
             justifyContent: "center",
         }}>
-            <Toaster />
+            <Box
+                display={error ? "block" : "none"}
+                position="absolute"
+                left="50%"
+                top="1rem"
+                zIndex="4"
+                marginTop="1rem"
+                borderRadius="0.5rem"
+                boxShadow="0 3px 5px gray"
+                fontWeight="bold"
+                padding="1rem 3rem"
+                backgroundColor={"#ffbbbb"}
+                sx={{ fontFamily: 'Poppins', transform: "translateX(-50%)" }}
+            >{error && error?.data?.message}
+            </Box>
             <Box sx={{
                 borderRadius: "1.4rem",
                 background: "white",
@@ -127,7 +148,7 @@ export const LoginDoctor = () => {
 
                     }}
                     >
-                        <Typography fontFamily='Poppins' variant="h3"  sx={{
+                        <Typography fontFamily='Poppins' variant="h3" sx={{
                             fontWeight: 'bold',
                             [theme.breakpoints.down("xsm")]: {
                                 fontSize: "9vw",
@@ -164,7 +185,7 @@ export const LoginDoctor = () => {
                                 paddingInline: "2rem",
                                 fontSize: "1.1rem",
                                 color: "#9D9D9D",
-                                fontFamily:'Poppins',
+                                fontFamily: 'Poppins',
                                 [theme.breakpoints.down("xsm")]: {
                                     fontSize: "1rem",
                                     paddingInline: "1rem"
@@ -184,7 +205,7 @@ export const LoginDoctor = () => {
                                     width: "100%",
                                     padding: "0.4rem 1rem",
                                     fontSize: "1.4rem",
-                                    fontFamily:'Poppins',
+                                    fontFamily: 'Poppins',
                                     background: theme.inputBackground,
                                     [theme.breakpoints.down("xsm")]: {
                                         fontSize: "1rem"
@@ -206,7 +227,7 @@ export const LoginDoctor = () => {
                                 paddingInline: "2rem",
                                 fontSize: "1.1rem",
                                 color: "#9D9D9D",
-                                fontFamily:'Poppins',
+                                fontFamily: 'Poppins',
                                 [theme.breakpoints.down("xsm")]: {
                                     fontSize: "1rem",
                                     paddingInline: "1rem"
@@ -221,7 +242,7 @@ export const LoginDoctor = () => {
                                 name="password"
                                 sx={{
                                     borderRadius: "20px",
-                                    fontFamily:'Poppins',
+                                    fontFamily: 'Poppins',
                                     outlineColor: theme.doctor.inputActive,
                                     border: `2px solid ${theme.doctor.inputDefault}`,
                                     width: "100%",
@@ -236,13 +257,13 @@ export const LoginDoctor = () => {
                                 onChange={e => getCredentials(e)}
                             />
                         </Box>
-                        <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem" ,fontFamily:'Poppins',}}>Forgot password</Link>
+                        <Link to="/forgot-password" style={{ color: theme.success, alignSelf: "flex-end", paddingInlineEnd: "1rem", marginBlockStart: "-1rem", fontFamily: 'Poppins', }}>Forgot password</Link>
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
                         <Input type="submit" value="Login"
                             disableUnderline
                             sx={{
-                                fontFamily:'Poppins',
+                                fontFamily: 'Poppins',
                                 borderRadius: "20px",
                                 backgroundColor: theme.success,
                                 border: "none",
@@ -258,7 +279,7 @@ export const LoginDoctor = () => {
                             }}
                             onClick={(e) => submitCredentials(e, creds)}
                         />
-                        <span style={{fontFamily:'Poppins',}}>New User? <Link to="/signup-doctor" style={{ color: theme.success }}>Register Now</Link></span>
+                        <span style={{ fontFamily: 'Poppins', }}>New User? <Link to="/signup-doctor" style={{ color: theme.success }}>Register Now</Link></span>
                     </Box>
                 </Box>
 
