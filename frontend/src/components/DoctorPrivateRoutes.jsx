@@ -12,7 +12,7 @@ export const DoctorPrivateRoutes = () => {
     const { doctorInfo } = useSelector((state) => state.auth)
     const [userOptions, setUserOptions] = useState(false);
     const logout = user.logoutDoctor();
-	const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
 
     const logoutUser = async () => {
@@ -76,7 +76,92 @@ export const DoctorPrivateRoutes = () => {
                         },
                     }}>View all records</Typography>
                 </Link>
-
+                <Box sx={
+                    {
+                        cursor: "pointer",
+                        position: "relative",
+                        marginLeft:"auto"
+                    }
+                }
+                >
+                    <img onClick={() => setUserOptions(p => !p)} src={userProfile} alt="user image" />
+                    <Box
+                        display={userOptions ? "flex" : "none"}
+                        backgroundColor="white"
+                        padding="0.5rem 1rem"
+                        borderRadius={1}
+                        position="absolute"
+                        left={-40}
+                        sx={{ transform: "translate(-50%, 10%)" }}
+                        minWidth="max-content"
+                        textAlign="center"
+                        color={theme['blue-150']}
+                        flexDirection="column"
+                        gap={1}
+                        fontSize={4}
+                        zIndex={3}
+                        boxShadow="0 4px 4px lightgray"
+                    >
+                        <Box
+                            display="none"
+                            gap={1}
+                            alignItems="center"
+                            sx={{
+                                cursor: "pointer",
+                                [theme.breakpoints.down("xl")]: {
+                                    display: "block"
+                                }
+                            }}
+                        >
+                            <Link to="/profile-user" style={{ textDecoration: "none" }}>
+                                <Typography fontFamily='poppins' sx={{
+                                    cursor: "pointer",
+                                    color: theme['blue-150'],
+                                    fontWeight: "bold",
+                                }}>user-profile</Typography>
+                            </Link>
+                        </Box>
+                        <Box sx={{
+                            [theme.breakpoints.down("xxl")]: {
+                                display: "none"
+                            },
+                            [theme.breakpoints.down("sm")]: {
+                                display: "block"
+                            },
+                        }}>
+                            <Link to="/appointments" style={{ textDecoration: "none" }}>
+                                <Typography fontFamily='poppins' sx={{
+                                    cursor: "pointer",
+                                    color: theme['blue-150'],
+                                    fontWeight: "bold",
+                                }}>Appointments</Typography>
+                            </Link>
+                        </Box>
+                        <Box
+                            display="flex"
+                            gap={1}
+                            alignItems="center"
+                            sx={{
+                                cursor: "pointer",
+                                [theme.breakpoints.down("xxl")]: {
+                                    display: "none"
+                                },
+                                [theme.breakpoints.down("sm")]: {
+                                    display: "block"
+                                },
+                            }}
+                        >
+                            <Link to="/health-records" style={{ textDecoration: "none" }}>
+                                <Typography fontFamily='poppins' sx={{
+                                    cursor: "pointer",
+                                    color: theme['blue-150'],
+                                    fontWeight: "bold",
+                                }}>Health Record</Typography>
+                            </Link>
+                        </Box>
+                        <Button onClick={logoutUser} sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Logout</Button>
+                    </Box>
+                </Box>
 
             </Grid>
             <Outlet />
