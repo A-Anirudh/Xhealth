@@ -19,7 +19,7 @@ const protect = asyncHandler(async (req, res, next) => {
             res.status(401);
             throw new Error("Not authorized, Invalid token for doctors")
         }
-    } else if (user_token && req.baseUrl.includes('users')) {
+    } if (user_token && req.baseUrl.includes('users')) {
         try {
             console.log("User token autherized")
             const dedcoded = jwt.verify(user_token, process.env.JWT_SECRET);
@@ -30,7 +30,7 @@ const protect = asyncHandler(async (req, res, next) => {
             throw new Error("Not authorized, Invalid token")
         }
 
-    } else if (hospital_token) {
+    } if (hospital_token) {
         try {
             const dedcoded = jwt.verify(hospital_token, process.env.JWT_SECRET);
             req.doctor = await Hospital.findById(dedcoded.userId).select('-password');
