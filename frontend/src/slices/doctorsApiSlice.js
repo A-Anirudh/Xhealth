@@ -44,11 +44,17 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
                 
             })
         }),
-
         logoutDoctor: builder.mutation({
             query: () => ({
                 url: `${DOCTOR_URL}/logout`,
                 method: 'POST'
+            })
+        }),
+        changeAptStatus: builder.mutation({
+            query: (data) => ({
+                url: `/api/users/appointments`,
+                method: 'POST',
+                body:data
             })
         }),
 
@@ -63,4 +69,5 @@ export const {
     useGetDoctorInfoQuery,//profile
     useUpdateDoctorInfoMutation,//update
     useGetDoctorAptQuery,
+    useChangeAptStatusMutation,
 } = doctorApiSlice;

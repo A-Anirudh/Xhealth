@@ -113,7 +113,7 @@ const allAppointments = asyncHandler(async (req,res)=>{
 // Access : private
 const changeAppointmentStatus = asyncHandler(async (req, res) => {
     const { newStatus } = req.body;
-    // console.log(req.user)
+    console.log("new status",req.body)
     try {
         const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
         // console.log(`date to be cancelled is ${updatedAppointmentStatus.appointmentDate}`)

@@ -2,19 +2,28 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Users } from '../sdk/users';
 import { useAddHealthRecordMutation, useGetHealthRecordsMutation, useUploadPdfMutation } from '../slices/healthRecordSlice';
-import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { useTheme } from '@emotion/react';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useChangeAptStatusMutation } from '../slices/doctorsApiSlice';
+ 
+
+
+
+
+
 
 export const AddHealthRecord = () => {
   const patientEmail = useSelector(state => state.patientId);
   const doctorId = useSelector(state => state.auth.doctorInfo._id)
+  const aptId=useSelector(state=>state.aptId)
+  console.log(aptId)
   const user = new Users();
   const theme = useTheme();
   const link = 'common_url/'
-
+ 
 
 
   // const [records] = useGetHealthRecordsMutation();
@@ -36,6 +45,8 @@ export const AddHealthRecord = () => {
   const [immu, setimmu] = useState([{ 'name': '', 'dosage': '' }])
   const [scans, setScans] = useState([{ 'name': '', 'pdfLink': link, 'typeOf': '' }]) //todo:encodedPDF->(entire pdf)->(base64string)
   const [body, setBody] = useState([''])
+  const [status] = useChangeAptStatusMutation()
+  const [alert, setAlert] = useState(false)
   //---------Dynamic input fields states-------
 
   const [newRecord, setnewRecord] = useState({
@@ -74,14 +85,11 @@ export const AddHealthRecord = () => {
   //-------Required Functions-----
 
   const handleOnSubmit = () => {
-    console.log("submitting", newRecord);
-    console.log('Submiiting PDF Body : ', body)
-    const data = addRecord(newRecord)
-    for (let i = 0; i < body.length; i++) {
-      uploadPdf(body[i])
-    }
-    console.log('data added', data.unwrap())
+    setAlert(true)
+
   }
+
+
 
 
   const handleOtherChange = (e) => {
@@ -316,8 +324,26 @@ export const AddHealthRecord = () => {
 
   }, [body])
 
+const navigate=useNavigate();
+  const submitEnd =()=>{
+    console.log("submitting", newRecord);
+    console.log('Submiiting PDF Body : ', body)
+    const data = addRecord(newRecord)
+    for (let i = 0; i < body.length; i++) {
+      uploadPdf(body[i])
+    }
+    console.log('data added', data.unwrap())
+    console.log('Submitted')
+    status({_id:aptId,newStatus:"Completed"})
+    navigate('/dashboard-doctor')
+    setAlert(false)
 
 
+  }
+
+  const submitCancel =()=>{
+    setAlert(false)
+  }
 
 
 
@@ -327,7 +353,23 @@ export const AddHealthRecord = () => {
   //-------Required Functions-----
   // console.log('record', newRecord)
   return (
-    <Grid sx={{ margin: '2rem 10rem', boxSizing: 'border-box' }}>
+    <Grid sx={{ marginX: '5rem', boxSizing: 'border-box' }}>
+
+      {alert?
+      <Alert severity="warning" sx={{display:'flex', flexDirection:'column',alignItems:'center',transform: 'translate(-50%, -50%)',
+      position: 'absolute',
+      top: '10%',
+      left: '50%',marginTop:'2rem'  }}>
+        <Typography variant='h6' fontFamily='poppins' margin={2} >Do you want to add this health record and end the appointment?</Typography>
+        <Box sx={{display:'flex',alignItems:'center',justifyContent:"center",gap:'5rem'}}>
+          <Button onClick={submitCancel} sx={{color:'white',fontFamily:'poppins',textTransform:'capitalize',backgroundColor:'red',':hover':{color:'red',backgroundColor:'transparent',outline:'2px solid red',}}}>Cancel</Button>
+          <Button onClick={submitEnd} sx={{color:'white',fontFamily:'poppins',textTransform:'capitalize',backgroundColor:`${theme['green-btn']}`,':hover':{color:`${theme['green-btn']}`,backgroundColor:'transparent',outline:`2px solid ${theme['green-btn']}`,}}}>Submit and end</Button>
+        </Box>
+        
+      </Alert>
+    :null}
+
+    
       <Grid
         item
         xl lg md sm xs xsm
@@ -382,7 +424,7 @@ export const AddHealthRecord = () => {
 
       <Box color={theme.doctor.primary} className='title&button' display='flex' justifyContent='space-between' alignItems='center' padding={1} margin={2} >
         <Typography fontFamily='poppins' fontWeight='600' variant='h4'>Add Patient Health Record </Typography>
-        <Button sx={{ color: 'white', backgroundColor: `${theme['green-btn']}`, textTransform: 'capitalize', fontFamily: 'poppins', fontSize: '1.2vw', padding: '0rem 2vw', borderRadius: "10px", '&:hover': { backgroundColor: "white", color: `${theme['green-btn']}`, outline: `2px solid ${theme['green-btn']}` }, boxShadow: '0px 4px 11px 0px rgba(0, 0, 0, 0.25);' }} onClick={handleOnSubmit}>Add new Record</Button>
+        <Button sx={{ color: 'white', backgroundColor: `${theme['green-btn']}`, textTransform: 'capitalize', fontFamily: 'poppins', fontSize: '1.2vw', padding: '0rem 2vw', borderRadius: "10px", '&:hover': { backgroundColor: "white", color: `${theme['green-btn']}`, outline: `2px solid ${theme['green-btn']}` }, boxShadow: '0px 4px 11px 0px rgba(0, 0, 0, 0.25)' }} onClick={handleOnSubmit}>Add new Record</Button>
       </Box>
 
       <Box className='diagnosis' padding={1} margin={2} display='flex' flexDirection='column'>
