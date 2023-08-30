@@ -1,14 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import { apiSlice } from './slices/apiSlice';
+import patientIdReducer from "./slices/patientIdSlice"
+import aptIdReducer from './slices/aptIdSlice'
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    [apiSlice.reducerPath]:apiSlice.reducer,
-    
+    patientId:patientIdReducer,
+    aptId :aptIdReducer ,
+    [apiSlice.reducerPath]: apiSlice.reducer,
+
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(apiSlice.middleware),
   devTools: true,
 });
 

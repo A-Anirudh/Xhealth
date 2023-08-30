@@ -1,89 +1,37 @@
 import { Box, Input, InputLabel, Typography } from "@mui/material"
-import loginThumbnail from "../../assets/userLogin.png";
+import img from '../../assets/userSU.png'
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../Login/Login.module.css";
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
-import { useUserLoginMutation } from "../../slices/usersApiSlice";
+import { useUserSignupMutation } from "../../slices/usersApiSlice";
 import { setUserCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
+import { signUpDetails } from "../../dump/";
 
 export const SignupUser = () => {
     const theme = useTheme()
-    const [creds, setCreds] = useState({});
-    const [login] = useUserLoginMutation();
+    const primary = '#50144C'
+    const [creds, setCreds] = useState({gender:'',bloodGroup:""});
+    const [signup] = useUserSignupMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userInfo } = useSelector(state => state.auth);
-    const signUpDetails = [
-        {
-            "name": "firstName",
-            "type": "text",
-            "label": "First name"
-        },
-        {
-            "name": "lastName",
-            "type": "text",
-            "label": "Last name"
-        },
-        {
-            "name": "password",
-            "type": "password",
-            "label": "Password"
-        },
-        {
-            "name": "email",
-            "type": "email",
-            "label": "Email"
-        },
-        {
-            "name": "phoneNumber",
-            "type": "tel",
-            "label": "Phone number"
-        },
-        {
-            "name": "dateOfBirth",
-            "type": "date",
-            "label": "Date of Birth"
-        },
-        {
-            "name": "state",
-            "type": "text",
-            "label": "State"
-        },
-        {
-            "name": "city",
-            "type": "text",
-            "label": "City"
-        },
-        {
-            "name": "pincode",
-            "type": "text",
-            "label": "Pincode"
-        },
-        {
-            "name": "gender",
-            "type": "text",
-            "label": "Gender"
-        },
-        {
-            "name": "bloodGroup",
-            "type": "text",
-            "label": "Blood group"
-        }
-    ]
+    
 
     const getCredentials = e => {
         const { value, name } = e.target;
         setCreds(p => ({ ...p, [name]: value }));
+        console.log(creds);
     }
 
     const submitCredentials = async (e, data) => {
         try {
             e.preventDefault();
-            const res = await login(data).unwrap();
-            dispatch(setUserCredentials(res));
+            const res = await signup(data);
+            console.log(res.error)
+            !res.error&&dispatch(setUserCredentials(res));
             toast.success("Welcome User!")
         }
         catch (e) {
@@ -96,191 +44,257 @@ export const SignupUser = () => {
     }, [navigate, userInfo])
 
     return (
-        <Box sx={{
-            background: theme.patient.background,
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-        }}>
-            <Toaster />
-            <Box sx={{
-                borderRadius: "1.4rem",
-                background: "white",
-                display: "flex",
-                overflow: "hidden",
-                height: "80%",
-                width: "70%",
-                [theme.breakpoints.down('lg')]: {
-                    width: "90%",
-                },
-                [theme.breakpoints.down("sm")]: {
-                    flexDirection: "column"
-                }
-            }}>
+        <Box className="maincontainer" sx={{ display: 'flex', boxSizing: "border-box" }} >
+            <Box className='left-section'
+                sx={{
+                    backgroundColor: primary,
+                    height: "100vh",
+                    width: "15%",
+                    position: 'relative',
+                }}> 
+
+                <img src={img} alt="signup image" style={{ position: 'absolute', bottom: '0', width: '100%' }} />
+                <Typography sx={{ color: 'white', fontWeight: "600", fontFamily: 'Poppins', position: 'absolute', right: "0", fontSize: '5vw' }}>REGI</Typography>
+
+            </Box>
+
+            <Box className='right-section' sx={{ position: 'relative', boxSizing: "border-box", width: '85%', display: 'flex', flexDirection: 'column' }}>
+                <Typography sx={{ color: primary, fontWeight: "600", fontFamily: 'Poppins', position: 'absolute', left: "0", fontSize: '5vw', top: '0' }}>STER</Typography>
+
+                {/* <Box sx={{display:'flex',backgroundColor:"red",flexDirection:'column',alignItems:'center'}}> */}
                 <Box sx={{
-                    background: theme.patient.primary,
-                    height: "100%",
-                    width: "35%",
-                    position: "relative",
                     display: "flex",
+                    // flexDirection: "column",
+                    height: '80vh',
+                    gap: "1rem",
                     alignItems: "center",
                     justifyContent: "center",
-                    [theme.breakpoints.down("sm")]: {
-                        width: "100%",
-                        height: "unset",
-                        paddingBlock: "1rem",
-                    },
-                }}>
-                    <Typography variant="h1" sx={{
-                        fontFamily: "Poppins",
-                        fontWeight: "bold",
-                        transform: "rotate(270deg) translateY(-7rem)",
-                        background: "linear-gradient(90deg, #C767C7 0%, rgba(255, 255, 255, 0.50) 100%)",
-                        backgroundClip: "text",
-                        textFillColor: "transparent",
-                        fontSize: "clamp(7rem, 8.5vw, 8rem)",
-                        [theme.breakpoints.down('lg')]: {
-                            transform: "rotate(270deg) translateY(-10vw)",
-                        },
-                        [theme.breakpoints.down('md')]: {
-                            transform: "rotate(270deg) translateY(-8vw)",
-                        },
-                        [theme.breakpoints.down("sm")]: {
-                            transform: "initial",
-                            fontSize: "4rem",
-                        },
-                        [theme.breakpoints.down("xsm")]: {
-                            transform: "initial",
-                            fontSize: "14vw",
-                        },
-                    }}>
-                        PATIENT
-                    </Typography>
-                    <Box sx={{
-                        [theme.breakpoints.down('sm')]: {
-                            display: "none"
-                        }
-                    }}>
-                        <img src={loginThumbnail} className={styles.coverImg} alt="patient" />
-                    </Box>
-                </Box>
-                <Box sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    justifyContent: "space-around"
+                    flexWrap: "wrap",
+                    // backgroundColor:'pink',
+                    marginTop: "8rem",
+                    padding: '2rem',
+                    position: 'relative'
+
                 }}
                 >
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+                    {
+                        signUpDetails.map(({ name, type, label }) => {
+                        
+                            if (name == 'gender') {
 
-                    }}
-                    >
-                        <Typography variant="h3" sx={{
-                            fontWeight: 'bold',
-                            [theme.breakpoints.down("xsm")]: {
-                                fontSize: "9vw",
-                            },
-                        }}>
-                            Sign Up
-                        </Typography>
-                        <Typography variant="h6" sx={{
-                            color: theme.secondaryText,
-                            [theme.breakpoints.down("xsm")]: {
-                                fontSize: "5vw",
-                            },
-                        }}>
-                            Please Sign up your account
-                        </Typography>
-                    </Box>
-                    <Box sx={{
-                        display: "flex",
-                        // flexDirection: "column",
-                        width: "80%",
-                        gap: "1rem",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexWrap: "wrap"
-                    }}
-                    >
-                        {
-                            signUpDetails.map(({name, type, label}) => (
-                                <Box sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    width: "10rem",
-                                    alignItems: "center",
-                                }}
-                                >
-                                    <InputLabel
-                                        htmlFor={name}
-                                        sx={{
-                                            alignSelf: "flex-start",
-                                            paddingInline: "1rem",
-                                            fontSize: "0.8rem",
-                                            color: "#9D9D9D",
-                                            [theme.breakpoints.down("xsm")]: {
+                                return (
+                                    <Box key={name} sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "26rem",
+                                        alignItems: "center",
+                                    }}>
+                                        <InputLabel
+                                            htmlFor={name}
+                                            sx={{
+                                                alignSelf: "flex-start",
+                                                paddingInline: "1rem",
+                                                fontSize: "1.2rem",
+                                                fontFamily: 'Poppins',
+                                                color: primary,
+
+                                                [theme.breakpoints.down("xsm")]: {
+                                                    fontSize: "1rem",
+                                                    paddingInline: "1rem"
+                                                },
+                                            }}
+                                        >
+                                            {label}
+                                        </InputLabel>
+                                        <select required style={{
+                                            borderRadius: "5px",
+                                            // outlineColor: theme.patient.inputActive,
+                                            // border: `1px solid ${theme.patient.inputDefault}`,
+                                            outline: 'none',
+                                            border: 'none',
+                                            width: "100%",
+                                            padding: "0 1rem",
+                                            height: '3rem',
+                                            fontSize: "1rem",
+                                            fontFamily: 'Poppins',
+                                            backgroundColor: theme.inputBackground,
+                                            "@media (maxWidth: 449.95px)": {
                                                 fontSize: "1rem",
                                                 paddingInline: "1rem"
                                             },
-                                        }}
-                                    >
-                                        {label}
-                                    </InputLabel>
-    
-                                    <Input
-                                        id={name}
-                                        type={type}
-                                        name={name}
-                                        sx={{
-                                            borderRadius: "20px",
-                                            outlineColor: theme.patient.inputActive,
-                                            border: `1px solid ${theme.patient.inputDefault}`,
-                                            width: "100%",
-                                            padding: "0 1rem",
-                                            fontSize: "1rem",
-                                            background: theme.inputBackground,
-                                            [theme.breakpoints.down("xsm")]: {
-                                                fontSize: "1rem"
+
+
+                                            "&:focus": {
+
                                             },
                                         }}
-                                        disableUnderline
-                                        onChange={e => getCredentials(e)}
-                                    />
-                                </Box>
-                            ))
-                        }
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "1rem" }}>
-                        <Input type="submit" value="Login"
-                            disableUnderline
-                            sx={{
-                                borderRadius: "20px",
-                                backgroundColor: theme.success,
-                                border: "none",
-                                width: "70%",
-                                padding: "0.4rem 1rem",
-                                color: "white",
-                                fontSize: "1.4rem",
-                                fontWeight: "600",
-                                [theme.breakpoints.down("xsm")]: {
-                                    fontSize: "1rem",
-                                    paddingInline: "1rem"
-                                },
+
+                                            key={name} value={creds.gender}  onChange={(e) => { setCreds(p => ({ ...p, 'gender': e.target.value })); console.log(creds) }}>
+                                            <option value="Male">Male</option   >
+                                            <option value="Female">Female</option   >
+
+                                        </select></Box>
+                                )
+                            }
+
+
+                            else if (name == 'bloodGroup') {
+
+                                return (
+                                    <Box key={name} sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "26rem",
+                                        alignItems: "center",
+                                    }}>
+                                        <InputLabel
+                                            htmlFor={name}
+                                            sx={{
+                                                alignSelf: "flex-start",
+                                                paddingInline: "1rem",
+                                                fontSize: "1.2rem",
+                                                fontFamily: 'Poppins',
+                                                color: primary,
+
+                                                [theme.breakpoints.down("xsm")]: {
+                                                    fontSize: "1rem",
+                                                    paddingInline: "1rem"
+                                                },
+                                            }}
+                                        >
+                                            {label}
+                                        </InputLabel>
+                                        <select style={{
+                                            borderRadius: "5px",
+                                            // outlineColor: theme.patient.inputActive,
+                                            // border: `1px solid ${theme.patient.inputDefault}`,
+                                            outline: 'none',
+                                            border: 'none',
+                                            width: "100%",
+                                            padding: "0 1rem",
+                                            height: '3rem',
+                                            fontSize: "1rem",
+                                            fontFamily: 'Poppins',
+                                            backgroundColor: theme.inputBackground,
+
+                                            "@media (maxWidth: 449.95px)": {
+                                                fontSize: "1rem",
+                                                paddingInline: "1rem"
+                                            },
+
+                                            "&:focus": {
+
+                                            },
+                                        }}
+
+                                            key={name} value={creds.bloodGroup}  onChange={(e) => { setCreds(p => ({ ...p, 'bloodGroup': e.target.value })); console.log(creds) }}>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+
+                                        </select></Box>
+                                )
+                            }
+
+
+
+
+                        
+                        
+                        
+                        
+                         else{ return(
+                            <Box key={name} sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                width: "26rem",
+                                alignItems: "center",
                             }}
-                            onClick={(e) => submitCredentials(e, creds)}
-                        />
-                        <span>Existing User? <Link to="/login-user" style={{ color: theme.success }}>Sign In Now</Link></span>
-                    </Box>
+                            >
+                                <InputLabel
+                                    htmlFor={name}
+                                    sx={{
+                                        alignSelf: "flex-start",
+                                        paddingInline: "1rem",
+                                        fontSize: "1.2rem",
+                                        fontFamily: 'Poppins',
+                                        color: primary,
+
+                                        [theme.breakpoints.down("xsm")]: {
+                                            fontSize: "1rem",
+                                            paddingInline: "1rem"
+                                        },
+                                    }}
+                                >
+                                    {label}
+                                </InputLabel>
+
+                                <Input
+                                    id={name}
+                                    type={type}
+                                    name={name}
+                                    sx={{
+                                        borderRadius: "5px",
+                                        // outlineColor: theme.patient.inputActive,
+                                        // border: `1px solid ${theme.patient.inputDefault}`,
+                                        width: "100%",
+                                        padding: "0 1rem",
+                                        height: '3rem',
+                                        fontSize: "1rem",
+                                        fontFamily: 'Poppins',
+                                        backgroundColor: theme.inputBackground,
+
+                                        [theme.breakpoints.down("xsm")]: {
+                                            fontSize: "1rem"
+                                        },
+
+
+                                        "&:focus": {
+
+                                        },
+                                    }}
+                                    disableUnderline
+                                    onChange={e => getCredentials(e)}
+                                />
+                            </Box>
+                        )}})
+                    }
+
+
+                    <Input type="submit" value="Register"
+                        disableUnderline
+                        sx={{
+                            borderRadius: "20px",
+                            backgroundColor: theme.success,
+                            border: "none",
+                            marginTop: '0',
+                            width: "400px",
+                            padding: "0.4rem 1rem",
+                            color: "white",
+                            fontSize: "1.4rem",
+                            fontWeight: "600",
+                            [theme.breakpoints.down("xsm")]: {
+                                fontSize: "1rem",
+                                paddingInline: "1rem"
+                            },
+
+
+
+                        }}
+                        onClick={(e) => submitCredentials(e, creds)}
+                    />
                 </Box>
 
+                {/* </Box> */}
+
             </Box>
-        </Box >
+
+        </Box>
     )
 }
 

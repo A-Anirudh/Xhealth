@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments } from './screens';
-import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
+// import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, AddHealthRecord } from './screens';
+// import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
+import { AddHealthRecord,LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, DashboardHospital, SignupHospital, DoctorAppointments, AllHealthRecords, ViewAppointments } from './screens';
+import { DoctorPrivateRoutes, UserPrivateRoutes, HospitalPrivateRoutes } from './components';
 
-import './index.css';
+// import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const theme = createTheme({
@@ -44,7 +46,15 @@ const theme = createTheme({
   'In Progress': "#FFFB93",
   'Cancelled': "#FF9393",
   'Expired': "#C3C3C8",
-  inputBackground: "#EEEEEE",
+  'purple-heading':'#5A4B9A',
+  'purple-bg':'#DFD7FF',
+  'green-btn':'#51AD49',
+  'grey-heading':'#969696',
+  'magenta':'#6C002E',
+  'grey-border':'#BEBEBE',
+  'grey-bg':'#F6F6F6',
+
+  inputBackground: "#ECECEC",
   primaryText: "",
   secondaryText: "#C3C3C8",
   success: "#79AC6E",
@@ -64,18 +74,34 @@ const theme = createTheme({
 const AppRouter = () => (
   <Router>
     <Routes>
+      <Route path='/' element={<LandingPage/>}/>
       <Route path='login-doctor' element={<LoginDoctor />} />
       <Route path='login-hospital' element={<LoginHospital />} />
       <Route path='login-user' element={<LoginUser />} />
       <Route path='signup-user' element={<SignupUser />} />
+      <Route path='signup-doctor' element={<SignupDoctor />} />
+      <Route path='signup-hospital' element={<SignupHospital />} />
+
       <Route path="/" element={<UserPrivateRoutes />}>
         <Route path='dashboard-user' element={<DashboardUser />} />
         <Route path='appointments' element={<Appointments />} />
+        <Route path='book-appointment' element={<BookAppointment />} />
+        <Route path='doctor-recommendation' element={<DoctorRecommendation />} />
+        <Route path='health-records' element={<PersonalHealthRecords />} />
+        <Route path='profile-user' element={<UserProfile />} />
       </Route>
       <Route path="/" element={<DoctorPrivateRoutes />}>
+        {/* <Route path='doctor-appointments' element={<DoctorAppointments />} /> */}
         <Route path='dashboard-doctor' element={<DashboardDoctor />} />
+        <Route path='profile-doctor' element={<DoctorProfile />} />
+        <Route path='add-record' element={<AddHealthRecord/>}/>
+        <Route path="view-all-records" element={<AllHealthRecords />} />
       </Route>
-
+      <Route path="/" element={<HospitalPrivateRoutes />}>
+        <Route path='doctor-appointments' element={<DoctorAppointments />} />
+        <Route path="dashboard-hospital" element={<DashboardHospital />} />
+        <Route path="doctor/appointments/:docname/:id" element={<ViewAppointments/>} />
+      </Route>
     </Routes>
   </Router>
 );

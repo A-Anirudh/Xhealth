@@ -19,7 +19,7 @@ const healthRecords=new Schema({
                 dosage:Number, //in milligrams per one time
                 perDay:Number,
                 gap:Number,  //gap between days 
-                timings:[Number]
+                timings:[String]
             }]
         },
         immunizations:[{
@@ -30,7 +30,8 @@ const healthRecords=new Schema({
             name:String,
             pdfLink:String,
             typeOf:String
-        }]
+        }],
+        time:String,
     }]
 })
 

@@ -7,6 +7,9 @@ const initialState = {
   doctorInfo: localStorage.getItem('doctorInfo')
     ? JSON.parse(localStorage.getItem('doctorInfo'))
     : null,
+  hospitalInfo: localStorage.getItem('hospitalInfo')
+    ? JSON.parse(localStorage.getItem('hospitalInfo'))
+    : null,
 };
 
 const authSlice = createSlice({
@@ -29,9 +32,17 @@ const authSlice = createSlice({
       state.doctorInfo = null;
       localStorage.removeItem('doctorInfo');
     },
+    setHospitalCredentials: (state, action) => {
+      state.hospitalInfo = action.payload;
+      localStorage.setItem('hospitalInfo', JSON.stringify(action.payload));
+    },
+    hospitalLogout: (state, action) => {
+      state.hospitalInfo = null;
+      localStorage.removeItem('hospitalInfo');
+    },
   },
 });
 
-export const { setUserCredentials, userLogout, setDoctorCredentials, doctorLogout } = authSlice.actions;
+export const { setUserCredentials, userLogout, setDoctorCredentials, doctorLogout, hospitalLogout, setHospitalCredentials } = authSlice.actions;
 
 export default authSlice.reducer;

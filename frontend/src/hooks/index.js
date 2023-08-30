@@ -1,0 +1,1 @@
+export { useAptDetails } from "./useAptDetails";

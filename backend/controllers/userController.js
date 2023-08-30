@@ -56,9 +56,9 @@ const registerUser = asyncHandler(async (req, res) => {
         lastName,
         phoneNumber,
         dateOfBirth, 
-        gender, 
-        state, 
-        bloodGroup, 
+        gender: gender.charAt(0).toUpperCase() + gender.slice(1), 
+        state:state.charAt(0).toUpperCase() + state.slice(1), 
+        bloodGroup:bloodGroup.charAt(0).toUpperCase() + bloodGroup.slice(1), 
         city, 
         pincode
     });
@@ -111,6 +111,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         city:req.user.city,
         pincode:req.user.pincode,
         userTimeSlots : req.user.userTimeSlot,
+        permissionCheck : req.user.permissionCheck
     }
     // console.log(user)
     res.status(200).json(user)
@@ -133,8 +134,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         user.email = req.body.email || user.email;
         user.bloodGroup = req.body.bloodGroup || user.bloodGroup;
         user.dateOfBirth = req.body.dateOfBirth || user.dateOfBirth;
-        user.gender = req.body.gender || user.gender;
-        user.state = req.body.state || user.state;
+        user.gender = req.body.gender.charAt(0).toUpperCase() + req.body.gender.slice(1) || user.gender;
+        user.state = req.body.state.charAt(0).toUpperCase() + req.body.state.slice(1) || user.state;
         user.city = req.body.city || user.city;
         user.pincode = req.body.pincode || user.pincode;     
         if(req.body.password){
@@ -151,10 +152,40 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         throw new Error('User not found')
     }
 
-    
+});
+
+const updateUserPermission = asyncHandler(async (req, res) => {
+    const {updateMode, doctorId} = req.body;
+    const user = await User.findOne({_id:req.user._id});
+    const index = user.permissionCheck.indexOf(doctorId);
+
+    if (updateMode === "remove"){
+        if (index>-1){
+            user.permissionCheck.splice(index,1);
+            res.status(200).json("Doctor removed successfully");
+        } else{
+            res.status(400);
+            throw new Error("doctorID not found. Cannot remove it!")
+        }
+    } else if(updateMode === 'add'){
+        if(index===-1){
+            user.permissionCheck.push(doctorId);
+            res.status(200).json("Doctor addedd successfully");
+        } else{
+            res.status(400);
+            throw new Error("Doctor already exists in your permission list!");
+        }
+    } else{
+        res.status(400);
+        throw new Error("Performing Invalid operation!")
+    }
+
+    user.save()
 
 });
+
+
 // cron.schedule('0 0 * * *', clearUserArray);
-export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile};
+export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile,updateUserPermission};
 
 // clearUserArray()
