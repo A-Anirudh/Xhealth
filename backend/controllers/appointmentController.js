@@ -106,7 +106,7 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
     const { newStatus } = req.body;
     // console.log(req.user)
     try {
-        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
+        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id })
         // console.log(`date to be cancelled is ${updatedAppointmentStatus.appointmentDate}`)
         if (updatedAppointmentStatus === null) {
             res.status(400)
@@ -131,7 +131,7 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
         removeDocArray(doc, updatedAppointmentStatus.appointmentDate);
 
         //   Removing from user array
-        const user = await User.findOne({ _id: req.user._id });
+        const user = await User.findOne({ _id: updatedAppointmentStatus.userId });
         // console.log(`user is ${user}`)
         removeUserArray(user, updatedAppointmentStatus.appointmentDate);
         const index = user.permissionCheck.indexOf(doc._id)

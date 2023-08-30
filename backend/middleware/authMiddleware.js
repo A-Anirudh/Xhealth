@@ -30,7 +30,7 @@ const protect = asyncHandler(async (req, res, next) => {
             throw new Error("Not authorized, Invalid token")
         }
 
-    } if (hospital_token) {
+    } else if (hospital_token) {
         try {
             const dedcoded = jwt.verify(hospital_token, process.env.JWT_SECRET);
             req.doctor = await Hospital.findById(dedcoded.userId).select('-password');
