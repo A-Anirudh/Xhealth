@@ -7,6 +7,7 @@ export const LandingPage = () => {
         <Box
             sx={{
                 background: `url(${LandingBg}) center no-repeat`, // Corrected the backgroundImage assignment
+                minHeight: "100vh",
                 backgroundSize: 'cover',
                 boxSizing: 'border-box',
             }}>
