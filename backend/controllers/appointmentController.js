@@ -214,7 +214,7 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
     const postDoctorId  = req.body._id;
     console.log(req.body)
     if (postDoctorId){
-        const apts = await Appointment.find({ doctorId: postDoctorId, status:'Scheduled' });
+        const apts = await Appointment.find({ doctorId: postDoctorId});
         const users_array = []
         for (let i = 0; i < apts.length; i++) {
             let user = await User.findOne({ _id: apts[i].userId })
@@ -231,7 +231,7 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
     
 
     } else{
-        const apts = await Appointment.find({ doctorId: doctorId, status:'Scheduled' });
+        const apts = await Appointment.find({ doctorId: doctorId});
         const users_array = []
         for (let i = 0; i < apts.length; i++) {
             let user = await User.findOne({ _id: apts[i].userId })
