@@ -18,6 +18,7 @@ export const AllHealthRecords = () => {
   const theme = useTheme()
   const [records] = useGetHealthRecordsMutation();
   const [doctorInfo] = user.getDoctorInfo();
+  
   const [toggle, settoggle] = useState(false)
   const link = 'http://localhost:8080/api/users/healthRecords/key/'
   const patientEmail = useSelector(state => state.patientId)
