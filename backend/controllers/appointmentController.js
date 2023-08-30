@@ -42,7 +42,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
         const [year, month, date] = appointmentDate.split('-')
         const [hour, min] = appointmentStartTime.split(':')
         const d = new Date(year, month - 1, date, hour, min)
-        if (d.toString() < new Date().toString()) {
+        if (d < new Date()) {
             res.status(400)
             throw new Error("Appointment date cannot be before todays date!")
         }
