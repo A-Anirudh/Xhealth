@@ -5,14 +5,17 @@ import { useTheme } from "@mui/material/styles";
 import { useDoctorRegisterMutation } from "../../slices/doctorsApiSlice";
 import { setDoctorCredentials } from "../../slices/authSlice";
 import { Toaster, toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signUpDetails } from "../../dump";
+let clearError;
 
 export const SignupDoctor = () => {
   const primary = "#68B7FF";
   const [creds, setCreds] = useState({ gender: "Male", bloodGroup: "" });
-  const [register] = useDoctorRegisterMutation();
+  const { doctorInfo } = useSelector(state => state.auth)
+  const [register, { error: logError }] = useDoctorRegisterMutation();
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -48,12 +51,34 @@ export const SignupDoctor = () => {
     }
   };
 
+  
+  useEffect(() => {
+    clearTimeout(clearError);
+    setError(logError);
+    clearError = setTimeout(() => setError(""), 2000);
+  }, [logError]);
+
   return (
     <Box
       className="maincontainer"
       sx={{ display: "flex", boxSizing: "border-box" }}
     >
-      <Toaster />
+      <Box
+        display={error ? "block" : "none"}
+        position="absolute"
+        left="50%"
+        top="1rem"
+        zIndex="4"
+        marginTop="1rem"
+        borderRadius="0.5rem"
+        boxShadow="0 3px 5px gray"
+        fontWeight="bold"
+        padding="1rem 3rem"
+        backgroundColor={"#ffbbbb"}
+        sx={{ fontFamily: "Poppins", transform: "translateX(-50%)" }}
+      >
+        {error && error?.data?.message}
+      </Box>
 
       <Box
         className="left-section"
@@ -126,9 +151,9 @@ export const SignupDoctor = () => {
             [theme.breakpoints.down("md")]: {
               display: "block",
               marginTop: "2rem",
-			  display: "flex",
-			  alignItems: "baseline",
-			  gap: "3rem"
+              display: "flex",
+              alignItems: "baseline",
+              gap: "3rem",
             },
           }}
         >
