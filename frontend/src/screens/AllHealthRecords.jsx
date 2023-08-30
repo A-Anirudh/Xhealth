@@ -91,7 +91,7 @@ console.log(allRecords)
           const date = timeInfo.getDate() + "-" + (timeInfo.getMonth() + 1) + "-" + timeInfo.getFullYear()
           const time = timeInfo.getHours() + ':' + timeInfo.getMinutes()
           return (
-            <Box  key={i}onClick={(e) => handleOnclick(i)}><HealthRecordCard  diagnosis={data} name={firstName + " " + lastName} hospital={currentHospitalWorkingName} date={date} time={time} /></Box>
+            <Box  key={i}onClick={(e) => handleOnclick(i)}><HealthRecordCard  diagnosis={data} name={"Dr."+firstName + " " + lastName} hospital={currentHospitalWorkingName} date={date} time={time} /></Box>
           )
         })}
 
