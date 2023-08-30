@@ -7,7 +7,7 @@ import { setDoctorCredentials } from "../../slices/authSlice";
 import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signUpDetails } from "../../dump";
+import { doctorSignupDetails } from "../../dump";
 
 export const SignupDoctor = () => {
   const primary = "#68B7FF";
@@ -149,7 +149,7 @@ export const SignupDoctor = () => {
             },
           }}
         >
-          {signUpDetails.map(({ name, type, label }) => {
+          {doctorSignupDetails.map(({ name, type, label }) => {
             if (name == "gender") {
               return (
                 <Box
