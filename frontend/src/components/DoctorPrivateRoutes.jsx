@@ -113,7 +113,7 @@ export const DoctorPrivateRoutes = () => {
                                 }
                             }}
                         >
-                            <Link to="/profile-user" style={{ textDecoration: "none" }}>
+                            <Link to="/profile-doctor" style={{ textDecoration: "none" }}>
                                 <Typography fontFamily='poppins' sx={{
                                     cursor: "pointer",
                                     color: theme['blue-150'],
