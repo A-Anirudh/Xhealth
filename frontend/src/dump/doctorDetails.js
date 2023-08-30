@@ -117,7 +117,7 @@ export const doctorDetails = {
   ],
 };
 
-export const signUpDetails = [
+export const doctorSignupDetails = [
   {
     name: "firstName",
     type: "text",

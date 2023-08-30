@@ -4,7 +4,7 @@ import img from "../../assets/doctorSU.png";
 import { useTheme } from "@mui/material/styles";
 import { useDoctorRegisterMutation } from "../../slices/doctorsApiSlice";
 import { setDoctorCredentials } from "../../slices/authSlice";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signUpDetails } from "../../dump";
@@ -174,7 +174,7 @@ export const SignupDoctor = () => {
             },
           }}
         >
-          {signUpDetails.map(({ name, type, label }) => {
+          {doctorSignupDetails.map(({ name, type, label }) => {
             if (name == "gender") {
               return (
                 <Box
