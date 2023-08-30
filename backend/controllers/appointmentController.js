@@ -115,7 +115,7 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
     const { newStatus } = req.body;
     console.log("new status",req.body._id)
     try {
-        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
+        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id })
         // console.log(`date to be cancelled is ${updatedAppointmentStatus.appointmentDate}`)
         if (updatedAppointmentStatus === null) {
             res.status(400)
@@ -149,8 +149,6 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
                 user.permissionCheck.splice(index, 1)
             }
         }
-
-
 
         await doc.save()
         await user.save()
