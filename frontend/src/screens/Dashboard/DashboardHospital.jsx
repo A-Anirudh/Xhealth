@@ -35,7 +35,7 @@ export const DashboardHospital = () => {
   const searchDoc = e => {
     const res = getDoctors && getDoctors?.allDoc?.filter(item => e === "" ? false : item.firstName.toLowerCase().includes(e.toLowerCase()) || item.lastName.toLowerCase().includes(e.toLowerCase()))
     setSearchRes(res);
-    // console.log("res doc search",res)
+    // console.log("res doc search",res
   }
 
   const handleSelectDoc = (e) => {
@@ -90,13 +90,6 @@ export const DashboardHospital = () => {
       setCategorizedApt(categApt);
     }
   }, [getDoctors,appointments])
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const res = await doctorApt({ '_id': "64cead652a1fae980800d582" });
-  //     console.log("res",res);
-  //   })()
-  // }, [doctorApt])
 
   return (
     <Grid className="main-container" container>
