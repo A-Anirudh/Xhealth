@@ -96,7 +96,16 @@ const viewAllMyAppointments = asyncHandler(async (req, res) => {
 
 const allAppointments = asyncHandler(async (req,res)=>{
     const allAppointments = await Appointment.find({})
-    res.status(200).json(allAppointments)
+    const users_array = []
+    for(let i=0;i<allAppointments.length;i++){
+        let user = await User.findOne({ _id: allAppointments[i].userId })
+                .select("-password");
+            users_array.push({id:user._id,name:`${user.firstName} ${user.lastName}`})
+            
+    }
+    console.log("uar",(users_array))
+    res.status(200).json({"apt_data":allAppointments,"user_data":users_array})
+    
 })
 
 // @desc Update appointment status
@@ -104,9 +113,9 @@ const allAppointments = asyncHandler(async (req,res)=>{
 // Access : private
 const changeAppointmentStatus = asyncHandler(async (req, res) => {
     const { newStatus } = req.body;
-    // console.log(req.user)
+    console.log("new status",req.body._id)
     try {
-        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id, userId: req.user._id })
+        const updatedAppointmentStatus = await Appointment.findOne({ _id: req.body._id})
         // console.log(`date to be cancelled is ${updatedAppointmentStatus.appointmentDate}`)
         if (updatedAppointmentStatus === null) {
             res.status(400)
@@ -131,7 +140,7 @@ const changeAppointmentStatus = asyncHandler(async (req, res) => {
         removeDocArray(doc, updatedAppointmentStatus.appointmentDate);
 
         //   Removing from user array
-        const user = await User.findOne({ _id: req.user._id });
+        const user = await User.findOne({ _id: updatedAppointmentStatus.userId });
         // console.log(`user is ${user}`)
         removeUserArray(user, updatedAppointmentStatus.appointmentDate);
         const index = user.permissionCheck.indexOf(doc._id)
@@ -202,11 +211,12 @@ const editAppointment = asyncHandler(async (req, res) => {
 })
 
 const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
+    console.log("req",req.doctor._id);
     const doctorId = req.doctor._id;
     const postDoctorId  = req.body._id;
     console.log(req.body)
     if (postDoctorId){
-        const apts = await Appointment.find({ doctorId: postDoctorId });
+        const apts = await Appointment.find({ doctorId: postDoctorId, status:'Scheduled' });
         const users_array = []
         for (let i = 0; i < apts.length; i++) {
             let user = await User.findOne({ _id: apts[i].userId })
@@ -223,7 +233,7 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
     
 
     } else{
-        const apts = await Appointment.find({ doctorId: doctorId });
+        const apts = await Appointment.find({ doctorId: doctorId, status:'Scheduled' });
         const users_array = []
         for (let i = 0; i < apts.length; i++) {
             let user = await User.findOne({ _id: apts[i].userId })
