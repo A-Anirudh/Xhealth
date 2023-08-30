@@ -368,60 +368,6 @@ const navigate=useNavigate();
         
       </Alert>
     :null}
-
-    
-      <Grid
-        item
-        xl lg md sm xs xsm
-        sx={{
-          background: theme["purple-500"],
-          padding: "1.5rem 2rem",
-          display: "flex",
-          alignItems: "center",
-          borderRadius: "0 0 1rem 1rem",
-          [theme.breakpoints.down("xsm")]: {
-            padding: "0.7rem 2rem",
-          },
-        }}
-      >
-        <Link to='/' style={{ textDecoration: "none" }}>
-          <Typography fontFamily='Poppins'
-            variant="h4"
-            fontWeight="bold"
-            color="white"
-            sx={{
-              cursor: "pointer",
-              [theme.breakpoints.down("sm")]: {
-                fontSize: "5vw"
-              },
-            }}
-
-          >
-            XHealth
-          </Typography>
-        </Link>
-        <Link to="/dashboard-doctor" style={{ textDecoration: "none", marginInline: '2rem' }}>
-          <Typography fontFamily='Poppins' color="white" sx={{
-            cursor: "pointer",
-            [theme.breakpoints.down("sm")]: {
-              fontSize: "1vw",
-              display: "none"
-            },
-          }}>Dashboard</Typography>
-        </Link>
-        <Link to="/view-all-records" style={{ textDecoration: "none", marginInline: '2rem' }}>
-          <Typography fontFamily='Poppins' color="white" sx={{
-            cursor: "pointer",
-            [theme.breakpoints.down("sm")]: {
-              fontSize: "1vw",
-              display: "none"
-            },
-          }}>View all records</Typography>
-        </Link>
-
-
-      </Grid>
-
       <Box color={theme.doctor.primary} className='title&button' display='flex' justifyContent='space-between' alignItems='center' padding={1} margin={2} >
         <Typography fontFamily='poppins' fontWeight='600' variant='h4'>Add Patient Health Record </Typography>
         <Button sx={{ color: 'white', backgroundColor: `${theme['green-btn']}`, textTransform: 'capitalize', fontFamily: 'poppins', fontSize: '1.2vw', padding: '0rem 2vw', borderRadius: "10px", '&:hover': { backgroundColor: "white", color: `${theme['green-btn']}`, outline: `2px solid ${theme['green-btn']}` }, boxShadow: '0px 4px 11px 0px rgba(0, 0, 0, 0.25)' }} onClick={handleOnSubmit}>Add new Record</Button>

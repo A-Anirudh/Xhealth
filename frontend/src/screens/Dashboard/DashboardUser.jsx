@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import userProfile from "../../assets/profile.svg";
 import dropdown from "../../assets/dropdown.png";
 import coverImg from "../../assets/Doctors-pana 2.png";
 import boyimg from "../../assets/boyimg.png";
@@ -10,10 +9,7 @@ import bp from "../../assets/bp.png";
 import gl from "../../assets/gl.png";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react'
-import { useLogoutUserMutation } from '../../slices/usersApiSlice';
 import moment from 'moment/moment';
-import { useDispatch } from 'react-redux';
-import { userLogout } from '../../slices/authSlice';
 import { Toaster, toast } from 'react-hot-toast';
 import { Users } from '../../sdk/users';
 
@@ -28,19 +24,6 @@ export const DashboardUser = () => {
 	const [personalHealth, refetchHealth] = user.getPersonalHealth();
 	const [appointments, refetchAppointment] = user.getAppointments();
 	const [doctors, refetchDoctors] = user.getDoctors();
-	const logout = user.logout();
-	const dispatch = useDispatch();
-
-	const logoutUser = async () => {
-		try {
-			await logout();
-			dispatch(userLogout());
-			setUserOptions(false);
-		} catch (e) {
-			console.error(e);
-			toast.error("Something went wrong")
-		}
-	}
 
 	useEffect(() => {
 		(async () => {
@@ -67,166 +50,6 @@ export const DashboardUser = () => {
 			backgroundColor={theme['blue-100']}
 		>
 			<Toaster />
-			<Grid
-				item
-				xl lg md sm xs xsm
-				sx={{
-					background: theme["purple-500"],
-					padding: "1.5rem 2rem",
-					display: "flex",
-					alignItems: "center",
-					borderRadius: "0 0 1rem 1rem",
-					[theme.breakpoints.down("xsm")]: {
-						padding: "0.7rem 2rem",
-					},
-				}}
-			>
-				<Link to='/' style={{ textDecoration: "none" }}>
-					<Typography fontFamily='poppins'
-						variant="h4"
-						fontWeight="bold"
-						color="white"
-						sx={{
-							cursor: "pointer",
-							[theme.breakpoints.down("sm")]: {
-								fontSize: "5vw"
-							},
-						}}
-
-					>
-						XHealth
-					</Typography>
-				</Link>
-				<Box
-					marginLeft="auto"
-					display="flex"
-					gap={4}
-					alignItems="center"
-				>
-					<Link to="/appointments" style={{ textDecoration: "none" }}>
-						<Typography fontFamily='poppins' color="white" sx={{
-							cursor: "pointer",
-							[theme.breakpoints.down("sm")]: {
-								fontSize: "1vw",
-								display: "none"
-							},
-						}}>Appointments</Typography>
-					</Link>
-					<Box sx={{
-						[theme.breakpoints.down("sm")]: {
-							fontSize: "1vw",
-							display: "none"
-						},
-					}}>
-						<Link to="/health-records"
-							style={{
-								gap: "6px",
-								textDecoration: 'none',
-								display: "flex",
-								cursor: "pointer",
-								alignItems: "center",
-							}}
-						>
-							<Typography fontFamily='poppins' color="white">Health Record</Typography>
-							{/* <img src={dropdown} alt="dropdown" /> */}
-						</Link>
-					</Box>
-					<Link to="/doctor-recommendation" style={{ textDecoration: "none" }}>
-						<Typography fontFamily='poppins' color="white" sx={{
-							cursor: "pointer",
-							[theme.breakpoints.down("sm")]: {
-								fontSize: "1vw",
-								display: "none"
-							},
-						}}>Get a Doctor</Typography>
-					</Link>
-					<Box sx={
-						{
-							cursor: "pointer",
-							position: "relative"
-						}
-					}
-					>
-						<img onClick={() => setUserOptions(p => !p)} src={userProfile} alt="user image" />
-						<Box
-							display={userOptions ? "flex" : "none"}
-							backgroundColor="white"
-							padding="0.5rem 1rem"
-							borderRadius={1}
-							position="absolute"
-							left={-40}
-							sx={{ transform: "translate(-50%, 10%)" }}
-							minWidth="max-content"
-							textAlign="center"
-							color={theme['blue-150']}
-							flexDirection="column"
-							gap={1}
-							fontSize={4}
-							zIndex={3}
-							boxShadow="0 4px 4px lightgray"
-						>
-							<Box
-								display="none"
-								gap={1}
-								alignItems="center"
-								sx={{
-									cursor: "pointer",
-									[theme.breakpoints.down("xl")]: {
-										display: "block"
-									}
-								}}
-							>
-								<Link to="/profile-user" style={{ textDecoration: "none" }}>
-									<Typography fontFamily='poppins' sx={{
-										cursor: "pointer",
-										color: theme['blue-150'],
-										fontWeight: "bold",
-									}}>user-profile</Typography>
-								</Link>
-							</Box>
-							<Box sx={{
-								[theme.breakpoints.down("xxl")]: {
-									display: "none"
-								},
-								[theme.breakpoints.down("sm")]: {
-									display: "block"
-								},
-							}}>
-								<Link to="/appointments" style={{ textDecoration: "none" }}>
-									<Typography fontFamily='poppins' sx={{
-										cursor: "pointer",
-										color: theme['blue-150'],
-										fontWeight: "bold",
-									}}>Appointments</Typography>
-								</Link>
-							</Box>
-							<Box
-								display="flex"
-								gap={1}
-								alignItems="center"
-								sx={{
-									cursor: "pointer",
-									[theme.breakpoints.down("xxl")]: {
-										display: "none"
-									},
-									[theme.breakpoints.down("sm")]: {
-										display: "block"
-									},
-								}}
-							>
-								<Link to="/health-records" style={{ textDecoration: "none" }}>
-									<Typography fontFamily='poppins' sx={{
-										cursor: "pointer",
-										color: theme['blue-150'],
-										fontWeight: "bold",
-									}}>Health Record</Typography>
-								</Link>
-							</Box>
-							<Button onClick={logoutUser} sx={{ fontWeight: "bold", background: theme['blue-100'], color: theme['blue-150'], padding: 0, margin: 0, textTransform: "capitalize", fontSize: "1rem" }}>Logout</Button>
-						</Box>
-					</Box>
-				</Box>
-			</Grid>
 			<Grid
 				item
 				xl={12}
