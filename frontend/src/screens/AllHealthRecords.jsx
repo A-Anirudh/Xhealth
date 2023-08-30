@@ -46,7 +46,7 @@ export const AllHealthRecords = () => {
   }, [patientEmail, doctorInfo])
 
   
- 
+console.log(allRecords)
   if (!allRecords ) return 'loading'
   const { firstName, lastName, currentHospitalWorkingName } = doctorInfo
   const handleOnclick = (i) => {

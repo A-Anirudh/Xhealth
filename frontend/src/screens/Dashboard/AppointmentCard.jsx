@@ -13,7 +13,9 @@ const AppointmentCard = ({aptid,idx,name,time,id}) => {
 
     const setId = async (id)=>{
         dispatch(setPatientId(id))
-        // dispatch(setAptId)
+        console.log("before storing",aptid)
+        dispatch(setAptId(aptid))
+        console.log("id=",id)
     } 
 
   const newLocal = `#736f0b`

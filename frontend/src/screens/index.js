@@ -17,4 +17,5 @@ export{LandingPage} from './LandingPage/LandingPage'
 export{SignupDoctor} from './Signup/SignupDoctor'
 export{AddHealthRecord} from './AddHealthRecord'
 export{AllHealthRecords} from './AllHealthRecords'
+export{ViewAppointments} from './ViewAppointments'
 
