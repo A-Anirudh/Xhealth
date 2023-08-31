@@ -74,9 +74,11 @@ export const AllHealthRecords = () => {
 
    if (!healthRecord)  return (
     <center><Typography variant='h2' fontFamily={'poppins'} fontWeight={700} color={'red'}>
-      {error}
+      {'No records found'}
     </Typography></center>
     )
+
+    console.log('all',allRecords.history.length)
   return (
     <Box position='relative' >
       <Typography fontFamily='poppins' fontWeight='600' color={theme.doctor.primary} margin='1rem' variant='h3'>Patient Health Records </Typography>
@@ -94,7 +96,7 @@ export const AllHealthRecords = () => {
         overflow='auto'
         gap='1rem'>
 
-        {allRecords.history.map((item, i) => {
+        {  allRecords.history.length!=0?(allRecords.history.map((item, i) => {
           const data = item?.diagnoses.data
           const timeInfo = new Date(item.time)
           // console.log("time info ",timeInfo)
@@ -103,7 +105,7 @@ export const AllHealthRecords = () => {
           return (
             <Box  key={i}onClick={(e) => handleOnclick(i)}><HealthRecordCard  docId={item.doctorId}diagnosis={data} name={"Dr."+firstName + " " + lastName} hospital={currentHospitalWorkingName} date={date} time={time} /></Box>
           )
-        })}
+        })):<center><h1 style={{fontFamily:'poppins',color:`${theme.doctor.primary}`}}>No records found</h1></center>  }
 
 
       </Box>
