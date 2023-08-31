@@ -27,9 +27,18 @@ const healthRecords=new Schema({
             dosage: Number
         }],
         scans:[{
-            name:String,
-            pdfLink:String,
-            typeOf:String
+            name:{
+                type:String,
+                default: ""
+            },
+            pdfLink:{
+                type:String,
+                default:""
+            },
+            typeOf:{
+                type:String,
+                default: ""
+            }
         }],
         time:String,
     }]
