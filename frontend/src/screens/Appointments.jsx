@@ -38,13 +38,14 @@ export const Appointments = () => {
         gap={3}
       >
         <Box display="flex" alignItems="center" width="100%">
-          <Typography variant="h3">Appointments</Typography>
-          <Button
-            sx={{ marginLeft: "auto" }}
+          <Typography variant="h3" fontFamily={'poppins'} fontWeight={'600'}>Appointments</Typography>
+          <Button 
+            sx={{ marginLeft: "auto" ,fontFamily:'poppins',textTransform:'capitalize'}}
             variant="contained"
             color="success"
           >
             <Link
+            fontFamily={'poppins'}
               style={{ textDecoration: "none", color: "white" }}
               to="/book-appointment"
             >
@@ -73,6 +74,7 @@ export const Appointments = () => {
                   key={idx}
                 >
                   <Typography
+                  fontFamily={'poppins'}
                     marginLeft={4}
                     padding="0.3rem 1rem"
                     color="white"
@@ -105,6 +107,7 @@ export const Appointments = () => {
                           justifyContent="space-between"
                         >
                           <Typography
+                          fontFamily={'poppins'}
                             padding="0.3rem 1.5rem"
                             fontWeight="bold"
                             backgroundColor={theme[status]}
@@ -118,11 +121,11 @@ export const Appointments = () => {
                             height="1.5rem"
                             borderRight={`1px solid ${theme["gray-200"]}`}
                           ></Box>
-                          <Typography fontWeight="bold">
+                          <Typography fontWeight="bold" fontFamily={'poppins'}>
                             {department}
                           </Typography>
                           <Box
-                            height="1.5rem"
+                            height="1.5rem" fontFamily={'poppins'}
                             borderRight={`1px solid ${theme["gray-200"]}`}
                           ></Box>
                           <Box
@@ -130,10 +133,11 @@ export const Appointments = () => {
                             alignItems="center"
                             flexDirection="column"
                           >
-                            <Typography fontWeight="bold">
+                            <Typography fontWeight="bold" fontFamily={'poppins'}>
                               {moment(appointmentDate).format("DD/MM/YYYY")}
                             </Typography>
                             <Typography
+                            fontFamily={'poppins'}
                               color={theme["gray-200"]}
                               fontSize="0.8rem"
                             >
@@ -152,13 +156,13 @@ export const Appointments = () => {
                             alignItems="center"
                             flexDirection="column"
                           >
-                            <Typography
+                            <Typography fontFamily={'poppins'}
                               fontWeight="bold"
                               color={theme["purple-150"]}
                             >
                               {hospitalName}
                             </Typography>
-                            <Typography fontWeight="bold" fontSize="0.8rem">
+                            <Typography fontWeight="bold" fontSize="0.8rem" fontFamily={'poppins'}>
                               {state}
                             </Typography>
                           </Box>
@@ -171,7 +175,7 @@ export const Appointments = () => {
                             alignItems="center"
                             flexDirection="column"
                           >
-                            <Typography fontWeight="bold">
+                            <Typography fontWeight="bold" fontFamily={'poppins'}>
                               {doctorName}
                             </Typography>
                           </Box>

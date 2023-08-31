@@ -7,7 +7,7 @@ import { setDoctorCredentials } from "../../slices/authSlice";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signUpDetails } from "../../dump";
+import { doctorSignupDetails, signUpDetails } from "../../dump";
 let clearError;
 
 export const SignupDoctor = () => {

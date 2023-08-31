@@ -9,6 +9,7 @@ import { setUserCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
 import { Users } from "../../sdk/users";
+import CommonNavbar from "../../components/CommonNavbar";
 let clearError
 
 export const LoginUser = () => {
@@ -57,6 +58,7 @@ export const LoginUser = () => {
             alignItems: "center",
             justifyContent: "center",
         }}>
+            <CommonNavbar/>
             <Box
                 display={error ? "block" : "none"}
                 position="absolute"
