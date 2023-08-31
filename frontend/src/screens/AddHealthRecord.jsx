@@ -953,7 +953,7 @@ export const AddHealthRecord = () => {
                           onChange={(e) => handleTimeChange(e, i, j)}
                         >
                           {hrs.map((item)=>(
-                            <option value={item}>{item+'hrs'}</option>
+                            <option value={item}>{item+' hrs'}</option>
                           ))}
                           
                         </select>
