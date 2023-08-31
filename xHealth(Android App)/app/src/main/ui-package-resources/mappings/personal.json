@@ -1,0 +1,6 @@
+{
+    "target": "Personal",
+    "package": "com.example.xhealth.personal",
+    "generateImplementation": true,
+    "generatePreviews": true
+}
