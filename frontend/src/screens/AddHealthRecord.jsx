@@ -40,7 +40,7 @@ export const AddHealthRecord = () => {
   };
 
   //---------Dynamic input fields states-------
-  const [problems, setproblems] = useState(['']);
+  const [problems, setproblems] = useState([""]);
   const [allmeds, setallmeds] = useState([
     { name: "", dosage: 0, perDay: 0, gap: 0, timings: [] },
   ]);
