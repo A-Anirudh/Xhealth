@@ -7,6 +7,7 @@ import { Hospital } from "../../sdk/hospitals";
 import { useEffect, useState } from "react";
 import { setHospitalCredentials } from "../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import CommonNavbar from "../../components/CommonNavbar";
 let clearError
 
 export const LoginHospital = () => {
@@ -57,6 +58,7 @@ export const LoginHospital = () => {
             alignItems: "center",
             justifyContent: "center",
         }}>
+            <CommonNavbar/>
             <Box
                 display={error ? "block" : "none"}
                 position="absolute"

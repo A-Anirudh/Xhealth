@@ -24,31 +24,38 @@ const getAllHealthRecords = asyncHandler(async (req, res) => {
     const { email } = req.body
     const user = await User.findOne({ email: email })
 
-    if (req.user) {
+    if(user){
+        if (req.user) {
 
-        const userHR = await getHealthRecordInstance(email);
-        if (userHR) {
-            res.status(200).json(userHR);
-        } else {
-            res.status(404).json({ message: "No health record found for user " + email })
-        }
-
-    } else if (req.doctor) {
-        if (user.permissionCheck.includes(req.doctor._id)) {
             const userHR = await getHealthRecordInstance(email);
             if (userHR) {
                 res.status(200).json(userHR);
             } else {
                 res.status(404).json({ message: "No health record found for user " + email })
             }
+    
+        } else if (req.doctor) {
+            if (user.permissionCheck.includes(req.doctor._id)) {
+                const userHR = await getHealthRecordInstance(email);
+                if (userHR) {
+                    res.status(200).json(userHR);
+                } else {
+                    res.status(404).json({ message: "No health record found for user " + email })
+                }
+            } else {
+                res.status(400)
+                throw new Error("Doctor does not have access to this patients health record")
+            }
         } else {
             res.status(400)
-            throw new Error("Doctor does not have access to this patients health record")
+            throw new Error("Permision denied")
         }
-    } else {
+    } else{
         res.status(400)
-        throw new Error("Permision denied")
+        throw new Error("Not authorized!")
     }
+
+
 });
 
 

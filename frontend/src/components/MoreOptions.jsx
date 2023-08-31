@@ -49,7 +49,7 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, myDoc, setMyDoc, d
 
                 <Box padding="1rem" display="flex" gap="2rem" flexWrap="wrap">
                     <Box style={{ width: "100%" }}>
-                        <Typography variant="h6" style={{ marginBottom: "1rem" }}>Pick a Doctor:</Typography>
+                        <Typography variant="h6" style={{ marginBottom: "1rem" }} fontFamily={'poppins'}>Pick a Doctor:</Typography>
                         <FormControl style={{ width: "100%" }}>
                             <InputLabel id="selectDoctors">Doctor</InputLabel>
                             <Select
@@ -70,7 +70,7 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, myDoc, setMyDoc, d
                         </FormControl>
                     </Box>
                     <Box style={{ width: "100%" }}>
-                        <Typography variant="h6" style={{ marginBottom: "1rem" }}>Pick Date and Time:</Typography>
+                        <Typography variant="h6" style={{ marginBottom: "1rem" }} fontFamily={'poppins'}>Pick Date and Time:</Typography>
                         <input type='datetime-local'
                             label="Date"
                             value={date}
@@ -84,11 +84,15 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, myDoc, setMyDoc, d
                         />
                     </Box>
                     <Button
+                    
                         variant="contained"
                         color="success"
                         sx={{
                             marginLeft: "auto",
-                            padding: "0.6rem 2rem"
+                            padding: "0.6rem 2rem",
+                            fontFamily:'poppins',
+                            textTransform:"capitalize"
+                            
                         }}
                         onClick={submitAppointment}
                     >Edit</Button>
@@ -96,7 +100,9 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, myDoc, setMyDoc, d
                         variant="contained"
                         color="error"
                         sx={{
-                            padding: "0.6rem 2rem"
+                            padding: "0.6rem 2rem",
+                            fontFamily:'poppins',
+                            textTransform:"capitalize"
                         }}
                         onClick={submitAppointment}
                     >Delete</Button>

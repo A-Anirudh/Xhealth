@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDoctorCredentials } from "../../slices/authSlice";
 import { Toaster, toast } from "react-hot-toast";
 import { useDoctorLoginMutation } from "../../slices/doctorsApiSlice";
+import CommonNavbar from "../../components/CommonNavbar";
 let clearError
 
 export const LoginDoctor = () => {
@@ -56,6 +57,7 @@ export const LoginDoctor = () => {
             alignItems: "center",
             justifyContent: "center",
         }}>
+            <CommonNavbar/>
             <Box
                 display={error ? "block" : "none"}
                 position="absolute"

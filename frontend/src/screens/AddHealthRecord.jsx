@@ -34,7 +34,7 @@ export const AddHealthRecord = () => {
   const [addRecord] = useAddHealthRecordMutation();
   const [uploadPdf] = useUploadPdfMutation();
   const [allRecords, setallRecords] = useState();
-
+  const hrs=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
   const generateEmptyTimings = (count) => {
     return new Array(count).fill(""); // Initialize with empty arrays
   };
@@ -136,11 +136,13 @@ export const AddHealthRecord = () => {
       return updatedProblems;
     });
   };
-  const handleProblemRemove = (i) => {
+  const handleProblemRemove = (e,i) => {
     const updatedProblems = [...problems];
+    console.log("before",updatedProblems)
     updatedProblems.splice(i, 1);
 
     setproblems(updatedProblems);
+    console.log("before",updatedProblems)
 
     setnewRecord((prev) => ({
       ...prev,
@@ -597,7 +599,7 @@ export const AddHealthRecord = () => {
                   value={val}
                   onChange={(e) => handleProblemChange(e, i)}
                 ></Input>
-                <Button onClick={handleProblemRemove}>
+                <Button onClick={(e)=>handleProblemRemove(e,i)}>
                   <ClearIcon sx={{ color: `${theme.Cancelled}` }} />
                 </Button>
               </Box>
@@ -937,19 +939,26 @@ export const AddHealthRecord = () => {
                         >
                           Time
                         </Typography>
-                        <Input
-                          type="time"
-                          disableUnderline
-                          sx={{
+                        <select
+                          
+                          
+                          
+                          style={{
                             backgroundColor: "white",
                             fontFamily: "poppins",
                             paddingInline: "2rem",
+                            marginLeft:'1rem',
                             color: `${theme["magenta"]}`,
                             fontWeight: "600",
                           }}
                           value={timing[j][i]}
                           onChange={(e) => handleTimeChange(e, i, j)}
-                        ></Input>
+                        >
+                          {hrs.map((item)=>(
+                            <option value={item}>{item+' hrs'}</option>
+                          ))}
+                          
+                        </select>
                       </Box>
                     </Box>
                   );

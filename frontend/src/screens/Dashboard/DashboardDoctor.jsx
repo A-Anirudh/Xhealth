@@ -10,19 +10,22 @@ export const DashboardDoctor = () => {
   const theme = useTheme();
   const user = new Users();
   const [doctorInfo, refetchDoctor] = user.getDoctorInfo();
-  const [aptBasedOnDoc, refetchapt] = user.getDocApt();
+  const [aptBasedOnDoc, setaptBasedOnDoc] = useState({apts:[],users_array:[]})
+  const [apts_doc,refetchapts]=user.getDocApt();
+  
 
-  useEffect(() => {
-    refetchapt(async () => {
-      await refetchDoctor();
+  // useEffect(() => {
+  //   refetchapt(async () => {
+  //     await refetchDoctor();
 
-      console.log("hhh", refetchapt());
-    });
-  }, []);
+  //     console.log("hhh", refetchapt());
+  //   });
+  // }, []);
 
   useEffect(() => {
     console.log("Appointments", aptBasedOnDoc);
-  }, [aptBasedOnDoc]);
+    setaptBasedOnDoc(apts_doc)
+  }, [apts_doc,aptBasedOnDoc]);
 
   return (
     <Grid className="main-container" container>
@@ -112,7 +115,7 @@ export const DashboardDoctor = () => {
                 >
                   Welcome
                 </Typography>
-                Dr. {doctorInfo?.firstName}!
+                {doctorInfo?.firstName}!
               </Typography>
               <Typography
                 variant="h5"
@@ -233,20 +236,20 @@ export const DashboardDoctor = () => {
             },
           }}
         >
-          <Typography variant="h4" fontSize="1rem">
+          <Typography variant="h4" fontFamily='Poppins' fontSize="1rem">
             S. No.
           </Typography>
-          <Typography variant="h4" fontSize="1rem">
+          <Typography variant="h4" fontFamily='Poppins'fontSize="1rem">
             Patient Name
           </Typography>
-          <Typography variant="h4" fontSize="1rem">
+          <Typography variant="h4" fontFamily='Poppins'fontSize="1rem">
             Visiting Time
           </Typography>
-          <Typography variant="h4" fontSize="1rem">
+          <Typography variant="h4" fontFamily='Poppins'fontSize="1rem">
             Examine
           </Typography>
         </Box>
-        {aptBasedOnDoc ? (
+        {aptBasedOnDoc || aptBasedOnDoc!=null  ? (
           Object.keys(aptBasedOnDoc.apts)?.map((item) => (
             <AppointmentCard
               key={item}

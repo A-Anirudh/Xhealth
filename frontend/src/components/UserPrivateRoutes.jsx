@@ -4,6 +4,7 @@ import { Box, Button, Grid, Typography, useTheme } from '@mui/material'
 import { useState } from 'react'
 import { Users } from '../sdk/users'
 import userProfile from "../assets/profile.svg";
+import { userLogout } from '../slices/authSlice'
 
 
 export const UserPrivateRoutes = () => {
@@ -140,7 +141,7 @@ export const UserPrivateRoutes = () => {
                                         cursor: "pointer",
                                         color: theme['blue-150'],
                                         fontWeight: "bold",
-                                    }}>user-profile</Typography>
+                                    }}>Profile</Typography>
                                 </Link>
                             </Box>
                             <Box sx={{

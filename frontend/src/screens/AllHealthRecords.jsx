@@ -18,6 +18,7 @@ export const AllHealthRecords = () => {
   const theme = useTheme()
   const [records] = useGetHealthRecordsMutation();
   const [doctorInfo] = user.getDoctorInfo();
+  const [error,setError]=useState("")
   const [toggle, settoggle] = useState(false)
   const link = 'http://localhost:8080/api/users/healthRecords/key/'
   const patientEmail = useSelector(state => state.patientId)
@@ -42,13 +43,19 @@ export const AllHealthRecords = () => {
   useEffect(() => {
     return async () => {
       const res = await records({ 'email': patientEmail });
+      console.log(res?.error?.data?.message)
+      setError(res?.error?.data?.message)
       setAllRecords(res.data)
     }
   }, [patientEmail, doctorInfo])
 
   
-console.log(allRecords)
-  if (!allRecords ) return 'loading'
+// console.log(allRecords)
+  if (!allRecords ) return (
+  <center><Typography variant='h2' fontFamily={'poppins'} fontWeight={700} color={'red'}>
+    {error}
+  </Typography></center>
+  )
   const { firstName, lastName, currentHospitalWorkingName } = doctorInfo
   const handleOnclick = (i) => {
     sethealthRecord(allRecords.history[i])
@@ -65,7 +72,13 @@ console.log(allRecords)
 
   
 
-  //  if (!healthRecord) return 'loading'
+   if (!healthRecord)  return (
+    <center><Typography variant='h2' fontFamily={'poppins'} fontWeight={700} color={'red'}>
+      {'No records found'}
+    </Typography></center>
+    )
+
+    console.log('all',allRecords.history.length)
   return (
     <Box position='relative' >
       <Typography fontFamily='poppins' fontWeight='600' color={theme.doctor.primary} margin='1rem' variant='h3'>Patient Health Records </Typography>
@@ -83,16 +96,16 @@ console.log(allRecords)
         overflow='auto'
         gap='1rem'>
 
-        {allRecords.history.map((item, i) => {
+        {  allRecords.history.length!=0?(allRecords.history.map((item, i) => {
           const data = item?.diagnoses.data
           const timeInfo = new Date(item.time)
           // console.log("time info ",timeInfo)
           const date = timeInfo.getDate() + "-" + (timeInfo.getMonth() + 1) + "-" + timeInfo.getFullYear()
           const time = timeInfo.getHours() + ':' + timeInfo.getMinutes()
           return (
-            <Box  key={i}onClick={(e) => handleOnclick(i)}><HealthRecordCard  diagnosis={data} name={firstName + " " + lastName} hospital={currentHospitalWorkingName} date={date} time={time} /></Box>
+            <Box  key={i}onClick={(e) => handleOnclick(i)}><HealthRecordCard  docId={item.doctorId}diagnosis={data} name={"Dr."+firstName + " " + lastName} hospital={currentHospitalWorkingName} date={date} time={time} /></Box>
           )
-        })}
+        })):<center><h1 style={{fontFamily:'poppins',color:`${theme.doctor.primary}`}}>No records found</h1></center>  }
 
 
       </Box>
