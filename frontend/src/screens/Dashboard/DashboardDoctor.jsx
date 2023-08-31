@@ -115,7 +115,7 @@ export const DashboardDoctor = () => {
                 >
                   Welcome
                 </Typography>
-                Dr. {doctorInfo?.firstName}!
+                {doctorInfo?.firstName}!
               </Typography>
               <Typography
                 variant="h5"

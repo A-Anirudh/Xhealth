@@ -21,7 +21,6 @@ export const PersonalHealthRecords = () => {
   const [toggle, settoggle] = useState(false)
   const link = 'http://localhost:8080/api/users/healthRecords/key/'
   const patientEmail = useSelector(state => state.auth.userInfo.email)
-  console.log("pemail",patientEmail,records)
   const [allRecords, setAllRecords] = useState()
   const [healthRecord, sethealthRecord] = useState({ 
     'diagnoses': {
@@ -91,7 +90,7 @@ console.log(allRecords)
           const date = timeInfo.getDate() + "-" + (timeInfo.getMonth() + 1) + "-" + timeInfo.getFullYear()
           const time = timeInfo.getHours() + ':' + timeInfo.getMinutes()
           return (
-            <Box  key={i}onClick={(e) => handleOnclick(i)}><HealthRecordCard  diagnosis={data} name={firstName + " " + lastName} hospital={currentHospitalWorkingName} date={date} time={time} /></Box>
+            <Box  key={i}onClick={(e) => handleOnclick(i)}><HealthRecordCard docId={item.doctorId} diagnosis={data}   date={date} time={time} /></Box>
           )
         })}
 

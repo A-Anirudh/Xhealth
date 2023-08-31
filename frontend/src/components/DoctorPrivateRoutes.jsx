@@ -118,7 +118,7 @@ export const DoctorPrivateRoutes = () => {
                                     cursor: "pointer",
                                     color: theme['blue-150'],
                                     fontWeight: "bold",
-                                }}>user-profile</Typography>
+                                }}>Profile</Typography>
                             </Link>
                         </Box>
                         <Box sx={{

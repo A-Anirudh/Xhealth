@@ -141,7 +141,7 @@ export const UserPrivateRoutes = () => {
                                         cursor: "pointer",
                                         color: theme['blue-150'],
                                         fontWeight: "bold",
-                                    }}>user-profile</Typography>
+                                    }}>Profile</Typography>
                                 </Link>
                             </Box>
                             <Box sx={{
