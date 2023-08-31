@@ -18,7 +18,7 @@ export const AllHealthRecords = () => {
   const theme = useTheme()
   const [records] = useGetHealthRecordsMutation();
   const [doctorInfo] = user.getDoctorInfo();
-  
+  const [error,setError]=useState("")
   const [toggle, settoggle] = useState(false)
   const link = 'http://localhost:8080/api/users/healthRecords/key/'
   const patientEmail = useSelector(state => state.patientId)
@@ -43,13 +43,19 @@ export const AllHealthRecords = () => {
   useEffect(() => {
     return async () => {
       const res = await records({ 'email': patientEmail });
+      console.log(res?.error?.data?.message)
+      setError(res?.error?.data?.message)
       setAllRecords(res.data)
     }
   }, [patientEmail, doctorInfo])
 
   
-console.log(allRecords)
-  if (!allRecords ) return 'loading'
+// console.log(allRecords)
+  if (!allRecords ) return (
+  <center><Typography variant='h2' fontFamily={'poppins'} fontWeight={700} color={'red'}>
+    {error}
+  </Typography></center>
+  )
   const { firstName, lastName, currentHospitalWorkingName } = doctorInfo
   const handleOnclick = (i) => {
     sethealthRecord(allRecords.history[i])
@@ -66,7 +72,11 @@ console.log(allRecords)
 
   
 
-  //  if (!healthRecord) return 'loading'
+   if (!healthRecord)  return (
+    <center><Typography variant='h2' fontFamily={'poppins'} fontWeight={700} color={'red'}>
+      {error}
+    </Typography></center>
+    )
   return (
     <Box position='relative' >
       <Typography fontFamily='poppins' fontWeight='600' color={theme.doctor.primary} margin='1rem' variant='h3'>Patient Health Records </Typography>
