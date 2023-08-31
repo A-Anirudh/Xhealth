@@ -40,7 +40,7 @@ export const AddHealthRecord = () => {
   };
 
   //---------Dynamic input fields states-------
-  const [problems, setproblems] = useState([""]);
+  const [problems, setproblems] = useState([]);
   const [allmeds, setallmeds] = useState([
     { name: "", dosage: 0, perDay: 0, gap: 0, timings: [] },
   ]);
@@ -136,11 +136,13 @@ export const AddHealthRecord = () => {
       return updatedProblems;
     });
   };
-  const handleProblemRemove = (i) => {
+  const handleProblemRemove = (e,i) => {
     const updatedProblems = [...problems];
+    console.log("before",updatedProblems)
     updatedProblems.splice(i, 1);
 
     setproblems(updatedProblems);
+    console.log("before",updatedProblems)
 
     setnewRecord((prev) => ({
       ...prev,
@@ -597,7 +599,7 @@ export const AddHealthRecord = () => {
                   value={val}
                   onChange={(e) => handleProblemChange(e, i)}
                 ></Input>
-                <Button onClick={handleProblemRemove}>
+                <Button onClick={(e)=>handleProblemRemove(e,i)}>
                   <ClearIcon sx={{ color: `${theme.Cancelled}` }} />
                 </Button>
               </Box>
