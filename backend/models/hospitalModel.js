@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { doctorSchema } from "./doctorModel.js";
 
 const hospitalSchema = mongoose.Schema({
     name:{
@@ -28,10 +27,7 @@ const hospitalSchema = mongoose.Schema({
         type:String,
         required:true
     },
-    doctorsList : {
-        type: [doctorSchema],
-        default :[]
-    },
+
     password: {
         type: String,
         required: true,

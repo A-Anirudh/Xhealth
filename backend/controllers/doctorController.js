@@ -62,10 +62,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
         pincode, department, qualification, experience, registrationNumber, currentHospitalWorkingName, workingHourStart, workingHourEnd, gradCollegeName
     });
     if (doc) {
-        if (hospital) {
-            hospital.doctorsList.push(doc);
-            await hospital.save()
-        }
+
         generateToken(res, doc._id, 'doctor');
         res.status(201).json({
             _id: doc._id,
