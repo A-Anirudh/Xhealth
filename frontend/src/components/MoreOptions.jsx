@@ -60,7 +60,7 @@ export const MoreOptions = ({ _id, aptDisplay, setAptDisplay, myDoc, setMyDoc, d
                                 onChange={e => setMyDoc(e.target.value)}
                             >
                                 {doctor ? doctor?.allDoc.map(item => (
-                                    <MenuItem value={item._id}>
+                                    <MenuItem value={item._id} key = {item._id}>
                                         {item.firstName} {item.lastName}
                                     </MenuItem>)) :
                                     <MenuItem value="Server Down">

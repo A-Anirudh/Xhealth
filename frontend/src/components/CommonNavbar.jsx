@@ -3,8 +3,6 @@ import React from 'react'
 import {Link }from 'react-router-dom'
 const CommonNavbar = () => {
     const currentUrl = window.location.href.split('/')[3]
-    console.log(currentUrl)
-
 
     const color={
         'login-doctor':'#5642aa',

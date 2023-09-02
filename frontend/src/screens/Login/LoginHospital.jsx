@@ -31,7 +31,6 @@ export const LoginHospital = () => {
             e.preventDefault();
             const { data: res } = await login(data);
             res && dispatch(setHospitalCredentials(res));
-            console.log(hospitalInfo);
         }
         catch (e) {
             e.status === 500 ? toast.error("Server Down! Please try after some time.") : toast.error("Invalid Credentials!!")
@@ -39,7 +38,6 @@ export const LoginHospital = () => {
     }
 
     useEffect(() => {
-        console.log(hospitalInfo);
         navigate(hospitalInfo ? "/dashboard-hospital" : "/login-hospital");
     }, [navigate, hospitalInfo])
 

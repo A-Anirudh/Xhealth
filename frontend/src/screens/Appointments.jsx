@@ -4,6 +4,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { MoreOptions } from "../components";
 import { useAptDetails } from "../hooks";
+import { v4 as uuid } from "uuid";
 
 export const Appointments = () => {
   const theme = useTheme();
@@ -38,14 +39,20 @@ export const Appointments = () => {
         gap={3}
       >
         <Box display="flex" alignItems="center" width="100%">
-          <Typography variant="h3" fontFamily={'poppins'} fontWeight={'600'}>Appointments</Typography>
-          <Button 
-            sx={{ marginLeft: "auto" ,fontFamily:'poppins',textTransform:'capitalize'}}
+          <Typography variant="h3" fontFamily={"poppins"} fontWeight={"600"}>
+            Appointments
+          </Typography>
+          <Button
+            sx={{
+              marginLeft: "auto",
+              fontFamily: "poppins",
+              textTransform: "capitalize",
+            }}
             variant="contained"
             color="success"
           >
             <Link
-            fontFamily={'poppins'}
+              fontFamily={"poppins"}
               style={{ textDecoration: "none", color: "white" }}
               to="/book-appointment"
             >
@@ -61,9 +68,10 @@ export const Appointments = () => {
             padding={4}
             paddingTop={0}
             minHeight="100vh"
+            key={uuid()}
           >
             {sortedAppointments &&
-              Object.keys(sortedAppointments)?.map((item, idx) => (
+              Object.keys(sortedAppointments)?.map((item) => (
                 <Box
                   width="100%"
                   display="flex"
@@ -71,10 +79,10 @@ export const Appointments = () => {
                   gap={4}
                   alignItems="flex-start"
                   paddingTop={4}
-                  key={idx}
+                  key={sortedAppointments[item].id}
                 >
                   <Typography
-                  fontFamily={'poppins'}
+                    fontFamily={"poppins"}
                     marginLeft={4}
                     padding="0.3rem 1rem"
                     color="white"
@@ -84,8 +92,9 @@ export const Appointments = () => {
                   >
                     {item}
                   </Typography>
+                  {/* {console.log(sortedAppointments, appointments)} */}
                   {sortedAppointments &&
-                    sortedAppointments[item].map(
+                    sortedAppointments[item].apt.map(
                       ({
                         _id,
                         appointmentDate,
@@ -105,9 +114,10 @@ export const Appointments = () => {
                           alignItems="center"
                           width="100%"
                           justifyContent="space-between"
+                          key={_id}
                         >
                           <Typography
-                          fontFamily={'poppins'}
+                            fontFamily={"poppins"}
                             padding="0.3rem 1.5rem"
                             fontWeight="bold"
                             backgroundColor={theme[status]}
@@ -121,11 +131,12 @@ export const Appointments = () => {
                             height="1.5rem"
                             borderRight={`1px solid ${theme["gray-200"]}`}
                           ></Box>
-                          <Typography fontWeight="bold" fontFamily={'poppins'}>
+                          <Typography fontWeight="bold" fontFamily={"poppins"}>
                             {department}
                           </Typography>
                           <Box
-                            height="1.5rem" fontFamily={'poppins'}
+                            height="1.5rem"
+                            fontFamily={"poppins"}
                             borderRight={`1px solid ${theme["gray-200"]}`}
                           ></Box>
                           <Box
@@ -133,11 +144,14 @@ export const Appointments = () => {
                             alignItems="center"
                             flexDirection="column"
                           >
-                            <Typography fontWeight="bold" fontFamily={'poppins'}>
+                            <Typography
+                              fontWeight="bold"
+                              fontFamily={"poppins"}
+                            >
                               {moment(appointmentDate).format("DD/MM/YYYY")}
                             </Typography>
                             <Typography
-                            fontFamily={'poppins'}
+                              fontFamily={"poppins"}
                               color={theme["gray-200"]}
                               fontSize="0.8rem"
                             >
@@ -156,13 +170,18 @@ export const Appointments = () => {
                             alignItems="center"
                             flexDirection="column"
                           >
-                            <Typography fontFamily={'poppins'}
+                            <Typography
+                              fontFamily={"poppins"}
                               fontWeight="bold"
                               color={theme["purple-150"]}
                             >
                               {hospitalName}
                             </Typography>
-                            <Typography fontWeight="bold" fontSize="0.8rem" fontFamily={'poppins'}>
+                            <Typography
+                              fontWeight="bold"
+                              fontSize="0.8rem"
+                              fontFamily={"poppins"}
+                            >
                               {state}
                             </Typography>
                           </Box>
@@ -175,7 +194,10 @@ export const Appointments = () => {
                             alignItems="center"
                             flexDirection="column"
                           >
-                            <Typography fontWeight="bold" fontFamily={'poppins'}>
+                            <Typography
+                              fontWeight="bold"
+                              fontFamily={"poppins"}
+                            >
                               {doctorName}
                             </Typography>
                           </Box>
