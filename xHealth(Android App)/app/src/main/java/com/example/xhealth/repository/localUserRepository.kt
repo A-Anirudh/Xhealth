@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.first
 
 interface UserRepository {
     suspend fun getUser():Flow<User>
-    suspend fun setUser(email: String)
+    suspend fun setUser(email: String,password: String)
     suspend fun getUserData():profileDetails
     suspend fun setAlarm()
 }
@@ -32,9 +32,10 @@ class LocalUserRepository constructor(
         return userDataStore.data
     }
 
-    override suspend fun setUser(email:String){
+    override suspend fun setUser(email:String,password:String){
         userDataStore.updateData {
-            it.toBuilder().setEmail(email).build()
+            it.toBuilder().setEmail(email).setPassword(password).build()
+
         }
     }
 

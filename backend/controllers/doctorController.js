@@ -37,7 +37,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
     const hospital = await Hospital.findOne({ name: currentHospitalWorkingName });
 
     console.log(req.body)
-
+    
     if (phoneNumber.length !== 10) {
         res.status(400);
         throw new Error("Phone number should be only 10 digits. Do no include country code!")

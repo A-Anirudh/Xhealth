@@ -65,7 +65,7 @@ fun HomeScreen(
     var topAppBar by rememberSaveable { mutableStateOf(true) }
     var bottomAppBar by rememberSaveable { mutableStateOf(true) }
     val doctorModel : doctorViewModel= doctorViewModel()
-    val healthRecordViewModel:healthRecordViewModel=healthRecordViewModel()
+    val healthRecordViewModel:healthRecordViewModel=healthRecordViewModel(dataViewModel)
         Scaffold(
             topBar = {
                 AnimatedVisibility(
