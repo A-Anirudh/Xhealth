@@ -45,6 +45,7 @@ class dataViewModel(
 
     private fun getEmail()=viewModelScope.launch {
         email=localUserRepository.getUser().first().email
+        password=localUserRepository.getUser().first().password
         alarmSet= localUserRepository.getUser().first().alarmSet
         Log.d(TAG,alarmSet.toString()+"----------------")
     }
@@ -68,7 +69,7 @@ class dataViewModel(
                     OnSuccess()
 //                    getRecords(OnSuccess=OnSuccess,OnFailure=OnFailure)
                     email=emailIn
-                    localUserRepository.setUser(emailIn);
+                    localUserRepository.setUser(emailIn,password);
                 }
             } catch (e: Exception) {
                 OnFailure()

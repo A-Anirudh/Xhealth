@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -113,7 +115,9 @@ fun UpComingRemainders(
             ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth(1f)
+                modifier = Modifier
+                    .fillMaxWidth(1f)
+                    .heightIn(max = 300.dp)
             ) {
                 Row(
                     modifier = Modifier
@@ -124,12 +128,16 @@ fun UpComingRemainders(
                     Text(text = "Upcoming Remainders", fontSize = 20.sp)
                 }
                 Divider(Modifier.fillMaxWidth(0.9f))
-                LazyColumn() {
+                LazyColumn(
+                    modifier=Modifier.heightIn(max=300.dp)
+                ) {
                     items(sortedMedication) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth().padding(5.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
                         ) {
                             Text(text = it.name)
                             Text(text = it.dosage.toString() + "mg")
@@ -225,35 +233,28 @@ fun homeRecord(
                     }
                 }
 //                    Divider(modifier = Modifier.padding(1.dp), thickness = 2.dp, color = MaterialTheme.colorScheme.scrim )
-                Column() {
+                Column(
+                    modifier=Modifier.heightIn(max=300.dp)
+                ) {
                     Text(text = "Medication : ")
-                    LazyColumn() {
-                        items(
-                            history.medications.allMeds.subList(
-                                0,
-                                history.medications.allMeds.size.coerceAtMost(3)
-                            )
+                    for( i in 0 until Math.min(3,history.medications.allMeds.size)){
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(text = it.name+"")
-                                Text(text = it.dosage.toString() + "mgs")
-                            }
+                            Text(text = history.medications.allMeds[i].name+"")
+                            Text(text = history.medications.allMeds[i].dosage.toString() + "mgs")
                         }
-                        items(1) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(text = ".......")
-                                Text(text = "....")
-                            }
 
-                        }
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = ".......")
+                        Text(text = "....")
                     }
                 }
             }
@@ -374,14 +375,14 @@ fun homeRecordPreview(dataViewModel: dataViewModel,healthRecordViewModel: health
 }
 ]
 """
-
+    val dataInternet=healthRecordViewModel.data
     val history= Json{ignoreUnknownKeys=true}.decodeFromString<List<healthRecordNew.History>>(json)
     val listOfMeds= mutableListOf<healthRecordNew.History.Medications>();
     for(i in history){
         listOfMeds.add(i.medications);
     }
 //    if(!dataViewModel.alarmSet) {
-        setAlarm(listOfMeds, context = LocalContext.current)
+//        setAlarm(listOfMeds, context = LocalContext.current)
 //        dataViewModel.setAlarm()
 //    }
     Log.d(TAG,history.toString())
@@ -389,12 +390,29 @@ fun homeRecordPreview(dataViewModel: dataViewModel,healthRecordViewModel: health
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .heightIn(min = 100.dp, max = 700.dp)
+                .verticalScroll(rememberScrollState())
         ) {
-            UpComingRemainders(medications =listOfMeds)
-            for(i in history){
-                homeRecord(history = i)
+            UpComingRemainders(medications = listOfMeds)
+            if(dataInternet!=null){
+                LazyColumn(
+                    modifier=Modifier.heightIn(max=600.dp)
+                ){
+                    items(dataInternet.history){
+                        homeRecord(history = it)
+                    }
+                }
+            }else{
+                Text(text = "Oops looks like the internet is weak or you have no health records!")
             }
+//            if(dataInternet!=null){
+//                homeRecord(history = dataInternet.history[0])
+//            }
+//            for(i in history){
+//                homeRecord(history = i)
+//            }
         }
     }
 }

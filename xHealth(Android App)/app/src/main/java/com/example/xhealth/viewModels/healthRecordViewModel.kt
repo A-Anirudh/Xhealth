@@ -12,14 +12,15 @@ import com.example.xhealth.network.XHealthApi
 import com.example.xhealth.network.healthRecordNew
 import kotlinx.coroutines.launch
 
-class healthRecordViewModel : ViewModel() {
+class healthRecordViewModel (dataViewModel: dataViewModel): ViewModel() {
     var dataReady:Boolean by mutableStateOf(false);
     var data:healthRecordNew? by mutableStateOf(null);
 
     init {
         viewModelScope.launch {
             try {
-                var headers=mapOf("email" to "aayanamanirudh@gmail.com", "password" to "123456")
+                var headers=mapOf("email" to dataViewModel.email, "password" to dataViewModel.password)
+                Log.d(TAG,headers.toString())
                 data=XHealthApi.retrofitService.getHealthRecord(headers);
                 Log.d(TAG,data.toString());
                 dataReady=true;
