@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { MoreOptions } from "../components";
 import { useAptDetails } from "../hooks";
 import { v4 as uuid } from "uuid";
+import more from "../assets/more.svg";
 
 export const Appointments = () => {
   const theme = useTheme();
@@ -34,12 +35,32 @@ export const Appointments = () => {
       <Box
         display="flex"
         flexDirection="column"
-        width="60%"
+        minWidth="60%"
+        maxWidth="90%"
         marginTop="5rem"
         gap={3}
       >
-        <Box display="flex" alignItems="center" width="100%">
-          <Typography variant="h3" fontFamily={"poppins"} fontWeight={"600"}>
+        <Box
+          display="flex"
+          alignItems="center"
+          width="100%"
+          sx={{
+            [theme.breakpoints.down("md")]: {
+              flexDirection: "column",
+              gap: "1rem",
+            },
+          }}
+        >
+          <Typography
+            variant="h3"
+            fontFamily={"poppins"}
+            fontWeight={"600"}
+            sx={{
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "8vw"
+              },
+            }}
+          >
             Appointments
           </Typography>
           <Button
@@ -47,6 +68,9 @@ export const Appointments = () => {
               marginLeft: "auto",
               fontFamily: "poppins",
               textTransform: "capitalize",
+              [theme.breakpoints.down("md")]: {
+                marginLeft: "0",
+              },
             }}
             variant="contained"
             color="success"
@@ -115,6 +139,26 @@ export const Appointments = () => {
                           width="100%"
                           justifyContent="space-between"
                           key={_id}
+                          gap="2rem"
+                          textAlign="center"
+                          sx={{
+                            [theme.breakpoints.down("md")]: {
+                              display: "grid",
+                              gridColumnGap: "0",
+                              gridRowGap: "1rem",
+                              gridTemplateRows: "4rem 4rem",
+                              gridTemplateColumns: "1fr 1fr 1fr",
+                              gridAutoFlow: "column",
+                              placeItems: "center",
+                              textAlign: "center",
+                            },
+                            [theme.breakpoints.down("sm")]: {
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "2rem",
+                              padding: "2rem",
+                            },
+                          }}
                         >
                           <Typography
                             fontFamily={"poppins"}
@@ -130,6 +174,11 @@ export const Appointments = () => {
                           <Box
                             height="1.5rem"
                             borderRight={`1px solid ${theme["gray-200"]}`}
+                            sx={{
+                              [theme.breakpoints.down("xl")]: {
+                                display: "none",
+                              },
+                            }}
                           ></Box>
                           <Typography fontWeight="bold" fontFamily={"poppins"}>
                             {department}
@@ -138,6 +187,11 @@ export const Appointments = () => {
                             height="1.5rem"
                             fontFamily={"poppins"}
                             borderRight={`1px solid ${theme["gray-200"]}`}
+                            sx={{
+                              [theme.breakpoints.down("xl")]: {
+                                display: "none",
+                              },
+                            }}
                           ></Box>
                           <Box
                             display="flex"
@@ -164,6 +218,11 @@ export const Appointments = () => {
                           <Box
                             height="1.5rem"
                             borderRight={`1px solid ${theme["gray-200"]}`}
+                            sx={{
+                              [theme.breakpoints.down("xl")]: {
+                                display: "none",
+                              },
+                            }}
                           ></Box>
                           <Box
                             display="flex"
@@ -188,6 +247,11 @@ export const Appointments = () => {
                           <Box
                             height="1.5rem"
                             borderRight={`1px solid ${theme["gray-200"]}`}
+                            sx={{
+                              [theme.breakpoints.down("xl")]: {
+                                display: "none",
+                              },
+                            }}
                           ></Box>
                           <Box
                             display="flex"
@@ -213,7 +277,11 @@ export const Appointments = () => {
                               openDialog(_id);
                             }}
                           >
-                            |
+                            <img
+                              src={more}
+                              alt="more"
+                              style={{ height: "100%" }}
+                            />
                           </Box>
                         </Box>
                       )

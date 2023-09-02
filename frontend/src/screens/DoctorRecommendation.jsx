@@ -24,7 +24,9 @@ export const DoctorRecommendation = () => {
         sx={{
           marginTop: "5rem",
           boxShadow: "1px 1px 4px black",
-          width: "60%",
+          width: "80vw",
+          minWidth: "60%",
+          maxWidth: "90%",
           textAlign: "center",
           borderRadius: "1rem",
         }}
@@ -40,8 +42,23 @@ export const DoctorRecommendation = () => {
           disableUnderline
         />
       </Box>
-      <Box display="flex" flexDirection="column" width="60%" gap={3}>
-        <Typography variant="h3">Doctor Recommendation</Typography>
+      <Box
+        display="flex"
+        flexDirection="column"
+        sx={{
+          width: "60%",
+          minWidth: "60%",
+          maxWidth: "90%",
+          [theme.breakpoints.down("xl")]: { width: "80vw" },
+        }}
+        gap={3}
+      >
+        <Typography
+          variant="h3"
+          sx={{ [theme.breakpoints.down("sm")]: { fontSize: "7vw" } }}
+        >
+          Doctor Recommendation
+        </Typography>
         <Box
           width="100%"
           backgroundColor={theme["purple-100"]}
@@ -75,6 +92,14 @@ export const DoctorRecommendation = () => {
                     alignItems="center"
                     width="100%"
                     justifyContent="space-between"
+                    sx={{
+                      [theme.breakpoints.down("md")]: {
+                        flexDirection: "column",
+                        gap: "1rem",
+                        padding: "2rem",
+                        textAlign: "center",
+                      },
+                    }}
                   >
                     <Box borderRadius={99} height="6rem" width="6rem">
                       <img

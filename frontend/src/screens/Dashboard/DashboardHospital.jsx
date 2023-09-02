@@ -74,7 +74,7 @@ export const DashboardHospital = () => {
 
   useEffect(() => {
     if (getDoctors && appointments) {
-      // console.log(getDoctors);
+      console.log(getDoctors);
       const allApt = appointments?.apt_data?.reduce((acc, curr) => {
         const newApt = {
           ...acc,
@@ -126,17 +126,11 @@ export const DashboardHospital = () => {
   else
     return (
       <Grid className="main-container" container>
-        <Grid
-          item
-          xl
-          lg
-          md
-          sm
-          xs
-          xsm
+        <Box
           sx={{
             background: theme["green-olive"],
             padding: "1.5rem 2rem",
+            width: "100%",
             display: "flex",
             alignItems: "center",
             borderRadius: "0 0 1rem 1rem",
@@ -216,21 +210,24 @@ export const DashboardHospital = () => {
               </Box>
             </Box>
           </Box>
-        </Grid>
+        </Box>
 
         <Grid
           className="cards-container"
-          item
+          container
           xl={12}
-          display="flex"
           margin="4rem"
-          width="100% "
-          alignItems="flex-start"
-          gap="1rem"
+          width="100%"
+          sx={{
+            [theme.breakpoints.down("sm")]: {
+              margin: "1rem",
+            },
+          }}
         >
           <Grid
             item
             xl={6}
+            lg={12}
             borderRadius="1rem"
             className="scroll-type"
             display="flex"
@@ -267,6 +264,11 @@ export const DashboardHospital = () => {
                       backgroundColor="white"
                       padding={2}
                       borderRadius={4}
+                      sx={{
+                        [theme.breakpoints.down("xl")]: {
+                          justifyContent: "space-around",
+                        },
+                      }}
                     >
                       <span>
                         <strong>Date:</strong>{" "}
@@ -286,6 +288,7 @@ export const DashboardHospital = () => {
           <Grid
             item
             xl={6}
+            lg={12}
             padding="0 2rem 2rem"
             borderRadius="1rem"
             className="scroll-type"
@@ -293,6 +296,11 @@ export const DashboardHospital = () => {
             flexDirection="column"
             gap="1rem"
             position="relative"
+            sx={{
+              [theme.breakpoints.down("md")]: {
+                padding: "0",
+              },
+            }}
           >
             <Box
               display="flex"
@@ -301,12 +309,23 @@ export const DashboardHospital = () => {
               padding="1.5rem 0"
               backgroundColor="white"
               top="0"
+              sx={{
+                [theme.breakpoints.down("sm")]: {
+                  flexDirection: "column",
+                  gap: "2rem",
+                },
+              }}
             >
               <Typography variant="h4">Doctors</Typography>
               <TextField
                 type="text"
                 variant="standard"
-                sx={{ marginLeft: "auto" }}
+                sx={{
+                  marginLeft: "auto",
+                  [theme.breakpoints.down("sm")]: {
+                    marginLeft: "0",
+                  },
+                }}
                 placeholder="Search Doctors"
                 onChange={(e) => searchDoc(e.target.value)}
               />
@@ -318,7 +337,15 @@ export const DashboardHospital = () => {
                 backgroundColor="white"
                 boxShadow={`0 0 4px ${theme["green-olive"]}`}
                 maxHeight="10rem"
-                sx={{ overflowY: "scroll" }}
+                sx={{
+                  overflowY: "scroll",
+                  [theme.breakpoints.down("sm")]: {
+                    left: "auto",
+                    top: "9rem",
+                    right: "unset",
+                    width: "100%",
+                  },
+                }}
                 right="0"
                 width="30%"
                 top="4rem"
@@ -351,6 +378,11 @@ export const DashboardHospital = () => {
                     display="flex"
                     gap="1rem"
                     flexDirection="column"
+                    sx={{
+                      [theme.breakpoints.down("md")]: {
+                        flexBasis: "100%",
+                      },
+                    }}
                   >
                     <Typography variant="h5">{item}</Typography>
                     {categorizedDoctors[item].map((doc) => (

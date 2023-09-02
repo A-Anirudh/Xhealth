@@ -18,20 +18,24 @@ export const AptCard = ({ idx, name, time }) => {
       sx={{
         backgroundColor: "white",
         color: "black",
-        padding: "2rem",
+        padding: "1rem 2rem",
         alignItems: "center",
-        height: "10vh",
+        // height: "10vh",
         width: "100%",
         borderRadius: "0.5rem",
         justifyContent: "space-between",
+        gap: "1rem",
         boxShadow: "0px 4px 18px 0px rgba(0, 0, 0, 0.15)",
+        [theme.breakpoints.down("md")]: {
+          flexDirection: "column",
+        },
       }}
     >
       <Typography
         sx={{
           fontFamily: "Poppins",
           fontWeight: "500",
-          fontSize: "1.5vw",
+          fontSize: "clamp(1rem, 1.5vw, 2rem)",
           textAlign: "left",
           display: "flex",
           alignItems: "center",
@@ -43,20 +47,24 @@ export const AptCard = ({ idx, name, time }) => {
         sx={{
           fontFamily: "Poppins",
           fontWeight: "500",
-          fontSize: "1.5vw",
+          fontSize: "clamp(1rem, 1.5vw, 2rem)",
           textAlign: "left",
           backgroundColor: "#",
           padding: "0.5rem",
           borderRadius: "1rem",
           display: "flex",
           alignItems: "center",
+          [theme.breakpoints.down("sm")]: {
+            flexDirection: "column",
+            gap: "0.2rem",
+          },
         }}
       >
         <Typography
           sx={{
             fontFamily: "Poppins",
             fontWeight: "500",
-            fontSize: "1.5vw",
+            fontSize: "clamp(1rem, 1.5vw, 2rem)",
             textAlign: "left",
             color: `#018725`,
           }}
@@ -69,17 +77,21 @@ export const AptCard = ({ idx, name, time }) => {
         sx={{
           fontFamily: "Poppins",
           fontWeight: "500",
-          fontSize: "1.5vw",
+          fontSize: "clamp(1rem, 1.5vw, 2rem)",
           textAlign: "left",
           display: "flex",
           alignItems: "center",
+          [theme.breakpoints.down("sm")]: {
+            flexDirection: "column",
+            gap: "0.2rem",
+          },
         }}
       >
         <Typography
           sx={{
             fontFamily: "Poppins",
             fontWeight: "500",
-            fontSize: "1.5vw",
+            fontSize: "clamp(1rem, 1.5vw, 2rem)",
             textAlign: "left",
             color: `#018725`,
           }}
@@ -144,7 +156,7 @@ export const ViewAppointments = () => {
             fontFamily: "poppins",
             fontWeight: "500",
             color: "black",
-            fontSize: "3vw",
+            fontSize: "clamp(2rem, 3vw, 4rem)",
           }}
         >
           {"Appointments of "}
@@ -155,7 +167,7 @@ export const ViewAppointments = () => {
             fontFamily: "poppins",
             fontWeight: "500",
             color: theme.hospital.primary,
-            fontSize: "3vw",
+            fontSize: "clamp(2rem, 3vw, 4rem)",
             display: "inline-flex",
             alignItems: "center",
           }}
@@ -179,6 +191,11 @@ export const ViewAppointments = () => {
         justifyContent="center"
         overflow="hidden    "
         gap="1rem"
+        sx={{
+          [theme.breakpoints.down("sm")]: {
+            margin: "1rem",
+          },
+        }}
       >
         {data.length != 0 ? (
           data.map((item, idx) => (
