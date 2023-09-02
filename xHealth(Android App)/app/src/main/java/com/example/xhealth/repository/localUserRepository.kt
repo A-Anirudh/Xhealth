@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.first
 interface UserRepository {
     suspend fun getUser():Flow<User>
     suspend fun setUser(email: String,password: String)
-    suspend fun getUserData():profileDetails
+    suspend fun getUserData(email: String,password: String):profileDetails
     suspend fun setAlarm()
 }
 
@@ -39,9 +39,9 @@ class LocalUserRepository constructor(
         }
     }
 
-    override suspend fun getUserData():profileDetails {
+    override suspend fun getUserData(email:String,password: String):profileDetails {
         val headers: MutableMap<String, String> =
-            mutableMapOf("email" to "jagnath@mail.com", "password" to "1234")
+            mutableMapOf("email" to email, "password" to password)
         return XHealthApi.retrofitService.getProfile(headers)
     }
 

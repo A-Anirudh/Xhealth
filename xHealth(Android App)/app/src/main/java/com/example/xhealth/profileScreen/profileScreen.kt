@@ -75,6 +75,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import com.example.xhealth.alarm.AndroidAlarmScheduler
+import com.example.xhealth.viewModels.profileDetailsViewModel
 
 
 @Composable
@@ -134,7 +135,7 @@ fun ProfileScreen(
             ) {
                 Column(
                 ) {
-                    Text(text ="Date of Birth : ${user.dateOfBirth}")
+                    Text(text ="Date of Birth : ${user.dateOfBirth.split("T")[0]}")
                     Text(text = "Gender : ${user.gender}",Modifier.padding(vertical = 3.dp))
                 }
                 Column() {
@@ -186,25 +187,9 @@ fun ProfileScreen(
 //    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 //)
 @Composable
-fun ProfileScreenPreview(){
+fun ProfileScreenPreview(
+    profileDetailsViewModel: profileDetailsViewModel
+){
+    profileDetailsViewModel.user?.let { ProfileScreen(user = it) }
 
-    val ss="""{
-    "_id": "64bf8f536f0bb44741c13db0",
-    "email": "jagnathreddy9@mail.com",
-    "firstName": "Jagnath",
-    "lastName": "Reddy",
-    "phoneNumber": "1234567890",
-    "bloodGroup": "A+",
-    "dateOfBirth": "14/10/2003",
-    "gender": "Male",
-    "state": "Karnataka",
-    "city": "blr",
-    "pincode": "47829",
-    "userTimeSlots": []
-}"""
-    XHealthTheme()
-    {
-        val profile = Json { ignoreUnknownKeys = true }.decodeFromString<profileDetails>(ss)
-        ProfileScreen(user = profile)
-    }
 }

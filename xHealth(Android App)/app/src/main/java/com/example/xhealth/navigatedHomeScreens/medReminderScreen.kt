@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.xhealth.homePage.convertTo12Hour
 import com.example.xhealth.network.healthRecordNew
+import com.example.xhealth.viewModels.healthRecordViewModel
 import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -123,9 +124,10 @@ fun medReminderScreen(history: List<healthRecordNew.History>) {
 
 }
 
-@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun medRemainderPreview(){
+fun medRemainderPreview(
+    healthRecordViewModel: healthRecordViewModel
+){
     val json="""[{
         "_id": "fdf",
     "doctorId": "Dr. A. Kumar",
@@ -225,6 +227,10 @@ fun medRemainderPreview(){
 """
 
 
-    val history= Json{ignoreUnknownKeys=true}.decodeFromString<List<healthRecordNew.History>>(json)
-    medReminderScreen(history = history)
+//    val history= Json{ignoreUnknownKeys=true}.decodeFromString<List<healthRecordNew.History>>(json)
+    val healthRecordLive=healthRecordViewModel.data
+    if(healthRecordLive!=null){
+        medReminderScreen(history = healthRecordLive.history)
+    }
+
 }

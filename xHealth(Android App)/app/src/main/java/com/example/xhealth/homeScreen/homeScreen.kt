@@ -47,6 +47,7 @@ import com.example.xhealth.profileScreen.ProfileScreenPreview
 import com.example.xhealth.viewModels.dataViewModel
 import com.example.xhealth.viewModels.doctorViewModel
 import com.example.xhealth.viewModels.healthRecordViewModel
+import com.example.xhealth.viewModels.profileDetailsViewModel
 
 
 data class screens(
@@ -65,6 +66,7 @@ fun HomeScreen(
     var topAppBar by rememberSaveable { mutableStateOf(true) }
     var bottomAppBar by rememberSaveable { mutableStateOf(true) }
     val doctorModel : doctorViewModel= doctorViewModel()
+    val profileDetail:profileDetailsViewModel=profileDetailsViewModel(dataViewModel)
     val healthRecordViewModel:healthRecordViewModel=healthRecordViewModel(dataViewModel)
         Scaffold(
             topBar = {
@@ -146,7 +148,7 @@ fun HomeScreen(
                     if(!topAppBar)topAppBar=!topAppBar;
                 }
                 composable(route = "remainder") {
-                    medRemainderPreview()
+                    medRemainderPreview(healthRecordViewModel)
                     if(!topAppBar)topAppBar=!topAppBar;
                 }
                 composable(route = "appointment") {
@@ -158,7 +160,7 @@ fun HomeScreen(
 
                     topAppBar=false;
                     bottomAppBar=false;
-                    ProfileScreenPreview()
+                    ProfileScreenPreview(profileDetail)
                 }
 
             }

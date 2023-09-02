@@ -45,7 +45,7 @@ data class healthRecordNew(
         @Serializable
         data class Immunization(
             @SerialName("dosage")
-            var dosage: Int=0,
+            var dosage: Int?=0,
             @SerialName("_id")
             var id: String="non",
             @SerialName("name")

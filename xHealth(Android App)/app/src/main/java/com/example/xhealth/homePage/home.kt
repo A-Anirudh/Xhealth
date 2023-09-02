@@ -78,9 +78,7 @@ fun UpComingRemainders(
     medications:List<healthRecordNew.History.Medications>
     ) {
     val time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    Log.d(TAG,time.toString())
     var sortedMedication: MutableList<healthRecordNew.History.Medications.AllMed> = mutableListOf()
-    val currentTime = LocalTime.now()
 
 
     for (i in medications) {
@@ -160,23 +158,19 @@ fun homeRecord(
     history: healthRecordNew.History
     ) {
 
-    // Assume start and end are date strings in the format "dd-MM-yyyy"
+    //Assume start and end are date strings in the format "dd-MM-yyyy"
     val formatter = SimpleDateFormat("yyyy-MM-dd")
+
     val startDate = formatter.parse(history.medications.startDate)
     val endDate = formatter.parse(history.medications.endDate)
-    val today= formatter.format(Date())
-    formatter.parse(today)
-    Log.d(TAG,today)
-// Get the difference in milliseconds
+    //Get the difference in milliseconds
     val diff = (endDate?.time ?: 0) - (startDate?.time ?: 0)
-
     val overDiff = (Date().time ?: 0) - (startDate?.time ?: 0)
-// Convert to days
+    //Convert to days
 
     var overDays=overDiff/(24 * 60 * 60 * 1000)
     val days = diff / (24 * 60 * 60 * 1000)
-    overDays= overDays.coerceAtMost(days);
-//    val overDays=LocalDateTime.now().minusDays((startDate?.time ?: 0) /24 * 60 * 60 * 1000)
+    overDays= overDays.coerceAtMost(days).coerceAtLeast(0)
     Log.d(TAG,days.toString());
     Log.d(TAG,(overDays.toFloat()/days.toFloat()).toString())
 
@@ -232,12 +226,11 @@ fun homeRecord(
                         )
                     }
                 }
-//                    Divider(modifier = Modifier.padding(1.dp), thickness = 2.dp, color = MaterialTheme.colorScheme.scrim )
                 Column(
                     modifier=Modifier.heightIn(max=300.dp)
                 ) {
                     Text(text = "Medication : ")
-                    for( i in 0 until Math.min(3,history.medications.allMeds.size)){
+                    for( i in 0 until 3.coerceAtMost(history.medications.allMeds.size)){
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -279,113 +272,17 @@ fun homeRecord(
 
 @Composable
 fun homeRecordPreview(dataViewModel: dataViewModel,healthRecordViewModel: healthRecordViewModel){
-    //use healthrecordviewmodel for data from db
-    val json="""[{
-        "_id": "fdf",
-        "time": "hello",
-    "doctorId": "Dr. A. Kumar",
-    "appointmentId": "60d21b5a6f434e3d8c1f4e6d",
-    "diagnoses": {
-        "data": "Patient has been diagnosed with Type 2 Diabetes and Hypertension.",
-        "problems": ["Type 2 Diabetes", "Hypertension"]
-    },
-    "medications": {
-        "startDate": "2023-07-20",
-        "endDate": "2023-09-16",
-        "allMeds": [
-            {
-                "name": "Metformin",
-                "dosage": 500,
-                "perDay": 2,
-                "gap": 0,
-                "timings": ["07","12", "16"], 
-                "_id": "64ef29d00205f8cc96bf2e84"
-            },
-            {
-                "name": "Lisinopril",
-                "dosage": 10,
-                "perDay": 1,
-                "gap": 0,
-                "timings": ["14","15","22"],
-                        "_id": "64ef29d00205f8cc96bf2e84"
-            }
-        ]
-    },
-    "immunizations": [
-        {
-            "name": "Influenza",
-            "dosage": 5,
-                        "_id": "64ef29d00205f8cc96bf2e84"
-        }
-    ],
-    "scans": [
-        {
-            "name":"Chest X-Ray",
-            "pdfLink":"https://www.example.com/chest-xray.pdf",
-            "typeOf":"X-Ray",
-                        "_id": "64ef29d00205f8cc96bf2e84"
-        }
-    ]
-},{
-    "_id": "abc",
-        "time": "hello",
-    "doctorId": "Dr. B. Singh",
-    "appointmentId": "60d21b5a6f434e3d8c1f4e6e",
-    "diagnoses": {
-        "data": "Patient has been diagnosed with Asthma and Allergies.",
-        "problems": ["Asthma", "Allergies"]
-    },
-    "medications": {
-        "startDate": "2023-08-01",
-        "endDate": "2023-10-01",
-        "allMeds": [
-            {
-                "name": "Albuterol",
-                "dosage": 90,
-                "perDay": 2,
-                "gap": 0,
-                "timings": ["08", "15","21"],
-                        "_id": "64ef29d00205f8cc96bf2e84"
-            },
-            {
-                "name": "Cetirizine",
-                "dosage": 10,
-                "perDay": 1,
-                "gap": 0,
-                "timings": ["01","15","20"],
-                        "_id": "64ef29d00205f8cc96bf2e84"
-            }
-        ]
-    },
-    "immunizations": [
-        {
-            "name": "Tdap",
-            "dosage": 1,
-                        "_id": "64ef29d00205f8cc96bf2e84"
-        }
-    ],
-    "scans": [
-        {
-            "name":"Lung CT Scan",
-            "pdfLink":"https://www.example.com/lung-ct-scan.pdf",
-            "typeOf":"CT Scan",
-                        "_id": "64ef29d00205f8cc96bf2e84"
-        }
-    ]
-}
-]
-"""
     val dataInternet=healthRecordViewModel.data
-    val history= Json{ignoreUnknownKeys=true}.decodeFromString<List<healthRecordNew.History>>(json)
     val listOfMeds= mutableListOf<healthRecordNew.History.Medications>();
-    for(i in history){
-        listOfMeds.add(i.medications);
+    if (dataInternet != null) {
+        for(i in dataInternet.history){
+            listOfMeds.add(i.medications);
+        }
     }
 //    if(!dataViewModel.alarmSet) {
 //        setAlarm(listOfMeds, context = LocalContext.current)
 //        dataViewModel.setAlarm()
 //    }
-    Log.d(TAG,history.toString())
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -407,12 +304,6 @@ fun homeRecordPreview(dataViewModel: dataViewModel,healthRecordViewModel: health
             }else{
                 Text(text = "Oops looks like the internet is weak or you have no health records!")
             }
-//            if(dataInternet!=null){
-//                homeRecord(history = dataInternet.history[0])
-//            }
-//            for(i in history){
-//                homeRecord(history = i)
-//            }
         }
     }
 }
