@@ -10,8 +10,7 @@ import {
 	ThemeProvider,
 	createTheme,
 } from "@mui/material";
-// import { LoginUser, DashboardUser, DashboardDoctor, LoginDoctor, LoginHospital, SignupUser, Appointments, LandingPage, DoctorRecommendation, PersonalHealthRecords, UserProfile, BookAppointment, SignupDoctor, DoctorProfile, AddHealthRecord } from './screens';
-// import { DoctorPrivateRoutes, UserPrivateRoutes } from './components';
+import LanguageIcon from "@mui/icons-material/Language";
 import {
 	AddHealthRecord,
 	LoginUser,
@@ -34,14 +33,11 @@ import {
 	AllHealthRecords,
 	ViewAppointments,
 } from "./screens";
-import LanguageIcon from "@mui/icons-material/Language";
 import {
 	DoctorPrivateRoutes,
 	UserPrivateRoutes,
 	HospitalPrivateRoutes,
 } from "./components";
-
-// import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { setLang } from "./slices/langSlice.js";
 
@@ -86,7 +82,6 @@ const theme = createTheme({
 	magenta: "#6C002E",
 	"grey-border": "#BEBEBE",
 	"grey-bg": "#F6F6F6",
-
 	inputBackground: "#ECECEC",
 	primaryText: "",
 	secondaryText: "#C3C3C8",
@@ -124,6 +119,7 @@ const AppRouter = () => {
 				zIndex="44444"
 				onClick={() => setLanguageDisplay((p) => !p)}
 				cursor="pointer"
+				aria-label="Language Selector"
 			>
 				<LanguageIcon />
 			</Box>
@@ -138,6 +134,7 @@ const AppRouter = () => {
 				onClick={() => setLanguageDisplay((p) => !p)}
 				overflow="hidden"
 				display={languageDisplay ? "block" : "none"}
+				aria-label="Language Options"
 			>
 				<ListItem
 					sx={{
@@ -159,8 +156,9 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("en"))}
 						primary="English"
+						aria-label="English"
 					/>
-										<ListItemText
+					<ListItemText
 						sx={{
 							padding: "0.5rem 1rem",
 							margin: "0",
@@ -173,6 +171,7 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("es"))}
 						primary="Spanish"
+						aria-label="Spanish"
 					/>
 					<ListItemText
 						sx={{
@@ -187,8 +186,8 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("de"))}
 						primary="German"
+						aria-label="German"
 					/>
-
 					<ListItemText
 						sx={{
 							padding: "0.5rem 1rem",
@@ -202,6 +201,7 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("hi"))}
 						primary="Hindi"
+						aria-label="Hindi"
 					/>
 					<ListItemText
 						sx={{
@@ -216,6 +216,7 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("kn"))}
 						primary="Kannada"
+						aria-label="Kannada"
 					/>
 					<ListItemText
 						sx={{
@@ -230,6 +231,7 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("bg"))}
 						primary="Bengali"
+						aria-label="Bengali"
 					/>
 					<ListItemText
 						sx={{
@@ -244,6 +246,7 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("ta"))}
 						primary="Tamil"
+						aria-label="Tamil"
 					/>
 					<ListItemText
 						sx={{
@@ -258,6 +261,7 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("mr"))}
 						primary="Marathi"
+						aria-label="Marathi"
 					/>
 					<ListItemText
 						sx={{
@@ -272,42 +276,112 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("te"))}
 						primary="Telegu"
+						aria-label="Telegu"
 					/>
 				</ListItem>
 			</Box>
 			<Routes>
-				<Route path="/" element={<LandingPage />} />
-				<Route path="login-doctor" element={<LoginDoctor />} />
-				<Route path="login-hospital" element={<LoginHospital />} />
-				<Route path="login-user" element={<LoginUser />} />
-				<Route path="signup-user" element={<SignupUser />} />
-				<Route path="signup-doctor" element={<SignupDoctor />} />
-				<Route path="signup-hospital" element={<SignupHospital />} />
+				<Route path="/" element={<LandingPage />} aria-label="Landing Page" />
+				<Route
+					path="login-doctor"
+					element={<LoginDoctor />}
+					aria-label="Doctor Login"
+				/>
+				<Route
+					path="login-hospital"
+					element={<LoginHospital />}
+					aria-label="Hospital Login"
+				/>
+				<Route
+					path="login-user"
+					element={<LoginUser />}
+					aria-label="User Login"
+				/>
+				<Route
+					path="signup-user"
+					element={<SignupUser />}
+					aria-label="User Signup"
+				/>
+				<Route
+					path="signup-doctor"
+					element={<SignupDoctor />}
+					aria-label="Doctor Signup"
+				/>
+				<Route
+					path="signup-hospital"
+					element={<SignupHospital />}
+					aria-label="Hospital Signup"
+				/>
 
 				<Route path="/" element={<UserPrivateRoutes />}>
-					<Route path="dashboard-user" element={<DashboardUser />} />
-					<Route path="appointments" element={<Appointments />} />
-					<Route path="book-appointment" element={<BookAppointment />} />
+					<Route
+						path="dashboard-user"
+						element={<DashboardUser />}
+						aria-label="User Dashboard"
+					/>
+					<Route
+						path="appointments"
+						element={<Appointments />}
+						aria-label="Appointments"
+					/>
+					<Route
+						path="book-appointment"
+						element={<BookAppointment />}
+						aria-label="Book Appointment"
+					/>
 					<Route
 						path="doctor-recommendation"
 						element={<DoctorRecommendation />}
+						aria-label="Doctor Recommendation"
 					/>
-					<Route path="health-records" element={<PersonalHealthRecords />} />
-					<Route path="profile-user" element={<UserProfile />} />
+					<Route
+						path="health-records"
+						element={<PersonalHealthRecords />}
+						aria-label="Personal Health Records"
+					/>
+					<Route
+						path="profile-user"
+						element={<UserProfile />}
+						aria-label="User Profile"
+					/>
 				</Route>
 				<Route path="/" element={<DoctorPrivateRoutes />}>
-					{/* <Route path='doctor-appointments' element={<DoctorAppointments />} /> */}
-					<Route path="dashboard-doctor" element={<DashboardDoctor />} />
-					<Route path="profile-doctor" element={<DoctorProfile />} />
-					<Route path="add-record" element={<AddHealthRecord />} />
-					<Route path="view-all-records" element={<AllHealthRecords />} />
+					<Route
+						path="dashboard-doctor"
+						element={<DashboardDoctor />}
+						aria-label="Doctor Dashboard"
+					/>
+					<Route
+						path="profile-doctor"
+						element={<DoctorProfile />}
+						aria-label="Doctor Profile"
+					/>
+					<Route
+						path="add-record"
+						element={<AddHealthRecord />}
+						aria-label="Add Health Record"
+					/>
+					<Route
+						path="view-all-records"
+						element={<AllHealthRecords />}
+						aria-label="View All Health Records"
+					/>
 				</Route>
 				<Route path="/" element={<HospitalPrivateRoutes />}>
-					<Route path="doctor-appointments" element={<DoctorAppointments />} />
-					<Route path="dashboard-hospital" element={<DashboardHospital />} />
+					<Route
+						path="doctor-appointments"
+						element={<DoctorAppointments />}
+						aria-label="Doctor Appointments"
+					/>
+					<Route
+						path="dashboard-hospital"
+						element={<DashboardHospital />}
+						aria-label="Hospital Dashboard"
+					/>
 					<Route
 						path="doctor/appointments/:docname/:id"
 						element={<ViewAppointments />}
+						aria-label="View Appointments"
 					/>
 				</Route>
 			</Routes>
