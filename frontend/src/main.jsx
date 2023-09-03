@@ -188,6 +188,76 @@ const AppRouter = () => {
 						onClick={() => dispatch(setLang("kn"))}
 						primary="Kannada"
 					/>
+					<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("bg"))}
+						primary="Bengali"
+					/>
+					<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("ml"))}
+						primary="Malayalam"
+					/>
+					<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("mr"))}
+						primary="Marathi"
+					/>
+					<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("te"))}
+						primary="Telegu"
+					/>
+					<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("es"))}
+						primary="Spanish"
+					/>
 				</ListItem>
 			</Box>
 			<Routes>
