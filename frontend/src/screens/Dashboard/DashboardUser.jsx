@@ -1,5 +1,5 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import dropdown from "../../assets/dropdown.png";
 import coverImg from "../../assets/Doctors-pana 2.png";
 import boyimg from "../../assets/boyimg.png";
@@ -8,22 +8,30 @@ import bw from "../../assets/bw.png";
 import bp from "../../assets/bp.png";
 import gl from "../../assets/gl.png";
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from 'react'
-import moment from 'moment/moment';
-import { Toaster, toast } from 'react-hot-toast';
-import { Users } from '../../sdk/users';
-
+import React, { useEffect, useState } from "react";
+import moment from "moment/moment";
+import { Toaster, toast } from "react-hot-toast";
+import { Users } from "../../sdk/users";
+import { useSelector } from "react-redux";
+import { useGetHealthRecordsMutation } from "../../slices/healthRecordSlice";
 
 export const DashboardUser = () => {
 	const theme = useTheme();
 	const user = new Users();
 	const [latestRecord, setLatestRecord] = useState({});
+	const [medications, setMedications] = useState("");
+	const [timings, setTimings] = useState("");
 	const [latestAppointments, setLatestAppointments] = useState([]);
 	const [userOptions, setUserOptions] = useState(false);
 	const [userInfo, refetchUser] = user.getUserInfo();
 	const [personalHealth, refetchHealth] = user.getPersonalHealth();
 	const [appointments, refetchAppointment] = user.getAppointments();
 	const [doctors, refetchDoctors] = user.getDoctors();
+	const patientEmail = useSelector((state) => state.auth.userInfo.email);
+	const [records] = useGetHealthRecordsMutation();
+	const {
+		lang: { patient },
+	} = useSelector((state) => state.language);
 
 	useEffect(() => {
 		(async () => {
@@ -31,24 +39,33 @@ export const DashboardUser = () => {
 			await refetchHealth();
 			await refetchAppointment();
 			await refetchDoctors();
-		}
-		)()
-	}, [])
+		})();
+	}, []);
 
 	useEffect(() => {
-		personalHealth && setLatestRecord(personalHealth[personalHealth.length - 1]);
-	}, [personalHealth])
+		(async () => {
+			const res = await records({ email: patientEmail });
+			const meds =
+				res?.data?.history[res?.data?.history?.length - 1]?.medications
+					?.allMeds[0];
+			setMedications(meds?.name);
+			setTimings(meds?.timings[0]);
+		})();
+	}, [records]);
+
+	useEffect(() => {
+		personalHealth &&
+			setLatestRecord(personalHealth[personalHealth.length - 1]);
+		console.log(personalHealth);
+	}, [personalHealth]);
 
 	useEffect(() => {
 		const recentApts = user.setRecentAppointments(appointments, doctors);
 		setLatestAppointments(recentApts);
-	}, [appointments, doctors])
+	}, [appointments, doctors]);
 
 	return (
-		<Grid
-			container
-			backgroundColor={theme['blue-100']}
-		>
+		<Grid container backgroundColor={theme["blue-100"]}>
 			<Toaster />
 			<Grid
 				item
@@ -58,10 +75,10 @@ export const DashboardUser = () => {
 				justifyContent="space-around"
 				sx={{
 					[theme.breakpoints.down("lg")]: {
-						margin: "4rem 1rem 2rem"
+						margin: "4rem 1rem 2rem",
 					},
 					[theme.breakpoints.down("sm")]: {
-						margin: "2rem 1rem"
+						margin: "2rem 1rem",
 					},
 				}}
 			>
@@ -81,7 +98,7 @@ export const DashboardUser = () => {
 						sx={{
 							[theme.breakpoints.down("md")]: {
 								padding: "0",
-								width: "90vw"
+								width: "90vw",
 							},
 							[theme.breakpoints.down("sm")]: {
 								padding: "0",
@@ -101,7 +118,8 @@ export const DashboardUser = () => {
 								},
 							}}
 						>
-							<Typography fontFamily='poppins'
+							<Typography
+								fontFamily="poppins"
 								variant="h3"
 								display="flex"
 								gap={2}
@@ -111,67 +129,60 @@ export const DashboardUser = () => {
 								sx={{
 									[theme.breakpoints.down("sm")]: {
 										fontSize: "2rem",
-										gap: 1
+										gap: 1,
 									},
 									[theme.breakpoints.down("xsm")]: {
-										fontSize: "1.5rem"
+										fontSize: "1.5rem",
 									},
 								}}
 							>
-								<Typography fontFamily='poppins'
+								<Typography
+									fontFamily="poppins"
 									variant="h3"
 									fontWeight="bold"
 									color={`${theme["purple-500"]}`}
 									sx={{
 										[theme.breakpoints.down("sm")]: {
-											fontSize: "2rem"
+											fontSize: "2rem",
 										},
 										[theme.breakpoints.down("xsm")]: {
-											fontSize: "1.5rem"
+											fontSize: "1.5rem",
 										},
 									}}
-								// onClick={() => {
-								//   appointments.find(item => {
-								//     if (item.status === "Scheduled" && new Date(item.appointmentDate) < new Date()) {
-								//       const data = {
-								//         _id: item._id,
-								//         newStatus: "Expired"
-								//       }
-								//       updateApt(data);
-								//     }
-								//   })
-								// }}
 								>
-									Welcome
+									{patient.dashboard.welcome}
 								</Typography>
 								{userInfo?.firstName}!
 							</Typography>
-							<Typography fontFamily='poppins'
+							<Typography
+								fontFamily="poppins"
 								variant="h5"
 								sx={{
 									display: "inline",
 									[theme.breakpoints.down("sm")]: {
-										fontSize: "1.2rem"
+										fontSize: "1.2rem",
 									},
 									[theme.breakpoints.down("xsm")]: {
-										fontSize: "1rem"
+										fontSize: "1rem",
 									},
 								}}
-							>Get better easily and live a healthy life.</Typography>
+							>
+								{patient.dashboard.label}
+							</Typography>
 						</Box>
 						<Box
 							sx={{
 								[theme.breakpoints.down("lg")]: {
-									display: "none"
+									display: "none",
 								},
 							}}
 						>
 							<img src={coverImg} alt="doctors image" />
 						</Box>
 					</Box>
-
 				</Grid>
-				<Grid item
+				<Grid
+					item
 					xl={3}
 					backgroundColor="white"
 					padding="1rem 1.5rem"
@@ -180,11 +191,18 @@ export const DashboardUser = () => {
 					position="relative"
 					sx={{
 						[theme.breakpoints.down("xl")]: {
-							display: "none"
+							display: "none",
 						},
 					}}
 				>
-					<Typography fontFamily='poppins' variant="h5" color={theme["blue-150"]} margin={0}>Profile</Typography>
+					<Typography
+						fontFamily="poppins"
+						variant="h5"
+						color={theme["blue-150"]}
+						margin={0}
+					>
+						{patient.dashboard.profile}
+					</Typography>
 					<Link
 						style={{
 							alignItems: "center",
@@ -196,17 +214,21 @@ export const DashboardUser = () => {
 							position: "absolute",
 							left: "0",
 							width: "100%",
-							textDecoration: "none"
+							textDecoration: "none",
 						}}
 						to="/profile-user"
 					>
 						<img src={boyimg} alt="user avatar" />
-						<Typography fontFamily='poppins' variant="h5">{userInfo?.firstName}</Typography>
+						<Typography fontFamily="poppins" variant="h5">
+							{userInfo?.firstName}
+						</Typography>
 					</Link>
 				</Grid>
 			</Grid>
 			<Grid
-				item xl md
+				item
+				xl
+				md
 				margin="0 8rem"
 				container
 				display="flex"
@@ -214,11 +236,12 @@ export const DashboardUser = () => {
 				gap={5}
 				sx={{
 					[theme.breakpoints.down("lg")]: {
-						margin: "0 1rem"
+						margin: "0 1rem",
 					},
 				}}
 			>
-				<Grid item
+				<Grid
+					item
 					xl={5}
 					backgroundColor={theme["purple-500"]}
 					padding="2rem 1.5rem"
@@ -231,11 +254,12 @@ export const DashboardUser = () => {
 					gap="1rem"
 					sx={{
 						[theme.breakpoints.down("lg")]: {
-							flexGrow: 1
+							flexGrow: 1,
 						},
 					}}
 				>
-					<Typography fontFamily='poppins'
+					<Typography
+						fontFamily="poppins"
 						backgroundColor="white"
 						padding="0.7rem 1.5rem"
 						variant="h5"
@@ -243,9 +267,10 @@ export const DashboardUser = () => {
 						borderRadius={4}
 						gap="1rem"
 					>
-						Diabetes Medication
+						{medications}
 					</Typography>
-					<Typography fontFamily='poppins'
+					<Typography
+						fontFamily="poppins"
 						backgroundColor={theme["green-olive"]}
 						padding="1rem 2rem"
 						fontWeight="bold"
@@ -256,11 +281,14 @@ export const DashboardUser = () => {
 						alignItems="center"
 						gap={1}
 					>
-						Next after dinner
-						<Box sx={{ transform: "rotate(270deg)" }}><img src={dropdown} alt="go Next" /></Box>
+						{patient.dashboard.medication.button} {timings}
+						<Box sx={{ transform: "rotate(270deg)" }}>
+							<img src={dropdown} alt="go Next" />
+						</Box>
 					</Typography>
 				</Grid>
-				<Grid item
+				<Grid
+					item
 					xl
 					backgroundColor={theme["purple-500"]}
 					padding="1.5rem"
@@ -271,14 +299,80 @@ export const DashboardUser = () => {
 					gap={1}
 					sx={{
 						[theme.breakpoints.down("lg")]: {
-							flexGrow: 1
+							flexGrow: 1,
 						},
 					}}
 				>
-					<Typography fontFamily='poppins' variant="h5" fontWeight="bold" color="white" paddingLeft={2}>
-						Appointments
+					<Typography
+						fontFamily="poppins"
+						variant="h5"
+						fontWeight="bold"
+						color="white"
+						paddingLeft={2}
+					>
+						{patient.dashboard.appointments.label}
 					</Typography>
-					{latestAppointments?.length > 0 ? latestAppointments.map(({ name, doctorName, hospitalName, appointmentDate }, idx) => (
+					{latestAppointments?.length > 0 ? (
+						latestAppointments.map(
+							({ name, doctorName, hospitalName, appointmentDate }, idx) => (
+								<Box
+									display="flex"
+									alignItems="center"
+									borderRadius={4}
+									overflow="hidden"
+									maxHeight="5rem"
+									marginBottom={1}
+									key={idx}
+								>
+									<Box backgroundColor="white" minWidth="10rem">
+										<Typography
+											fontFamily="poppins"
+											variant="h5"
+											fontWeight="bold"
+											padding="1rem 1.5rem"
+											height="5rem"
+											display="flex"
+											alignItems="center"
+											justifyContent="center"
+										>
+											{name === "prev"
+												? patient.dashboard.appointments.prev
+												: patient.dashboard.appointments.next}
+										</Typography>
+									</Box>
+									<Box
+										backgroundColor={theme["blue-500"]}
+										width="100%"
+										color="white"
+										padding="1rem 1.5rem"
+									>
+										<Box display="flex" alignItems="center">
+											<Box display="flex" flexDirection="column">
+												<Typography fontFamily="poppins" variant="h5">
+													{doctorName}
+												</Typography>
+												<Typography
+													fontFamily="poppins"
+													fontSize={15}
+													color={theme["gray-200"]}
+													marginTop={-0.5}
+												>
+													{hospitalName}
+												</Typography>
+											</Box>
+											<Typography
+												fontFamily="poppins"
+												fontSize={15}
+												marginLeft="auto"
+											>
+												{moment(appointmentDate).format("DD/MM/YYYY")}
+											</Typography>
+										</Box>
+									</Box>
+								</Box>
+							)
+						)
+					) : (
 						<Box
 							display="flex"
 							alignItems="center"
@@ -286,10 +380,10 @@ export const DashboardUser = () => {
 							overflow="hidden"
 							maxHeight="5rem"
 							marginBottom={1}
-							key={idx}
 						>
-							<Box backgroundColor="white" minWidth="10rem">
-								<Typography fontFamily='poppins'
+							<Box backgroundColor="white" width="100%">
+								<Typography
+									fontFamily="poppins"
 									variant="h5"
 									fontWeight="bold"
 									padding="1rem 1.5rem"
@@ -298,61 +392,16 @@ export const DashboardUser = () => {
 									alignItems="center"
 									justifyContent="center"
 								>
-									{name === "prev" ? "Previous" : "Upcoming"}
+									{patient.dashboard.appointments.noApt}
 								</Typography>
 							</Box>
-							<Box
-								backgroundColor={theme['blue-500']}
-								width="100%"
-								color="white"
-								padding="1rem 1.5rem"
-							>
-								<Box display="flex" alignItems="center">
-									<Box
-										display="flex"
-										flexDirection="column"
-									>
-										<Typography fontFamily='poppins' variant="h5">
-											{doctorName}
-										</Typography>
-										<Typography fontFamily='poppins' fontSize={15} color={theme['gray-200']} marginTop={-0.5}>
-											{hospitalName}
-										</Typography>
-									</Box>
-									<Typography fontFamily='poppins' fontSize={15} marginLeft="auto">
-										{moment(appointmentDate).format('DD/MM/YYYY')}
-									</Typography>
-								</Box>
-							</Box>
-
 						</Box>
-					)) : <Box
-						display="flex"
-						alignItems="center"
-						borderRadius={4}
-						overflow="hidden"
-						maxHeight="5rem"
-						marginBottom={1}
-					>
-						<Box backgroundColor="white" width="100%">
-							<Typography fontFamily='poppins'
-								variant="h5"
-								fontWeight="bold"
-								padding="1rem 1.5rem"
-								height="5rem"
-								display="flex"
-								alignItems="center"
-								justifyContent="center"
-							>
-								No Appointments Booked!
-							</Typography>
-						</Box>
-					</Box>
-					}
+					)}
 				</Grid>
 			</Grid>
 			<Grid
-				item xl={12}
+				item
+				xl={12}
 				margin="2rem 8rem"
 				container
 				display="flex"
@@ -361,40 +410,105 @@ export const DashboardUser = () => {
 				paddingBottom={5}
 				sx={{
 					[theme.breakpoints.down("lg")]: {
-						margin: "2rem"
+						margin: "2rem",
 					},
 				}}
 			>
-				<Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
+				<Grid
+					item
+					xl
+					backgroundColor="white"
+					borderRadius={4}
+					boxShadow="0 4px 4px rgba(0,0,0,0.25)"
+					padding="2rem"
+					flexGrow={1}
+				>
 					<Box marginBottom={2}>
 						<img src={heart} alt="heartRate" />
 					</Box>
-					<Typography fontFamily='poppins' variant="h6">Heart Rate</Typography>
-					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.heartRate : "-"} bpm</Typography>
+					<Typography fontFamily="poppins" variant="h6">
+						{patient.dashboard.hr.label}
+					</Typography>
+					<Typography
+						fontFamily="poppins"
+						variant="h6"
+						color={theme["purple-500"]}
+					>
+						{latestRecord ? latestRecord?.heartRate : "-"}{" "}
+						{patient.dashboard.hr.unit}
+					</Typography>
 				</Grid>
-				<Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
+				<Grid
+					item
+					xl
+					backgroundColor="white"
+					borderRadius={4}
+					boxShadow="0 4px 4px rgba(0,0,0,0.25)"
+					padding="2rem"
+					flexGrow={1}
+				>
 					<Box marginBottom={2}>
 						<img src={bp} alt="bloodpressure" />
 					</Box>
-					<Typography fontFamily='poppins' variant="h6">Blood pressure</Typography>
-					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.bloodPressure : "-/-"}</Typography>
+					<Typography fontFamily="poppins" variant="h6">
+						{patient.dashboard.bp.label}
+					</Typography>
+					<Typography
+						fontFamily="poppins"
+						variant="h6"
+						color={theme["purple-500"]}
+					>
+						{latestRecord ? latestRecord?.bloodPressure : "-/-"}
+					</Typography>
 				</Grid>
-				<Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
+				<Grid
+					item
+					xl
+					backgroundColor="white"
+					borderRadius={4}
+					boxShadow="0 4px 4px rgba(0,0,0,0.25)"
+					padding="2rem"
+					flexGrow={1}
+				>
 					<Box marginBottom={2}>
 						<img src={bw} alt="body weight" />
 					</Box>
-					<Typography fontFamily='poppins' variant="h6">Body Weight</Typography>
-					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.weight : "-"} kg</Typography>
+					<Typography fontFamily="poppins" variant="h6">
+						{patient.dashboard.bw.label}
+					</Typography>
+					<Typography
+						fontFamily="poppins"
+						variant="h6"
+						color={theme["purple-500"]}
+					>
+						{latestRecord ? latestRecord?.weight : "-"}{" "}
+						{patient.dashboard.bw.unit}
+					</Typography>
 				</Grid>
-				<Grid item xl backgroundColor="white" borderRadius={4} boxShadow="0 4px 4px rgba(0,0,0,0.25)" padding="2rem" flexGrow={1}>
+				<Grid
+					item
+					xl
+					backgroundColor="white"
+					borderRadius={4}
+					boxShadow="0 4px 4px rgba(0,0,0,0.25)"
+					padding="2rem"
+					flexGrow={1}
+				>
 					<Box marginBottom={2}>
 						<img src={gl} alt="glucose level" />
 					</Box>
-					<Typography fontFamily='poppins' variant="h6">Glucose Levels</Typography>
-					<Typography fontFamily='poppins' variant="h6" color={theme["purple-500"]}>{latestRecord ? latestRecord?.glucose : "-"}</Typography>
+					<Typography fontFamily="poppins" variant="h6">
+						{patient.dashboard.gl.label}
+					</Typography>
+					<Typography
+						fontFamily="poppins"
+						variant="h6"
+						color={theme["purple-500"]}
+					>
+						{latestRecord ? latestRecord?.glucose : "-"}
+					</Typography>
 				</Grid>
 			</Grid>
-		</Grid >
-	)
-}
-
+		</Grid>
+	);
+};

@@ -1,43 +1,43 @@
-export const hospitalDetails = [
-    {
-        "name": "name",
-        "type": "text",
-        "label": "Hospital name"
-    },
-    {
-        "name": "password",
-        "type": "password",
-        "label": "Password"
-    },
+export const hospitalDetails = (lang) => [
+	{
+		name: "name",
+		type: "text",
+		label: lang.hname,
+	},
+	{
+		name: "password",
+		type: "password",
+		label: lang.password,
+	},
 
-    {
-        "name": "email",
-        "type": "email",
-        "label": "Email"
-    },
-    {
-        "name": "phoneNumber",
-        "type": "tel",
-        "label": "Phone number"
-    },
-    {
-        "name": "state",
-        "type": "text",
-        "label": "State"
-    },
-    {
-        "name": "city",
-        "type": "text",
-        "label": "City"
-    },
-    {
-        "name": "pincode",
-        "type": "text",
-        "label": "Pincode"
-    },
-    {
-        "name": "hospitalRegistrationNumber",
-        "type": "text",
-        "label": "Registration number"
-    },
-]
+	{
+		name: "email",
+		type: "email",
+		label: lang.email,
+	},
+	{
+		name: "phoneNumber",
+		type: "tel",
+		label: lang.phone,
+	},
+	{
+		name: "state",
+		type: "text",
+		label: lang.state,
+	},
+	{
+		name: "city",
+		type: "text",
+		label: lang.city,
+	},
+	{
+		name: "pincode",
+		type: "text",
+		label: lang.pincode,
+	},
+	{
+		name: "hospitalRegistrationNumber",
+		type: "text",
+		label: lang.rNo,
+	},
+];
