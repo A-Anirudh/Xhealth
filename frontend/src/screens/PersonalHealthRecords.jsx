@@ -618,7 +618,7 @@ export const PersonalHealthRecords = () => {
 														</Typography>
 														<Input
 															disabled
-															type="time"
+															type="text"
 															disableUnderline
 															sx={{
 																backgroundColor: "white",
@@ -627,7 +627,7 @@ export const PersonalHealthRecords = () => {
 																color: `${theme["magenta"]}`,
 																fontWeight: "600",
 															}}
-															value={val}
+															value={val+' hrs'}
 															onChange={(e) => handleTimeChange(e, i, j)}
 														></Input>
 													</Box>
