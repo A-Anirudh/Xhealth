@@ -187,7 +187,6 @@ const allDoctor = asyncHandler(async (req, res) => {
     });
 });
 
-
 // const getUserDetailBasedOnAppointment = asyncHandler(async (req, res) => {
 //     console.log("inside user detail")
 
