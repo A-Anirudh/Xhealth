@@ -5,7 +5,7 @@ import moment from "moment";
 import { v4 as uuid } from "uuid";
 
 
-export const useAptDetails = () => {
+export const useAptDetails = ({hrid}) => {
   const user = new Users();
   const [appointments, refetchApt] = user.getAppointments();
   const [doctors] = user.getDoctors();
@@ -30,7 +30,7 @@ export const useAptDetails = () => {
             city: docDetail?.city,
             doctorName: docDetail?.firstName,
             department: docDetail?.department,
-            healthRecord: "https://picsum.photos/99/99",
+            healthRecord: "http://localhost:8080/api/users/healthRecords/key/"+hrid,
             _id,
           };
         }

@@ -40,6 +40,7 @@ import {
 } from "./components";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { setLang } from "./slices/langSlice.js";
+import { AddMetrices } from "./screens/AddMetrices.jsx";
 
 const theme = createTheme({
 	patient: {
@@ -342,6 +343,11 @@ const AppRouter = () => {
 					<Route
 						path="profile-user"
 						element={<UserProfile />}
+						aria-label="User Profile"
+					/>
+					<Route
+						path="add-metrices"
+						element={<AddMetrices />}
 						aria-label="User Profile"
 					/>
 				</Route>

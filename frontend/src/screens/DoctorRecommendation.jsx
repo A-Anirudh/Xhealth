@@ -141,14 +141,14 @@ export const DoctorRecommendation = () => {
 											)}
 										</Box>
 										<Box height="1.5rem" paddingRight={1}>
-											<Button variant="contained" color="error">
-												<Link
-													to="/book-appointment"
-													style={{ textDecoration: "none", color: "white" }}
-												>
+											<Link
+												to="/book-appointment"
+												style={{ textDecoration: "none", color: "white" }}
+											>
+												<Button variant="contained" color="error">
 													{patient.doctorRecommendation.book}
-												</Link>
-											</Button>
+												</Button>
+											</Link>
 										</Box>
 									</Box>
 								)

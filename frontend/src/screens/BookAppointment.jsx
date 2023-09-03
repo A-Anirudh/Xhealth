@@ -14,6 +14,7 @@ import bookApt from "../assets/bookApt.png";
 import { Toaster, toast } from "react-hot-toast";
 import { Users } from "../sdk/users";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 export const BookAppointment = () => {
 	const theme = useTheme();
@@ -110,6 +111,8 @@ export const BookAppointment = () => {
 							type="datetime-local"
 							label="Date"
 							value={date}
+							min={moment().format('YYYY-MM-DDTHH:mm')}
+							max={moment(new Date().setMonth(new Date().getMonth() + 1)).format('YYYY-MM-DDTHH:mm')}
 							onChange={(e) => setDate(e.target.value)}
 							style={{
 								padding: "1rem",
@@ -118,7 +121,6 @@ export const BookAppointment = () => {
 								width: "100%",
 							}}
 						/>
-						{/* {console.log(moment(date).toLocaleString())} */}
 					</Box>
 					<Box style={{ width: "100%" }}>
 						<Typography variant="h6" style={{ marginBottom: "1rem" }}>
