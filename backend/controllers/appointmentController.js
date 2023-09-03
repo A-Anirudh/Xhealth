@@ -21,64 +21,68 @@ const bookAppointment = asyncHandler(async (req, res) => {
 
     const { doctorId, appointmentDate, appointmentStartTime, reason, status } = req.body;
     // console.log(doctorId)
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    console.log(dateRegex.test(appointmentDate))
+    if (dateRegex.test(appointmentDate)){
+        try {
+            const doc = await Doctor.findOne({ _id: doctorId })
+            const user = await User.findOne({ _id: req.user._id })
+            // console.log(doc)
 
-    try {
-        const doc = await Doctor.findOne({ _id: doctorId })
-        const user = await User.findOne({ _id: req.user._id })
-        // console.log(doc)
-        const allAptOfDoc = await Appointment.find({ doctor: doc._id })
-        // console.log(allAptOfDoc);
-
-        const convertedAppointmentStartTime = convertTimeToMinutes(appointmentStartTime);
-        const convertedWorkingHourStart = convertTimeToMinutes(doc.workingHourStart);
-        const convertedWorkingHourEnd = convertTimeToMinutes(doc.workingHourEnd);
-        // Checking if appointment time is within working hours of doctor
-        if (convertedAppointmentStartTime < convertedWorkingHourStart || convertedAppointmentStartTime > convertedWorkingHourEnd) {
-            console.log(res)
-            res.status(400)
-            throw new Error("Doctor not available!")
+            const convertedAppointmentStartTime = convertTimeToMinutes(appointmentStartTime);
+            const convertedWorkingHourStart = convertTimeToMinutes(doc.workingHourStart);
+            const convertedWorkingHourEnd = convertTimeToMinutes(doc.workingHourEnd);
+            // Checking if appointment time is within working hours of doctor
+            if (convertedAppointmentStartTime < convertedWorkingHourStart || convertedAppointmentStartTime > convertedWorkingHourEnd) {
+                res.status(400)
+                throw new Error("Doctor not available!")
+            }
+            // Format of date from input
+            const [year, month, date] = appointmentDate.split('-')
+            const [hour, min] = appointmentStartTime.split(':')
+            const d = new Date(year, month - 1, date, hour, min)
+            if (d < new Date()) {
+                res.status(400)
+                throw new Error("Appointment date cannot be before todays date!")
+            }
+    
+            // ? Check if doctor is free or has an appointment
+            // console.log(doc)
+            checkDocAvailability(doc, d, res)
+            // ? Check if user has another appointment at that time
+            // console.log(user.userTimeSlot)
+            checkUserAvailability(user, d, res)
+            // * Step 3: Book a New Appointment
+            const newAppointment = new Appointment({
+                userId: req.user._id,
+                doctorId: doctorId,
+                appointmentDate: d.toString(),
+                appointmentStartTime: appointmentStartTime,
+                reason: reason,
+                status: status || "Scheduled",
+            });
+    
+            //  ? Add time to doctor time slots
+            //   console.log(doc.timeSlotsBooked)
+            //  TODO: Add the functions and remove the below 2 lines
+    
+            addDocArray(doc, d);
+            addUserArray(user, d);
+            user.permissionCheck.push(doc._id);
+            await user.save()
+            await doc.save()
+            await newAppointment.save();
+    
+            res.status(201).json({ message: "Appointment booked successfully.", appointment: newAppointment });
+    
+        } catch (error) {
+            res.status(res.statusCode === 200 ? 500 : res.statusCode); // Preserve existing status code if it's not an HTTP error
+            throw new Error(error.message || "An error occurred while booking the appointment.");
         }
-        // Format of date from input
-        const [year, month, date] = appointmentDate.split('-')
-        const [hour, min] = appointmentStartTime.split(':')
-        const d = new Date(year, month - 1, date, hour, min)
-        if (d < new Date()) {
-            res.status(400)
-            throw new Error("Appointment date cannot be before todays date!")
-        }
-
-        // ? Check if doctor is free or has an appointment
-        // console.log(doc)
-        checkDocAvailability(doc, d, res)
-        // ? Check if user has another appointment at that time
-        // console.log(user.userTimeSlot)
-        checkUserAvailability(user, d, res)
-        // * Step 3: Book a New Appointment
-        const newAppointment = new Appointment({
-            userId: req.user._id,
-            doctorId: doctorId,
-            appointmentDate: d.toString(),
-            appointmentStartTime: appointmentStartTime,
-            reason: reason,
-            status: status || "Scheduled",
-        });
-
-        //  ? Add time to doctor time slots
-        //   console.log(doc.timeSlotsBooked)
-        //  TODO: Add the functions and remove the below 2 lines
-
-        addDocArray(doc, d);
-        addUserArray(user, d);
-        user.permissionCheck.push(doc._id);
-        await user.save()
-        await doc.save()
-        await newAppointment.save();
-
-        res.status(201).json({ message: "Appointment booked successfully.", appointment: newAppointment });
-
-    } catch (error) {
-        res.status(res.statusCode === 200 ? 500 : res.statusCode); // Preserve existing status code if it's not an HTTP error
-        throw new Error(error.message || "An error occurred while booking the appointment.");
+    
+    } else{
+        res.status(400)
+        throw new Error("Invalid date")
     }
 });
 

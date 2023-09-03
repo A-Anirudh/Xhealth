@@ -1,6 +1,4 @@
 const checkDocAvailability = (doc, d,res) => {
-    console.log(doc.timeSlotsBooked)
-    console.log(d.toString())
     if (doc.timeSlotsBooked.includes(d.toString())) {
         res.status(400)
         throw new Error("Slot not available")
