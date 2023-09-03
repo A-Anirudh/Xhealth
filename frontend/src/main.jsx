@@ -271,7 +271,7 @@ const AppRouter = () => {
 							},
 						}}
 						onClick={() => dispatch(setLang("te"))}
-						primary="Telegu"
+						primary="Telugu"
 					/>
 				</ListItem>
 			</Box>
