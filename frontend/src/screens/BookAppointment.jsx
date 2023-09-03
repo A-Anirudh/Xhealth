@@ -60,6 +60,9 @@ export const BookAppointment = () => {
 					fontSize="5rem"
 					fontWeight="bolder"
 					color="white"
+					fontFamily={'poppins'}
+					textAlign={'right'}
+					
 				>
 					{patient.doctorRecommendation.book}
 				</Typography>
@@ -70,7 +73,9 @@ export const BookAppointment = () => {
 					variant="h2"
 					fontSize="5rem"
 					fontWeight="bolder"
+					fontFamily={'poppins'}
 					color={theme["purple-150"]}
+					textAlign={'left'}
 				>
 					{patient.appointments.label}
 				</Typography>
@@ -138,10 +143,12 @@ export const BookAppointment = () => {
 					</Box>
 					<Button
 						variant="contained"
-						color="error"
+						color="success"
 						sx={{
 							marginLeft: "auto",
 							padding: "0.6rem 2rem",
+							fontFamily:'poppins',
+							textTransform:"capitalize"
 						}}
 						onClick={() =>
 							user.submitAppointment(
