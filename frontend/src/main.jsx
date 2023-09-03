@@ -160,6 +160,35 @@ const AppRouter = () => {
 						onClick={() => dispatch(setLang("en"))}
 						primary="English"
 					/>
+										<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("es"))}
+						primary="Spanish"
+					/>
+					<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("de"))}
+						primary="German"
+					/>
+
 					<ListItemText
 						sx={{
 							padding: "0.5rem 1rem",
@@ -243,34 +272,6 @@ const AppRouter = () => {
 						}}
 						onClick={() => dispatch(setLang("te"))}
 						primary="Telegu"
-					/>
-					<ListItemText
-						sx={{
-							padding: "0.5rem 1rem",
-							margin: "0",
-							width: "100%",
-							textAlign: "center",
-							cursor: "pointer",
-							["&:hover"]: {
-								backgroundColor: "lightgray",
-							},
-						}}
-						onClick={() => dispatch(setLang("es"))}
-						primary="Spanish"
-					/>
-					<ListItemText
-						sx={{
-							padding: "0.5rem 1rem",
-							margin: "0",
-							width: "100%",
-							textAlign: "center",
-							cursor: "pointer",
-							["&:hover"]: {
-								backgroundColor: "lightgray",
-							},
-						}}
-						onClick={() => dispatch(setLang("de"))}
-						primary="German"
 					/>
 				</ListItem>
 			</Box>
