@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 export const Appointments = () => {
 	const theme = useTheme();
 	const [aptDisplay, setAptDisplay] = useState("none");
-	const { sortedAppointments, appointments } = useAptDetails();
+	const { sortedAppointments, appointments } = useAptDetails({ hrid: "4efdoa4acfedajeacd6" });
 	const [myDoc, setMyDoc] = useState("");
 	const [date, setDate] = useState("");
 	const [reason, setReason] = useState("");

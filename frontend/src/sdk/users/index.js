@@ -142,7 +142,7 @@ export class Users {
         const newApt = {
             doctorId: myDoc,
             appointmentDate: moment(date).format('YYYY-MM-DD'),
-            appointmentStartTime: moment(date).format('HH:MM'),
+            appointmentStartTime:moment(date).format('HH:mm'),
             status: aptStatus,
             reason
         }
