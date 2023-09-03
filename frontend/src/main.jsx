@@ -185,6 +185,7 @@ const AppRouter = () => {
 								backgroundColor: "lightgray",
 							},
 						}}
+						onClick={() => dispatch(setLang("kn"))}
 						primary="Kannada"
 					/>
 				</ListItem>
