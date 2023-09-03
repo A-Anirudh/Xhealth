@@ -258,6 +258,20 @@ const AppRouter = () => {
 						onClick={() => dispatch(setLang("es"))}
 						primary="Spanish"
 					/>
+					<ListItemText
+						sx={{
+							padding: "0.5rem 1rem",
+							margin: "0",
+							width: "100%",
+							textAlign: "center",
+							cursor: "pointer",
+							["&:hover"]: {
+								backgroundColor: "lightgray",
+							},
+						}}
+						onClick={() => dispatch(setLang("de"))}
+						primary="German"
+					/>
 				</ListItem>
 			</Box>
 			<Routes>
