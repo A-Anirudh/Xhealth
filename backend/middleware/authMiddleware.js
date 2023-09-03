@@ -11,7 +11,6 @@ const protect = asyncHandler(async (req, res, next) => {
     hospital_token = req.cookies['jwt-hospital']
     if (doctor_token) {
         try {
-            console.log("Doctor is autheroisadfasfd")
             const dedcoded = jwt.verify(doctor_token, process.env.JWT_SECRET);
             req.doctor = await Doctor.findById(dedcoded.userId).select('-password');
             next();
@@ -21,7 +20,6 @@ const protect = asyncHandler(async (req, res, next) => {
         }
     }  else if (user_token && req.baseUrl.includes('users')) {
         try {
-            console.log("User token autherized")
             const dedcoded = jwt.verify(user_token, process.env.JWT_SECRET);
             req.user = await User.findById(dedcoded.userId).select('-password');
             next();
