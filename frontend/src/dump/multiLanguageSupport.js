@@ -1758,15 +1758,15 @@ export const multiLangSupport = {
       h1: "Empoderando Tu Viaje de Salud, En Cada Paso",
       h2: "Elevando el Bienestar: Citas Fáciles, Atención Total",
       doctor: {
-        h1: "¿Doctor?",
+        h1: "Doctor?",
         p: "Comprometidos a brindar atención excepcional y tratamiento personalizado para tu bienestar",
       },
       patient: {
-        h1: "¿Paciente?",
-        p: "¿Eres un paciente buscando programar citas y administrar tu salud?",
+        h1: "Paciente?",
+        p: "Eres un paciente buscando programar citas y administrar tu salud?",
       },
       hospital: {
-        h1: "¿Hospital?",
+        h1: "Hospital?",
         p: "Dedicados a servir a nuestra comunidad con un enfoque holístico en el bienestar",
       },
       button: "Iniciar Sesión Aquí",
@@ -1778,9 +1778,9 @@ export const multiLangSupport = {
         h2: "Por favor, inicie sesión en su cuenta",
         email: "Correo Electrónico",
         password: "Contraseña",
-        forgot: "¿Olvidó su contraseña?",
+        forgot: "Olvidó su contraseña?",
         button: "Iniciar Sesión",
-        newUser: "¿Nuevo Usuario?",
+        newUser: "Nuevo Usuario?",
         register: "Regístrate Ahora",
       },
       signup: {
@@ -1841,7 +1841,7 @@ export const multiLangSupport = {
         h2: "Agregar Nuevo Registro",
         diagnosis: "Diagnóstico",
         confirmMsg:
-          "¿Desea agregar este historial de salud y finalizar la cita?",
+          "Desea agregar este historial de salud y finalizar la cita?",
         bCancel: "Cancelar",
         bSubmit: "Enviar y Finalizar",
         problems: {
@@ -1916,9 +1916,9 @@ export const multiLangSupport = {
         h2: "Por favor, inicie sesión en su cuenta",
         email: "Correo Electrónico",
         password: "Contraseña",
-        forgot: "¿Olvidó su contraseña?",
+        forgot: "Olvidó su contraseña?",
         button: "Iniciar Sesión",
-        newUser: "¿Nuevo Usuario?",
+        newUser: "Nuevo Usuario?",
         register: "Regístrate Ahora",
       },
       signup: {
@@ -2067,9 +2067,9 @@ export const multiLangSupport = {
         h2: "Por favor, inicie sesión en su cuenta",
         email: "Correo Electrónico",
         password: "Contraseña",
-        forgot: "¿Olvidó su contraseña?",
+        forgot: "Olvidó su contraseña?",
         button: "Iniciar Sesión",
-        newUser: "¿Nuevo Usuario?",
+        newUser: "Nuevo Usuario?",
         register: "Regístrate Ahora",
       },
       signup: {
