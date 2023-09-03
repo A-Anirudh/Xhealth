@@ -13,6 +13,7 @@ import React from "react";
 import moment from "moment";
 import { useEditAppointmentMutation } from "../slices/usersApiSlice";
 import { Users } from "../sdk/users";
+import { useSelector } from "react-redux";
 
 export const MoreOptions = ({
   _id,
@@ -24,6 +25,10 @@ export const MoreOptions = ({
   setDate,
 }) => {
   const user = new Users();
+  const {
+		lang: { patient },
+	} = useSelector((state) => state.language);
+
   const [doctor] = user.getDoctors();
   const [editApt] = useEditAppointmentMutation();
   const theme = useTheme();
@@ -67,7 +72,7 @@ export const MoreOptions = ({
               style={{ marginBottom: "1rem" }}
               fontFamily={"poppins"}
             >
-              Pick a Doctor:
+              {patient.appointments.pickDoc}
             </Typography>
             <FormControl style={{ width: "100%" }}>
               <InputLabel id="selectDoctors">Doctor</InputLabel>
@@ -86,7 +91,7 @@ export const MoreOptions = ({
                   ))
                 ) : (
                   <MenuItem value="Server Down">
-                    Server Down Please Try Later
+                    {patient.appointments.serverDown}
                   </MenuItem>
                 )}
               </Select>
@@ -98,7 +103,7 @@ export const MoreOptions = ({
               style={{ marginBottom: "1rem" }}
               fontFamily={"poppins"}
             >
-              Pick Date and Time:
+              {patient.appointments.pickDT}
             </Typography>
             <input
               type="datetime-local"
@@ -127,7 +132,7 @@ export const MoreOptions = ({
             }}
             onClick={submitAppointment}
           >
-            Edit
+            {patient.appointments.edit}
           </Button>
           <Button
             variant="contained"
@@ -142,7 +147,7 @@ export const MoreOptions = ({
             }}
             onClick={submitAppointment}
           >
-            Delete
+            {patient.appointments.delete}
           </Button>
         </Box>
       </Box>

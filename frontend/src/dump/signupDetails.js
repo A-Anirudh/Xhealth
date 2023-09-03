@@ -1,57 +1,57 @@
-export const signUpDetails = [
-    {
-        "name": "firstName",
-        "type": "text",
-        "label": "First name"
-    },
-    {
-        "name": "lastName",
-        "type": "text",
-        "label": "Last name"
-    },
-    {
-        "name": "password",
-        "type": "password",
-        "label": "Password"
-    },
-    {
-        "name": "email",
-        "type": "email",
-        "label": "Email"
-    },
-    {
-        "name": "phoneNumber",
-        "type": "tel",
-        "label": "Phone number"
-    },
-    {
-        "name": "dateOfBirth",
-        "type": "date",
-        "label": "Date of Birth"
-    },
-    {
-        "name": "state",
-        "type": "text",
-        "label": "State"
-    },
-    {
-        "name": "city",
-        "type": "text",
-        "label": "City"
-    },
-    {
-        "name": "pincode",
-        "type": "text",
-        "label": "Pincode"
-    },
-    {
-        "name": "gender",
-        "type": "text",
-        "label": "Gender"
-    },
-    {
-        "name": "bloodGroup",
-        "type": "text",
-        "label": "Blood group"
-    }
-]
+export const signUpDetails = (lang) => [
+	{
+		name: "firstName",
+		type: "text",
+		label: lang.fname,
+	},
+	{
+		name: "lastName",
+		type: "text",
+		label: lang.lname,
+	},
+	{
+		name: "password",
+		type: "password",
+		label: lang.password,
+	},
+	{
+		name: "email",
+		type: "email",
+		label: lang.email,
+	},
+	{
+		name: "phoneNumber",
+		type: "tel",
+		label: lang.phone,
+	},
+	{
+		name: "dateOfBirth",
+		type: "date",
+		label: lang.dob,
+	},
+	{
+		name: "state",
+		type: "text",
+		label: lang.state,
+	},
+	{
+		name: "city",
+		type: "text",
+		label: lang.city,
+	},
+	{
+		name: "pincode",
+		type: "text",
+		label: lang.pincode,
+	},
+	{
+		name: "gender",
+		type: "text",
+		label: lang.gender.label,
+	},
+	{
+		name: "bloodGroup",
+		type: "text",
+		label: lang.bg.label,
+	},
+];

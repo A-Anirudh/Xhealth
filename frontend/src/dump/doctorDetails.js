@@ -1,217 +1,217 @@
-export const doctorDetails = {
-  personal: [
-    {
-      name: "First name",
-      id: "firstName",
-      type: "text",
-      disabled: "",
-    },
-    {
-      name: "Last name",
-      id: "lastName",
-      type: "text",
-      disabled: "",
-    },
-    {
-      name: "Date of Birth",
-      id: "dateOfBirth",
-      type: "date",
-      disabled: "",
-    },
-    {
-      name: "Blood Group",
-      id: "bloodGroup",
-      type: "text",
-      disabled: "disabled",
-    },
-    {
-      name: "Gender",
-      id: "gender",
-      type: "text",
-      disabled: "disabled",
-    },
-    {
-      name: "Qualification",
-      id: "qualification",
-      type: "text",
-      disabled: "",
-    },
-    {
-      name: "Registration number",
-      id: "registrationNumber",
-      type: "text",
-      disabled: "disabled",
-    },
-    {
-      name: "Graduated College",
-      id: "gradCollegeName",
-      type: "text",
-      disabled: "",
-    },
-  ],
-  contact: [
-    {
-      name: "Email",
-      id: "email",
-      type: "email",
-      disabled: "disabled",
-    },
-    {
-      name: "Phone Number",
-      id: "phoneNumber",
-      type: "number",
-      disabled: "",
-    },
-    {
-      name: "State",
-      id: "state",
-      type: "text",
-      disabled: "",
-    },
-    {
-      name: "City",
-      id: "city",
-      type: "text",
-      disabled: "",
-    },
-    {
-      name: "Pincode",
-      id: "pincode",
-      type: "number",
-      disabled: "",
-    },
-  ],
+export const doctorDetails = (lang) => ({
+	personal: [
+		{
+			name: lang.fname,
+			id: "firstName",
+			type: "text",
+			disabled: "",
+		},
+		{
+			name: lang.lname,
+			id: "lastName",
+			type: "text",
+			disabled: "",
+		},
+		{
+			name: lang.dob,
+			id: "dateOfBirth",
+			type: "date",
+			disabled: "",
+		},
+		{
+			name: lang.bg,
+			id: "bloodGroup",
+			type: "text",
+			disabled: "disabled",
+		},
+		{
+			name: lang.gender,
+			id: "gender",
+			type: "text",
+			disabled: "disabled",
+		},
+		{
+			name: lang.qualification,
+			id: "qualification",
+			type: "text",
+			disabled: "",
+		},
+		{
+			name: lang.rNo,
+			id: "registrationNumber",
+			type: "text",
+			disabled: "disabled",
+		},
+		{
+			name: lang.college,
+			id: "gradCollegeName",
+			type: "text",
+			disabled: "",
+		},
+	],
+	contact: [
+		{
+			name: lang.email,
+			id: "email",
+			type: "email",
+			disabled: "disabled",
+		},
+		{
+			name: lang.phone,
+			id: "phoneNumber",
+			type: "number",
+			disabled: "",
+		},
+		{
+			name: lang.state,
+			id: "state",
+			type: "text",
+			disabled: "",
+		},
+		{
+			name: lang.city,
+			id: "city",
+			type: "text",
+			disabled: "",
+		},
+		{
+			name: lang.pincode,
+			id: "pincode",
+			type: "number",
+			disabled: "",
+		},
+	],
 
-  work: [
-    {
-      name: "Department",
-      id: "department",
-      type: "text",
-      disabled: "",
-    },
-    {
-      name: "Work hour start",
-      id: "workingHourStart",
-      type: "time",
-      disabled: "",
-    },
-    {
-      name: "Work hour end",
-      id: "workingHourEnd",
-      type: "time",
-      disabled: "",
-    },
-    {
-      name: "Working hospital",
-      id: "currentHospitalWorkingName",
-      type: "text",
-      disabled: "",
-    },
+	work: [
+		{
+			name: lang.department,
+			id: "department",
+			type: "text",
+			disabled: "",
+		},
+		{
+			name: lang.startHour,
+			id: "workingHourStart",
+			type: "time",
+			disabled: "",
+		},
+		{
+			name: lang.endHour,
+			id: "workingHourEnd",
+			type: "time",
+			disabled: "",
+		},
+		{
+			name: lang.hospital,
+			id: "currentHospitalWorkingName",
+			type: "text",
+			disabled: "",
+		},
 
-    {
-      name: "Experience",
-      id: "experience",
-      type: "text",
-      disabled: "",
-    },
-  ],
-};
+		{
+			name: lang.experience,
+			id: "experience",
+			type: "text",
+			disabled: "",
+		},
+	],
+});
 
-export const doctorSignupDetails = [
-  {
-    name: "firstName",
-    type: "text",
-    label: "First name",
-  },
-  {
-    name: "lastName",
-    type: "text",
-    label: "Last name",
-  },
-  {
-    name: "password",
-    type: "password",
-    label: "Password",
-  },
+export const doctorSignupDetails = (lang) => [
+	{
+		name: "firstName",
+		type: "text",
+		label: lang.fname,
+	},
+	{
+		name: "lastName",
+		type: "text",
+		label: lang.lname,
+	},
+	{
+		name: "password",
+		type: "password",
+		label: lang.password,
+	},
 
-  {
-    name: "email",
-    type: "email",
-    label: "Email",
-  },
-  {
-    name: "phoneNumber",
-    type: "tel",
-    label: "Phone number",
-  },
-  {
-    name: "dateOfBirth",
-    type: "date",
-    label: "Date of Birth",
-  },
-  {
-    name: "state",
-    type: "text",
-    label: "State",
-  },
-  {
-    name: "city",
-    type: "text",
-    label: "City",
-  },
-  {
-    name: "pincode",
-    type: "text",
-    label: "Pincode",
-  },
-  {
-    name: "gender",
-    type: "text",
-    label: "Gender",
-  },
-  {
-    name: "bloodGroup",
-    type: "text",
-    label: "Blood group",
-  },
-  {
-    name: "department",
-    type: "text",
-    label: "Department",
-  },
-  {
-    name: "qualification",
-    type: "text",
-    label: "Qualification",
-  },
-  {
-    name: "gradCollegeName",
-    type: "text",
-    label: "Graduated College",
-  },
-  {
-    name: "workingHourStart",
-    type: "time",
-    label: "Work hour start",
-  },
-  {
-    name: "workingHourEnd",
-    type: "time",
-    label: "Work hour end",
-  },
-  {
-    name: "experience",
-    type: "text",
-    label: "Experience",
-  },
-  {
-    name: "currentHospitalWorkingName",
-    type: "text",
-    label: "Current working hospital",
-  },
-  {
-    name: "registrationNumber",
-    type: "text",
-    label: "Registration number",
-  },
+	{
+		name: "email",
+		type: "email",
+		label: lang.email,
+	},
+	{
+		name: "phoneNumber",
+		type: "tel",
+		label: lang.phone,
+	},
+	{
+		name: "dateOfBirth",
+		type: "date",
+		label: lang.dob,
+	},
+	{
+		name: "state",
+		type: "text",
+		label: lang.state,
+	},
+	{
+		name: "city",
+		type: "text",
+		label: lang.city,
+	},
+	{
+		name: "pincode",
+		type: "text",
+		label: lang.pincode,
+	},
+	{
+		name: "gender",
+		type: "text",
+		label: lang.gender.label,
+	},
+	{
+		name: "bloodGroup",
+		type: "text",
+		label: lang.bg.label,
+	},
+	{
+		name: "department",
+		type: "text",
+		label: lang.department,
+	},
+	{
+		name: "qualification",
+		type: "text",
+		label: lang.qualification,
+	},
+	{
+		name: "gradCollegeName",
+		type: "text",
+		label: lang.college,
+	},
+	{
+		name: "workingHourStart",
+		type: "time",
+		label: lang.startHour,
+	},
+	{
+		name: "workingHourEnd",
+		type: "time",
+		label: lang.endHour,
+	},
+	{
+		name: "experience",
+		type: "text",
+		label: lang.experience,
+	},
+	{
+		name: "currentHospitalWorkingName",
+		type: "text",
+		label: lang.hospital,
+	},
+	{
+		name: "registrationNumber",
+		type: "text",
+		label: lang.rNo,
+	},
 ];
