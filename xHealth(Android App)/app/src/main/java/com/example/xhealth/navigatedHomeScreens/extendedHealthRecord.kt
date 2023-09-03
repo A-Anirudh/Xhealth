@@ -1,17 +1,16 @@
 package com.example.xhealth.navigatedHomeScreens
 
-import android.content.ContentValues
-import android.util.Log
+import android.app.Application
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -21,26 +20,23 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import com.example.xhealth.MainActivity
 import com.example.xhealth.homePage.convertTo12Hour
 import com.example.xhealth.network.doctorClass
 import com.example.xhealth.network.healthRecordNew
 import com.example.xhealth.theme.DynamicTheme
-import com.example.xhealth.utils.ProgressArc
 import kotlinx.serialization.json.Json
-import java.text.SimpleDateFormat
-import java.util.Date
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,6 +83,7 @@ fun ExtendedHealthRecord (history: healthRecordNew.History,doctorClass: doctorCl
                 LazyRow(
                     modifier = Modifier.padding(vertical = 2.dp)
                 ) {
+
                     items(history.diagnoses.problems) {
                         AssistChip(
                             onClick = {},
@@ -126,7 +123,9 @@ fun ExtendedHealthRecord (history: healthRecordNew.History,doctorClass: doctorCl
                                             .padding(horizontal = 8.dp)
                                             .padding(top = 3.dp, bottom = 5.dp))
                                 }
-                                Divider(modifier = Modifier.padding(horizontal=17.dp).fillMaxWidth())
+                                Divider(modifier = Modifier
+                                    .padding(horizontal = 17.dp)
+                                    .fillMaxWidth())
                             }}
 
                     }
@@ -141,9 +140,31 @@ fun ExtendedHealthRecord (history: healthRecordNew.History,doctorClass: doctorCl
                             Text(text = history.immunizations[i].name+"", fontSize = 18.sp)
                             Text(text = history.immunizations[i].dosage.toString() + "ml", fontSize = 15.sp)
                         }
-                        Divider(modifier = Modifier.padding(horizontal=18.dp).fillMaxWidth().height(2.dp))
+                        Divider(modifier = Modifier
+                            .padding(horizontal = 18.dp)
+                            .fillMaxWidth()
+                            .height(2.dp))
                     }
-                    
+                    Text(text = "All related PDFs : ", fontSize = 18.sp)
+                    LazyRow(
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    ) {
+                        MainActivity().applicationContext.shareLink("https://xhealth-git-jagnathreddy9-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com/")
+                        items(history.scans) {
+                            AssistChip(
+                                onClick = {
+
+                                },
+                                label = { Text(text = it.name) },
+                                modifier = Modifier
+                                    .height(30.dp)
+                                    .padding(horizontal = 2.dp),
+                                shape = MaterialTheme.shapes.extraSmall,
+                            )
+                        }
+                    }
+
+
                 }
             }
 
@@ -1000,4 +1021,16 @@ fun displayHealthRecords(){
             ExtendedHealthRecord(kotlinClass.history[0],kotlinDocClass)
         }
     }
+}
+
+fun Context.shareLink(url:String){
+    val sendIntent=Intent(
+        Intent.ACTION_SEND
+    ).apply {
+        type="text/plain"
+    }
+    val shareIntent=Intent.createChooser(
+        sendIntent,null
+    )
+    startActivity(shareIntent)
 }

@@ -24,6 +24,9 @@ healthRecordsRouter.route("/").post(protect, newHealthRecord)
 healthRecordsRouter.route("/getAll").post(protect, getAllHealthRecords)
 
 healthRecordsRouter.get("/key/:keyId",protect, getDocument).post("/addPdf",protect,storeDocument)
+healthRecordsRouter.get("android/key/:keyId", getDocument)
+
+
 
 //Dynamic access to doctors 
 //TODO: implement new protect as user may add doctors to allow permission to see their health records
