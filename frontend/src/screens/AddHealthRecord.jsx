@@ -321,10 +321,10 @@ export const AddHealthRecord = () => {
 	useEffect(() => {}, [body]);
 
 	const navigate = useNavigate();
-	const submitEnd = () => {
+	const submitEnd = async () => {
 		const data = addRecord(newRecord);
 		for (let i = 0; i < body.length; i++) {
-			uploadPdf(body[i]);
+			await uploadPdf(body[i]);
 		}
 		status({ _id: aptId, newStatus: "Completed" });
 		navigate("/dashboard-doctor");
