@@ -9,10 +9,10 @@ import personalHealth from '../models/personalHealthModel.js'
  */
 
 const addMetrics = asyncHandler(async (req, res) => {
-    const {userId, heartRate, bloodPressure, glucose, weight, height, bmi } = req.body;
+    const { heartRate, bloodPressure, glucose, weight, height, bmi } = req.body;
 
     const healthMetric = await personalHealth.create({
-        userId, heartRate, bloodPressure, glucose, weight, height, bmi
+        userId:req.user._id, heartRate, bloodPressure, glucose, weight, height, bmi
     })
 
     res.status(200).json({
@@ -30,11 +30,11 @@ const addMetrics = asyncHandler(async (req, res) => {
 */
 
 const getAllMyMetrics = asyncHandler(async (req, res) => {
-    
-    try {
-        const myMetrics = await personalHealth.find({userId:req.user._id});
+    const myMetrics = await personalHealth.find({userId:req.user._id});
+
+    if(myMetrics) {
         res.status(200).json(myMetrics)
-    } catch (error) {
+    } else {
         res.status(res.statusCode === 200 ? 500 : res.statusCode);
         // Preserve existing status code if it's not an HTTP error
         throw new Error("Could not find data for the specified user!");
@@ -52,11 +52,11 @@ const getAllMyMetrics = asyncHandler(async (req, res) => {
 
 const deletePersonalHealthMetric = asyncHandler(async (req,res)=>{
     const {_id} = req.body;
-    console.log(_id);
-    try {
-        const metric = await personalHealth.findByIdAndDelete(_id);
+    const metric = await personalHealth.findByIdAndDelete(_id);
+
+    if(metric) {
         res.status(200).json({metric})
-    } catch (error) {
+    } else {
         res.status(res.statusCode === 200 ? 500 : res.statusCode);
         throw new Error("Metric not found to delete")
     }
