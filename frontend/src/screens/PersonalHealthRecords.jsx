@@ -13,6 +13,7 @@ export const PersonalHealthRecords = () => {
 	const theme = useTheme();
 	const [records] = useGetHealthRecordsMutation();
 	const [toggle, settoggle] = useState(false);
+	const [error, setError] = useState("");
 	const link = "http://localhost:8080/api/users/healthRecords/key/";
 	const patientEmail = useSelector((state) => state.auth.userInfo.email);
 	const [allRecords, setAllRecords] = useState();
@@ -41,11 +42,38 @@ export const PersonalHealthRecords = () => {
 	useEffect(() => {
 		return async () => {
 			const res = await records({ email: patientEmail });
+			console.log(res?.error?.data?.message);
+			setError(res?.error?.data?.message);
 			setAllRecords(res.data);
 		};
 	}, []);
 
-	if (!allRecords) return "loading";
+	if (!allRecords)
+		return (
+			<center>
+				<Typography
+					variant="h5"
+					fontFamily={"poppins"}
+					fontWeight={700}
+					color={"red"}
+				>
+					{error}
+				</Typography>
+			</center>
+		);
+		if (!healthRecord)
+		return (
+			<center>
+				<Typography
+					variant="h2"
+					fontFamily={"poppins"}
+					fontWeight={700}
+					color={"red"}
+				>
+					{"No records found"}
+				</Typography>
+			</center>
+		);
 	const handleOnclick = (i) => {
 		sethealthRecord(allRecords.history[i]);
 		settoggle(true);
