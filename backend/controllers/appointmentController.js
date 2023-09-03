@@ -186,26 +186,32 @@ const editAppointment = asyncHandler(async (req, res) => {
     const newDoc = await Doctor.findById(newDoctorId);
     const currentUser = await User.findById(req.user._id);
     // TODO : Check all the code and functions below again!
-    if (apt) {
-        const [hour, min] = newAppointmentTime.split(":")
-        const year = new Date(newAppointmentDate).getFullYear();
-        const month = new Date(newAppointmentDate).getMonth();
-        const date = new Date(newAppointmentDate).getDate();
-        const newD = new Date(year, month, date, hour, min)
-        checkUserAvailability(currentUser, newD, res)
-        checkDocAvailability(newDoc, newD, res);
-        removeUserArray(currentUser, apt.appointmentDate);
-        addUserArray(currentUser, newD.toString())
-        removeDocArray(newDoc, apt.appointmentDate)
-        addDocArray(newDoc, newD.toString());
-        apt.doctorId = newDoctorId || apt.doctorId
-        apt.appointmentDate = newD.toString() || apt.appointmentDate;
-        apt.appointmentStartTime = newAppointmentTime || apt.appointmentStartTime;
-        newDoc.save();
-        apt.save();
-        currentUser.save();
+
+    if(apt.status === 'Scheduled'){
+        if (apt) {
+            const [hour, min] = newAppointmentTime.split(":")
+            const year = new Date(newAppointmentDate).getFullYear();
+            const month = new Date(newAppointmentDate).getMonth();
+            const date = new Date(newAppointmentDate).getDate();
+            const newD = new Date(year, month, date, hour, min)
+            checkUserAvailability(currentUser, newD, res)
+            checkDocAvailability(newDoc, newD, res);
+            removeUserArray(currentUser, apt.appointmentDate);
+            addUserArray(currentUser, newD.toString())
+            removeDocArray(newDoc, apt.appointmentDate)
+            addDocArray(newDoc, newD.toString());
+            apt.doctorId = newDoctorId || apt.doctorId
+            apt.appointmentDate = newD.toString() || apt.appointmentDate;
+            apt.appointmentStartTime = newAppointmentTime || apt.appointmentStartTime;
+            newDoc.save();
+            apt.save();
+            currentUser.save();
+        }
+        res.status(200).json("Appointment updates successfully")
+    } else{
+        res.status(400)
+        throw new Error("Appointment completed! Cannot update now!")
     }
-    res.status(200).json("Appointment updates successfully")
 })
 
 const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
