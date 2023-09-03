@@ -213,8 +213,8 @@ const AppRouter = () => {
 								backgroundColor: "lightgray",
 							},
 						}}
-						onClick={() => dispatch(setLang("ml"))}
-						primary="Malayalam"
+						onClick={() => dispatch(setLang("ta"))}
+						primary="Tamil"
 					/>
 					<ListItemText
 						sx={{
