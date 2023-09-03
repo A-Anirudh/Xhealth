@@ -20,14 +20,12 @@ import { convertTimeToMinutes } from "../utils/timeToMinutes.js";
 const bookAppointment = asyncHandler(async (req, res) => {
 
     const { doctorId, appointmentDate, appointmentStartTime, reason, status } = req.body;
-    // console.log(doctorId)
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     console.log(dateRegex.test(appointmentDate))
     if (dateRegex.test(appointmentDate)){
         try {
             const doc = await Doctor.findOne({ _id: doctorId })
             const user = await User.findOne({ _id: req.user._id })
-            // console.log(doc)
 
             const convertedAppointmentStartTime = convertTimeToMinutes(appointmentStartTime);
             const convertedWorkingHourStart = convertTimeToMinutes(doc.workingHourStart);
@@ -219,10 +217,8 @@ const editAppointment = asyncHandler(async (req, res) => {
 })
 
 const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
-    console.log("req",req.doctor._id);
-    const doctorId = req.doctor._id;
+    const doctorId = req.doctor;
     const postDoctorId  = req.body._id;
-    console.log(req.body)
     if (postDoctorId){
         const apts = await Appointment.find({ doctorId: postDoctorId, status:'Scheduled' });
         const users_array = []
@@ -240,8 +236,16 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
         }
     
 
-    } else{
-        const apts = await Appointment.find({ doctorId: doctorId, status:'Scheduled' });
+    } else if(doctorId){
+        const startDate = new Date()
+        const endDate = new Date()
+        startDate.setHours(0,0,0,0);
+        endDate.setHours(23,59,59,999);
+
+        const apts = await Appointment.find({ doctorId: doctorId._id, status:'Scheduled', appointmentDate: {
+            $gte:startDate,
+            $lt:endDate
+        } });
         const users_array = []
         for (let i = 0; i < apts.length; i++) {
             let user = await User.findOne({ _id: apts[i].userId })
@@ -255,6 +259,9 @@ const getAppointmentDetailBasedOnDoctor = asyncHandler(async (req, res) => {
             res.status(400)
             throw new Error("appointment not found")
         }
+    } else{
+        res.status(400)
+        throw new Error("No doctor found")
     }
 
 });
