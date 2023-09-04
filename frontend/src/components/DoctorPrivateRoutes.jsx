@@ -49,7 +49,7 @@ export const DoctorPrivateRoutes = () => {
 					},
 				}}
 			>
-				<Link to="/" style={{ textDecoration: "none" }}>
+				<Link to="/" style={{ textDecoration: "none" }} onClick={logoutUser}>
 					<Typography
 						fontFamily="Poppins"
 						variant="h4"
