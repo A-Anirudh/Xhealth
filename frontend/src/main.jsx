@@ -129,11 +129,13 @@ const AppRouter = () => {
 				right="2rem"
 				bottom="6rem"
 				padding="0"
+				height="10rem"
 				backgroundColor="white"
-				borderRadius="1rem"
+				borderRadius="0.4rem"
 				zIndex="44444"
 				onClick={() => setLanguageDisplay((p) => !p)}
-				overflow="hidden"
+				sx={{ overflowY: "scroll" }}
+				className="scroll-type"
 				display={languageDisplay ? "block" : "none"}
 				aria-label="Language Options"
 			>
