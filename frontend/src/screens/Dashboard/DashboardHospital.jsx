@@ -26,9 +26,9 @@ export const DashboardHospital = () => {
 	const [categorizedDoctors, setCategorizedDoctors] = useState();
 	const [searchRes, setSearchRes] = useState([]);
 	const navigate = useNavigate();
-  const {
-    lang: { hospital: langHospital },
-  } = useSelector ((state) => state.language);
+	const {
+		lang: { hospital: langHospital },
+	} = useSelector((state) => state.language);
 
 	const searchDoc = (e) => {
 		const res =
@@ -41,7 +41,6 @@ export const DashboardHospital = () => {
 			);
 		setSearchRes(res);
 	};
-
 
 	const handleSelectDoc = (e) => {
 		const docName = e.target.innerText;
@@ -135,7 +134,7 @@ export const DashboardHospital = () => {
 						},
 					}}
 				>
-					<Link to="/" style={{ textDecoration: "none" }}>
+					<Link to="/" style={{ textDecoration: "none" }} onClick={logoutUser}>
 						<Typography
 							fontFamily="Poppins"
 							variant="h4"
@@ -267,15 +266,21 @@ export const DashboardHospital = () => {
 											}}
 										>
 											<span>
-												<strong>{langHospital.dashboard.appointments.date}:</strong>{" "}
+												<strong>
+													{langHospital.dashboard.appointments.date}:
+												</strong>{" "}
 												{moment(apt.appointmentDate).format("DD/MM/YYYY")}
 											</span>{" "}
 											<span>
-												<strong>{langHospital.dashboard.appointments.time}:</strong>{" "}
+												<strong>
+													{langHospital.dashboard.appointments.time}:
+												</strong>{" "}
 												{apt.appointmentStartTime}
 											</span>{" "}
 											<span>
-												<strong>{langHospital.dashboard.appointments.reason}:</strong>{" "}
+												<strong>
+													{langHospital.dashboard.appointments.reason}:
+												</strong>{" "}
 												{apt.reason}
 											</span>
 										</Typography>
