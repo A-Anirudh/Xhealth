@@ -10,7 +10,7 @@ export default defineConfig({
     port:3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://xhealth-git-jagnathreddy9-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com',
         changeOrigin: true,
         secure: false,
         ws: true,

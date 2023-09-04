@@ -20,7 +20,7 @@ export const AddHealthRecord = () => {
 	} = useSelector((state) => state.language);
 	const aptId = useSelector((state) => state.aptId);
 	const theme = useTheme();
-	const link = "http://localhost:8080/api/users/healthRecords/key/";
+	const link = "https://xhealth-git-jagnathreddy9-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com/api/users/healthRecords/key/";
 
 	// const [records] = useGetHealthRecordsMutation();
 	const [addRecord] = useAddHealthRecordMutation();
