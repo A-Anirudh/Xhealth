@@ -5,7 +5,7 @@ import personalHealth from '../models/personalHealthModel.js'
  * @desc : Add a new health metric
  * @access : Private
  * @route : POST to /api/users/metrics
- * @params : userId, heartRate, bloodPressure, glucose, weight, height, bmi
+ * @params : heartRate, bloodPressure, glucose, weight, height, bmi
  */
 
 const addMetrics = asyncHandler(async (req, res) => {
