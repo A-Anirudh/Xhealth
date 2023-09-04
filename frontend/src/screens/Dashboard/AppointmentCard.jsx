@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { setPatientId } from "../../slices/patientIdSlice";
 import { useTheme } from "@emotion/react";
 import { setAptId } from "../../slices/aptIdSlice";
-const AppointmentCard = ({ aptid, idx, name, time, id }) => {
+const AppointmentCard = ({ reason,aptid, idx, name, time, id }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const {
@@ -16,9 +16,11 @@ const AppointmentCard = ({ aptid, idx, name, time, id }) => {
 	const setId = async (id) => {
 		dispatch(setPatientId(id));
 		dispatch(setAptId(aptid));
+		localStorage.setItem('reason', reason);
 	};
 
 	const newLocal = `#736f0b`;
+	console.log(reason)
 	return (
 		<Box
 			className="main-card"

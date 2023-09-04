@@ -31,6 +31,7 @@ const authSlice = createSlice({
     doctorLogout: (state, action) => {
       state.doctorInfo = null;
       localStorage.removeItem('doctorInfo');
+      localStorage.removeItem('reason');
     },
     setHospitalCredentials: (state, action) => {
       state.hospitalInfo = action.payload;
