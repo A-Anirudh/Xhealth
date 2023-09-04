@@ -2,16 +2,13 @@ package com.example.xhealth.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 
@@ -45,6 +42,9 @@ interface XHealthApiService{
 
     @GET("api/doctors/all")
     suspend fun getDoc():doctorClass
+
+    @GET("/api/users/appointments/android")
+    suspend fun getAllAppointment(@HeaderMap headers:Map<String,String>): List<appointmentResponse.Appointment>
 
 
 }

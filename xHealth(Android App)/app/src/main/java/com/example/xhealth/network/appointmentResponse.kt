@@ -1,11 +1,10 @@
-
+package com.example.xhealth.network
 import kotlinx.serialization.Serializable
 
 import kotlinx.serialization.SerialName
 
 @Serializable
 data class appointmentResponse(
-    @SerialName("appointments")
     var appointments: List<Appointment>
 ) {
     @Serializable

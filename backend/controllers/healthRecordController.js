@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler"
 import healthRecordModel from "../models/healthRecordModel.js";
 import User from "../models/userModel.js";
 import {cos} from "../config/cos.js";
+import { error } from "console";
 
 async function getHealthRecordInstance(email) {
     if (email) {
@@ -175,16 +176,13 @@ const getDocument=(req,res)=>{
     cos.getObject({Key:req.params.keyId,Bucket:"cloud-object-storage-cos-standard-wwf"})
     .on('complete',(response)=>{
         // Get the base64 encoded PDF from your server
-        pdfBase64="non"
-        if(response.data.Body)
-        
-        var pdfBase64 = response.data.Body?.toString();
+        pdfBase64=""
+        if(response.data!=null)
+        var pdfBase64 = pdfBase64+response.data.Body?.toString();
         
         // Set the content type and send the base64 encoded PDF as the response body
         res.setHeader('Content-Type', 'application/pdf');
         res.send(Buffer.from(pdfBase64, 'base64'));
-    }).on('error',(error)=>{
-        res.status(404).json(error)
     })
     .send()
 }

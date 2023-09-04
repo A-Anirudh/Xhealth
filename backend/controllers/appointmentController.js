@@ -88,7 +88,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
 
 // @desc : View all my appointments
 // route : GET /api/users/appointments
-// route : GET /api/users/appointment/android
+// route : GET /api/users/appointments/android
 // Access : private
 const viewAllMyAppointments = asyncHandler(async (req, res) => {
     const appointments = await Appointment.find({ userId: req.user._id })
