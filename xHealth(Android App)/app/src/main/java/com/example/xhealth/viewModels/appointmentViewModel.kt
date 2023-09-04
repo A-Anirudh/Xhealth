@@ -15,13 +15,12 @@ class appointmentViewModel(
     dataViewModel: dataViewModel
 ):ViewModel() {
     var allAppointment: List<appointmentResponse.Appointment>? by mutableStateOf(null)
-
+    var dataReady:Boolean by mutableStateOf(false)
     init {
         viewModelScope.launch {
             var headers=mapOf("email" to dataViewModel.email, "password" to dataViewModel.password)
             allAppointment=XHealthApi.retrofitService.getAllAppointment(headers)
-            Log.d(TAG,allAppointment.toString())
-
+            dataReady=true
         }
     }
 }

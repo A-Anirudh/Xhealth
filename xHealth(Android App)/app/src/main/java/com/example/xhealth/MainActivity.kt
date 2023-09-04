@@ -32,6 +32,7 @@ import com.example.xhealth.alarm.AlarmItem
 import com.example.xhealth.alarm.AndroidAlarmScheduler
 import com.example.xhealth.alarm.setAlarm
 import com.example.xhealth.homeScreen.startScreen
+import com.example.xhealth.network.AndroidDownloder
 import com.example.xhealth.network.XHealthApi
 import com.example.xhealth.network.XHealthApiService
 import com.example.xhealth.repository.LocalUserRepository
@@ -60,6 +61,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen();
 //        Log.d(TAG,WorkManager.getInstance(this).enqueue(getDataRequest).result.isDone.toString()+"++++++++++++++++++++++")
+
         setContent {
             DynamicTheme(){
                 // A surface container using the 'background' color from the theme
@@ -83,7 +85,6 @@ class MainActivity : ComponentActivity() {
                         )
                     )
                     val ready by rememberSaveable { mutableStateOf(false) }
-
 //                    Button(onClick = {
 //                        AndroidAlarmScheduler(context = this ).schedule(Calendar.getInstance().apply {
 //                            timeInMillis = System.currentTimeMillis()

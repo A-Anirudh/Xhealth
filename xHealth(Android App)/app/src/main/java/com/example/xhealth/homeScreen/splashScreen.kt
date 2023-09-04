@@ -47,7 +47,6 @@ fun startScreen(
         LogInScreen(viewModel = model)
     }
     LaunchedEffect(shouldNavigate.value) {
-        
         delay(2000) // 2 seconds delay
         shouldNavigate.value = true
     }

@@ -255,13 +255,12 @@ fun homeRecord(
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.End,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 7.dp),
         ){
-            Text(text = "Doctor : ${history.doctorId}", fontFamily = FontFamily.Monospace)
-            Text("15/8/2023")
+            Text(history.time.split("T")[0])
         }
 
     }
@@ -279,10 +278,11 @@ fun homeRecordPreview(dataViewModel: dataViewModel,healthRecordViewModel: health
             listOfMeds.add(i.medications);
         }
     }
-//    if(!dataViewModel.alarmSet) {
-//        setAlarm(listOfMeds, context = LocalContext.current)
-//        dataViewModel.setAlarm()
-//    }
+    val setForCurrent=false;
+    if(!dataViewModel.alarmSet) {
+        setAlarm(listOfMeds, context = LocalContext.current)
+        dataViewModel.setAlarm()
+    }
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {

@@ -16,10 +16,12 @@ import okhttp3.internal.wait
 
 class doctorViewModel(
 ) : ViewModel() {
-     var allDoctors:doctorClass? by mutableStateOf(null);
+    var allDoctors:doctorClass? by mutableStateOf(null);
+    var dataReady:Boolean by mutableStateOf(false);
     init {
         viewModelScope.launch {
             allDoctors=XHealthApi.retrofitService.getDoc();
+            dataReady=true
         }
     }
 }

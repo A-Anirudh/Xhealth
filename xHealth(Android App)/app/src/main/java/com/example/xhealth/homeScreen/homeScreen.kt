@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -13,7 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.AccountCircle
+import androidx.compose.material.icons.sharp.DoubleArrow
 import androidx.compose.material.icons.sharp.Event
+import androidx.compose.material.icons.sharp.Expand
+import androidx.compose.material.icons.sharp.ExpandMore
 import androidx.compose.material.icons.sharp.Home
 import androidx.compose.material.icons.sharp.PendingActions
 import androidx.compose.material3.BottomAppBar
@@ -21,8 +25,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,13 +45,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.xhealth.R
 import com.example.xhealth.homePage.homeRecordPreview
 import com.example.xhealth.navigatedHomeScreens.AllAppointmentScreenPreview
+import com.example.xhealth.navigatedHomeScreens.displayHealthRecords
 import com.example.xhealth.navigatedHomeScreens.medRemainderPreview
 import com.example.xhealth.profileScreen.ProfileScreenPreview
+import com.example.xhealth.utils.LoadingScreen
 import com.example.xhealth.viewModels.appointmentViewModel
 import com.example.xhealth.viewModels.dataViewModel
 import com.example.xhealth.viewModels.doctorViewModel
 import com.example.xhealth.viewModels.healthRecordViewModel
 import com.example.xhealth.viewModels.profileDetailsViewModel
+import kotlinx.coroutines.delay
 
 
 data class screens(
@@ -65,7 +75,7 @@ fun HomeScreen(
     val doctorModel : doctorViewModel= doctorViewModel()
     val profileDetail:profileDetailsViewModel= profileDetailsViewModel(dataViewModel)
     val healthRecordViewModel:healthRecordViewModel=healthRecordViewModel(dataViewModel)
-    val appointmentViewModel:appointmentViewModel=appointmentViewModel(dataViewModel)
+    val appointmentViewModel:appointmentViewModel= appointmentViewModel(dataViewModel)
     Scaffold(
         topBar = {
             AnimatedVisibility(
@@ -84,7 +94,11 @@ fun HomeScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            navController.navigate("profile")
+                            navController.navigate("profile"){
+                                popUpTo(route = "profile")
+                                restoreState=true
+                            }
+
                         }) {
                             Icon(
                                 Icons.Sharp.AccountCircle,
@@ -108,14 +122,20 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    IconButton(onClick = { navController.navigate("home")}) {
+                    IconButton(onClick = { navController.navigate("home"){
+                        popUpTo(route = "home")
+                        restoreState=true
+                    } }) {
                         Icon(
                             Icons.Sharp.Home, contentDescription = null, modifier = Modifier
                                 .fillMaxSize(0.8f)
                                 .padding(1.dp)
                         )
                     }
-                    IconButton(onClick = { navController.navigate("remainder") }) {
+                    IconButton(onClick = { navController.navigate("remainder") {
+                        popUpTo(route = "remainder")
+                        restoreState=true
+                    } }) {
                         Icon(
                             Icons.Sharp.PendingActions,
                             contentDescription = "home",
@@ -124,9 +144,22 @@ fun HomeScreen(
                                 .padding(1.dp)
                         )
                     }
-                    IconButton(onClick = { navController.navigate("appointment") }) {
+                    IconButton(onClick = { navController.navigate("appointment"){
+                        popUpTo(route = "appointment")
+                        restoreState=true
+                    }  }) {
                         Icon(
                             Icons.Sharp.Event, contentDescription = null, modifier = Modifier
+                                .fillMaxSize(0.8f)
+                                .padding(1.dp)
+                        )
+                    }
+                    IconButton(onClick = { navController.navigate("extendedHealthRecord"){
+                        popUpTo(route = "extendedHealthRecord")
+                        restoreState=true;
+                    } }) {
+                        Icon(
+                            Icons.Sharp.Expand, contentDescription = null, modifier = Modifier
                                 .fillMaxSize(0.8f)
                                 .padding(1.dp)
                         )
@@ -138,19 +171,31 @@ fun HomeScreen(
     ) {
         NavHost(
             navController = navController,
-            startDestination = "remainder",
+            startDestination = "home",
             modifier = Modifier.padding(it),
         ) {
             composable(route="home"){
-                homeRecordPreview(dataViewModel,healthRecordViewModel)
+                if(healthRecordViewModel.dataReady){
+                    homeRecordPreview(dataViewModel,healthRecordViewModel)
+                }else{
+                    loading(dataName = "Health Record")
+                }
                 if(!topAppBar)topAppBar=!topAppBar;
             }
             composable(route = "remainder") {
-                medRemainderPreview(healthRecordViewModel)
+                if(healthRecordViewModel.dataReady){
+                    medRemainderPreview(healthRecordViewModel)
+                }else{
+                    loading(dataName = "medicines")
+                }
                 if(!topAppBar)topAppBar=!topAppBar;
             }
             composable(route = "appointment") {
-                AllAppointmentScreenPreview(appointmentViewModel,doctorModel)
+                if(appointmentViewModel.dataReady&&doctorModel.dataReady){
+                    AllAppointmentScreenPreview(appointmentViewModel,doctorModel)
+                }else{
+                    loading(dataName = "Appointments")
+                }
                 if(!topAppBar)topAppBar=!topAppBar;
             }
 
@@ -160,7 +205,25 @@ fun HomeScreen(
                 bottomAppBar=false;
                 ProfileScreenPreview(profileDetail)
             }
+            composable(route = "extendedHealthRecord") {
+                if(healthRecordViewModel.dataReady){
+                    displayHealthRecords(dataViewModel,healthRecordViewModel,doctorModel)
+                }else{
+                    loading(dataName = "Health Record And Doctor Data")
+                }
+                if(!topAppBar)topAppBar=!topAppBar;
+            }
+
 
         }
+    }
+}
+@Composable
+fun loading(dataName:String){
+    Column(modifier=Modifier.fillMaxSize(),Arrangement.Center,Alignment.CenterHorizontally) {
+        Surface(modifier = Modifier.fillMaxSize(0.5f)) {
+            LoadingScreen()
+        }
+        Text(text="Please wait while we load your $dataName")
     }
 }
