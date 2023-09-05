@@ -30,6 +30,7 @@ export const DashboardDoctor = () => {
 		setaptBasedOnDoc(apts_doc);
 	}, [apts_doc, aptBasedOnDoc]);
 
+	// console.log("data",aptBasedOnDoc.apts)
 	return (
 		<Grid className="main-container" container>
 			<Grid
@@ -254,6 +255,7 @@ export const DashboardDoctor = () => {
 				{aptBasedOnDoc || aptBasedOnDoc != null ? (
 					Object.keys(aptBasedOnDoc.apts)?.map((item) => (
 						<AppointmentCard
+							reason={aptBasedOnDoc.apts[Number(item)].reason}
 							key={item}
 							aptid={aptBasedOnDoc.apts[Number(item)]._id}
 							idx={Number(item) + 1}
