@@ -30,7 +30,7 @@ export const useAptDetails = ({hrid}) => {
             city: docDetail?.city,
             doctorName: docDetail?.firstName,
             department: docDetail?.department,
-            healthRecord: "http://localhost:8080/api/users/healthRecords/key/"+hrid,
+            healthRecord: "http://localhost:5000/api/users/healthRecords/key/"+hrid,
             _id,
           };
         }

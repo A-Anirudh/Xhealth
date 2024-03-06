@@ -16,7 +16,7 @@ export const AllHealthRecords = () => {
 	const [doctorInfo] = user.getDoctorInfo();
 	const [error, setError] = useState("");
 	const [toggle, settoggle] = useState(false);
-	const link = "http://localhost:8080/api/users/healthRecords/key/";
+	const link = "http://localhost:5000/api/users/healthRecords/key/";
 	const patientEmail = useSelector((state) => state.patientId);
 	const [allRecords, setAllRecords] = useState();
 	const {
