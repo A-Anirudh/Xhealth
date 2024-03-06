@@ -20,11 +20,12 @@ const port = process.env.PORT || 8080;
 const app = express()
 app.use(cors({ origin: '*', credentials: true }));
 
-app.use(bodyParser.json({limit:"50mb"}))
-
 app.use(cors())
 app.use(express.json()); // this makes req.body available.. else body won't be available
 app.use(express.urlencoded({extended: true})); // Allows to send form data. If I don't add this, I won't be able to send data..
+app.use(bodyParser.json({limit:"50mb"}))
+
+
 app.use(cookieParser());
 app.use('/api/users',router) // This is for userRoutes only
 app.use('/api/doctors',docRouter) // doctorRoutes

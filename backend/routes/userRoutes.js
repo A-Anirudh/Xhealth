@@ -12,4 +12,4 @@ router.route('/profile').get(protect,getUserProfile).put(protect,updateUserProfi
 router.route('/profile/android').get(androidProtect,getUserProfile);
 router.post('/updatePermission',protect,updateUserPermission)
 
-export default router
+export default router   
