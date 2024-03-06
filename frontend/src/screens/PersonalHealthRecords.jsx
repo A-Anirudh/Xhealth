@@ -14,7 +14,7 @@ export const PersonalHealthRecords = () => {
 	const [records] = useGetHealthRecordsMutation();
 	const [toggle, settoggle] = useState(false);
 	const [error, setError] = useState("");
-	const link = "http://localhost:8080/api/users/healthRecords/key/";
+	const link = "http://localhost:5000/api/users/healthRecords/key/";
 	const patientEmail = useSelector((state) => state.auth.userInfo.email);
 	const [allRecords, setAllRecords] = useState();
 	const {

@@ -37,11 +37,11 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-        getDoctorApt: builder.query({
-            query: () => ({
+        getDoctorApt: builder.mutation({
+            query: (body) => ({
                 url: `/api/users/appointments/doctor`,
                 method: 'POST',
-                
+                body
             })
         }),
         logoutDoctor: builder.mutation({
@@ -68,6 +68,6 @@ export const {
     useDoctorRegisterMutation,
     useGetDoctorInfoQuery,//profile
     useUpdateDoctorInfoMutation,//update
-    useGetDoctorAptQuery,
+    useGetDoctorAptMutation,
     useChangeAptStatusMutation,
 } = doctorApiSlice;

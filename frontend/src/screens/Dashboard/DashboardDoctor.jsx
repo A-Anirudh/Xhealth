@@ -15,20 +15,23 @@ export const DashboardDoctor = () => {
 		apts: [],
 		users_array: [],
 	});
-	const [apts_doc, refetchapts] = user.getDocApt();
+	const apts_doc = user.getDocApt();
 	const {
 		lang: { doctor },
 	} = useSelector((state) => state.language);
 
 	useEffect(() => {
-		refetchapts(async () => {
-			await refetchDoctor();
-		});
+		refetchDoctor();
 	}, []);
 
 	useEffect(() => {
-		setaptBasedOnDoc(apts_doc);
-	}, [apts_doc, aptBasedOnDoc]);
+		// setaptBasedOnDoc(apts_doc);
+		(async () => {
+			console.log(doctorInfo);
+			const res = await apts_doc({ _id: doctorInfo._id });
+			setaptBasedOnDoc(res.data);
+		})();
+	}, [doctorInfo]);
 
 	// console.log("data",aptBasedOnDoc.apts)
 	return (
